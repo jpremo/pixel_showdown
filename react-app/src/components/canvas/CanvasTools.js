@@ -10,12 +10,10 @@ const CanvasTools = props => {
     const canvasSettings = useSelector(state => state.canvas)
 
     const colorChange = (e) => {
-        debugger
         const colArr = [e.rgb.r, e.rgb.g, e.rgb.b, e.rgb.a,]
         dispatch(changeProperty({ color: colArr }))
     }
 
-    let hexColor = rgbToHex(canvasSettings.color)
     let a = canvasSettings.color[3] ? canvasSettings.color[3] : 1
     let colObj = {
         r: canvasSettings.color[0],

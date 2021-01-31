@@ -7,8 +7,8 @@ const useCanvas = (draw, options) => {
     const formattedDraw = (ctx) => {
         ctx.canvas.width = String(options.width * options.pixelSize);
         ctx.canvas.height = String(options.height * options.pixelSize);
-        ctx.fillStyle = 'rgb(255, 255, 255)'
-        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        // ctx.fillStyle = 'rgb(255, 255, 255)'
+        // ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         draw(ctx)
     }
 

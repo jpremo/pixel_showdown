@@ -10,7 +10,7 @@ const initialState = {
     pixelSize: 20,
     height: 32,
     width: 32,
-    color: [0,180,0],
+    color: [0,180,0,1],
     grid: {},
     finalGrid: {}
 }
