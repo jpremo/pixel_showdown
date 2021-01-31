@@ -2,13 +2,15 @@ import React from 'react'
 import useCanvas from './useCanvas'
 import './Canvas.css'
 import {drawPixel} from '../canvas/color_functions'
+import { changeProperty } from '../../store/canvas'
+import { useDispatch, useSelector } from "react-redux";
 
 const Canvas = props => {
-    const { draw, options, ...rest } = props
+    const { draw, ...rest } = props
+    const options = useSelector(state => state.canvas)
+    const dispatch = useDispatch()
     const gridCopy = { ...options.finalGrid };
     const canvasRef = useCanvas(draw, options)
-
-    let interval;
 
     const setPixel = (e) => {
         if(e.buttons == 1) {
@@ -24,7 +26,8 @@ const Canvas = props => {
     }
 
     function updateGrid() {
-        options.setGrid({ ...options.grid, ...gridCopy})
+        const newGrid = { ...options.grid, ...gridCopy}
+        dispatch(changeProperty({grid: newGrid}))
     }
 
     return (

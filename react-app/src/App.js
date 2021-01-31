@@ -9,19 +9,25 @@ import User from "./components/User";
 import HomePage from "./components/HomePage"
 import { authenticate } from "./services/auth";
 
+import { restoreUser } from "./store/session";
+import { useDispatch } from "react-redux";
+
+
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const [loaded, setLoaded] = useState(false);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     (async() => {
-      const user = await authenticate();
-      if (!user.errors) {
-        setAuthenticated(true);
-      }
+      const user = await dispatch(restoreUser())
+      if(user.id) setAuthenticated(true);
       setLoaded(true);
     })();
-  }, []);
+  }, [dispatch]);
+
+  if (!loaded) {
+    return null;
+  }
 
   if (!loaded) {
     return null;
@@ -40,15 +46,12 @@ function App() {
         <Route path="/sign-up" exact={true}>
           <SignUpForm authenticated={authenticated} setAuthenticated={setAuthenticated} />
         </Route>
-        <ProtectedRoute path="/users" exact={true} authenticated={authenticated}>
-          <UsersList/>
-        </ProtectedRoute>
-        <ProtectedRoute path="/users/:userId" exact={true} authenticated={authenticated}>
+        <Route path="/users/:userId" exact={true} authenticated={authenticated}>
           <User />
-        </ProtectedRoute>
-        <ProtectedRoute path="/" exact={true} authenticated={authenticated}>
+        </Route>
+        <Route path="/" exact={true} authenticated={authenticated}>
           <HomePage/>
-        </ProtectedRoute>
+        </Route>
       </Switch>
     </BrowserRouter>
   );
