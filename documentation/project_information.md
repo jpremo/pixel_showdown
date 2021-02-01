@@ -30,10 +30,96 @@ When creating a competition rule set, users will be able to set time limits, sub
 # Stretch Goals #
 1. Add in animation capabilities, allowing user images to have multiple frames which can be strung together in a GIF.
 2. Add in ability to like/dislike rulesets, posts, and competition submissions. Likes translate into points.
-2. Add in a notification system to alert users to posts by those they are following.
-3. Add in a private messaging system.
+3. Add in a search feature for users/posts/rulesets.
+4. Add in a notification system to alert users to posts by those they are following.
+5. Add in a private messaging system.
 
 # Database Schema #
 ![Schema](./db_schema.png )
 
-# Wireframes
+# Planned Routes #
+## API ##
+- POST /login
+- POST /logout
+- POST /signup
+- GET /users/id
+- GET /rulesets/id
+- GET /posts/id
+    - gets post, associated images, comments, and user(s)
+- GET /images/id
+- GET /posts/feed
+    - retrieves ten most recent informational and competition posts from users being followed
+- GET /posts/competitions
+    - retrieves ten most popular competitions and recent competitions
+- GET /posts/informational
+    - retrieves ten most popular and recent posts that are not competitions
+- POST /rulesets
+- POST /posts
+- POST /images
+
+## Frontend ##
+- /
+    - homepage
+- /profile
+    - user's own profile
+    - tabs for their own images, competition images, rulesets, and posts. Also a button for changing profile picture/bio
+- /user/id
+    - public profile of users
+- /competitions/id
+    - hub for competition information
+    - ids for non-competition posts will reroute/throw 404
+- /competitions/id/entry
+    - new entry page
+- /posts/id
+    - ids for competition posts will reroute/throw 404
+- /sketch
+    - freedraw area
+- /images/id
+    - close up of image with information about it
+NOTE: Login/signup will be handled with a modal
+
+# React Component List #
+- Canvas
+    - Canvas Backdrop
+- Canvas tools
+    - Pencil
+    - Eraser
+    - Fill button
+    - Undo and Redo
+    - Clear page
+    - Increase/decrease pixel size
+    - Increase/decrease pixel size
+    - Color palette
+    - Custom color selector
+    - Alpha selector
+- Download Button Set
+    - PNG
+    - Save
+    - GIF (stretch goal)
+- HomePage
+    - PostList
+        - Post
+            - Competition
+            - Informational
+            - ImageModal
+- CompetitionPage
+    - Canvas
+    - CanvasTools (adjusted to ruleset)
+- NavBar
+    - Login
+    - Sign Up
+    - Logout
+    - Profile
+    - Search (stretch goal)
+    - HomeLogo
+- Profile
+    - editBio/editPicture
+    - Postlist (from Homepage)
+    - ImageList
+    - FollowList (for followers and following)
+
+# Planned Technologies #
+- React frontend
+- Python/flask/sqlalchemy backend
+- Redux
+- Color Picker NPM package
