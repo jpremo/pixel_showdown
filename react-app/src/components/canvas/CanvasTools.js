@@ -1,13 +1,32 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './Canvas.css'
 import { rgbToHex, hexToRgb } from '../canvas/color_functions'
 import { changeProperty } from '../../store/canvas'
 import { useDispatch, useSelector } from "react-redux";
 import { SketchPicker } from 'react-color'
+import useKeyPress from './useKeyPress'
+
 
 const CanvasTools = props => {
     const dispatch = useDispatch()
-    const canvasSettings = useSelector(state => state.canvas)
+    const canvasSettings = props.canvasSettings
+    const z = useKeyPress('z')
+    const y = useKeyPress('y')
+    const ctrl = useKeyPress('Control')
+
+    useEffect(() => {
+        // debugger
+        if(z && ctrl) {
+            undo()
+        }
+    }, [z])
+
+    useEffect(() => {
+        // debugger
+        if(y && ctrl) {
+            redo()
+        }
+    }, [y])
 
     const colorChange = (e) => {
         const colArr = [e.rgb.r, e.rgb.g, e.rgb.b, e.rgb.a,]
@@ -23,6 +42,7 @@ const CanvasTools = props => {
     }
 
     const undo = () => {
+        // debugger
         const newPosition = Math.max(canvasSettings.historyPosition - 1, 0)
         const newGrid = {}
         for(let i = 0; i <= newPosition; i++){

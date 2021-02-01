@@ -28,7 +28,7 @@ function HomePage() {
 
     return (
         <>
-            <CanvasTools/>
+            <CanvasTools canvasSettings={canvasSettings}/>
             <Canvas draw={draw}/>
         </>
     );
