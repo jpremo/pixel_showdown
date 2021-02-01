@@ -8,7 +8,7 @@ import UsersList from "./components/UsersList";
 import User from "./components/User";
 import HomePage from "./components/HomePage"
 import { authenticate } from "./services/auth";
-
+import Sketch from './components/Sketch'
 import { restoreUser } from "./store/session";
 import { useDispatch } from "react-redux";
 
@@ -42,6 +42,9 @@ function App() {
             authenticated={authenticated}
             setAuthenticated={setAuthenticated}
           />
+        </Route>
+        <Route path="/sketch" exact={true}>
+          <Sketch/>
         </Route>
         <Route path="/sign-up" exact={true}>
           <SignUpForm authenticated={authenticated} setAuthenticated={setAuthenticated} />

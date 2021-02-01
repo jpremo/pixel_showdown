@@ -39,6 +39,11 @@ const NavBar = ({ setAuthenticated }) => {
             </li>
           </>
         }
+        <li>
+          <NavLink to="/sketch" exact={true} activeClassName="active">
+            Sketch
+          </NavLink>
+        </li>
       </ul>
     </nav>
   );

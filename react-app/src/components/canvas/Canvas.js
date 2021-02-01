@@ -46,9 +46,7 @@ const Canvas = props => {
     return (
         <>
         {/* <div className='whole-page-div' onMouseUp={updateGrid}></div> */}
-        <div className='canvas-div'>
             <canvas className='pixel-canvas' ref={canvasRef} {...rest} onMouseMove={setPixel} onMouseDown={setPixel} onMouseUp={updateGrid} onMouseLeave={updateGrid}/>
-        </div>
         </>
     )
 }
