@@ -33,9 +33,12 @@ const Canvas = props => {
     }
 
     function updateGrid() {
-        console.log('triggered')
-        const newGrid = { ...options.grid, ...drawGrid}
-        dispatch(changeProperty({grid: newGrid}))
+        if(Object.keys(drawGrid).length) {
+            const newGrid = { ...options.grid, ...drawGrid}
+            const newPosition = options.historyPosition+1
+            const newMoveHistory = [...options.moveHistory.slice(0, newPosition),drawGrid]
+            dispatch(changeProperty({grid: newGrid, moveHistory: newMoveHistory, historyPosition: newPosition}))
+        }
     }
 
 

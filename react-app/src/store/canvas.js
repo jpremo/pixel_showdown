@@ -12,7 +12,9 @@ const initialState = {
     width: 32,
     color: [0,180,0,1],
     grid: {},
-    finalGrid: {}
+    finalGrid: {},
+    moveHistory: [{}],
+    historyPosition: 0,
 }
 
 function reducer(state = initialState, action) {
