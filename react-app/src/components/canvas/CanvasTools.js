@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { SketchPicker, AlphaPicker, CirclePicker, PhotoshopPicker } from 'react-color'
 import useKeyPress from './useKeyPress'
 import AddSubtract from './AddSubtract'
+import Collapse from './Collapse'
 
 const CanvasTools = props => {
     const dispatch = useDispatch()
@@ -56,8 +57,6 @@ const CanvasTools = props => {
     const alphaChange = (e) => {
         const colArr = [...canvasSettings.color]
         colArr[3] = e.rgb.a
-        // debugger
-        // setStateColor(colArr)
         dispatch(changeProperty({ color: colArr }))
     }
 
@@ -136,35 +135,54 @@ const CanvasTools = props => {
     const colorSwapBrushClass = canvasSettings.currentTool === 'colorSwapBrush' ? ' selected' : ''
     return (
         <div className='canvas-tools'>
-            {/* <input type='color' value={hexColor} onChangeComplete={colorChange}/> */}
-            <SketchPicker
-                color={stateColor}
-                onChange={colorState}
-                onChangeComplete={colorChange}
-                presetColors = {[]}
-            />
-            <AlphaPicker
-                color={{ r: 100, g: 100, b: 100, a: alpha }}
-                onChange={alphaState}
-                onChangeComplete={alphaChange}
+            <h2>Canvas Tools</h2>
+            <Collapse title={'Color Selector'}>
 
-            />
-            <CirclePicker
-                color={colObj}
-                onChangeComplete={colorChange}
-                colors={canvasSettings.colorPalette} />
-            {/* <GithubPicker color={colObj}/> */}
-            <button className={'canvas-button' + undoClass} onClick={undo}>Undo</button>
-            <button className={'canvas-button' + redoClass} onClick={redo}>Redo</button>
-            <button className={'canvas-button' + gridClass} onClick={swapGrid}>Grid</button>
-            <button className={'canvas-button' + brushClass} onClick={swapBrush}>Brush</button>
-            <button className={'canvas-button' + eraserClass} onClick={swapEraser}>Eraser</button>
-            <button className={'canvas-button' + fillClass} onClick={swapFill}>Fill</button>
-            <button className={'canvas-button' + colorSwapClass} onClick={swapColorSwap}>Color Swap</button>
-            <button className={'canvas-button' + colorSwapBrushClass} onClick={swapColorSwapBrush}>Color Swap Brush</button>
-            <button className={'canvas-button'} onClick={clearImage}>Clear Image</button>
-            <AddSubtract property={'pixelSize'} title={'Pixel Size'} min={1} max={100} />
-            <AddSubtract property={'brushSize'} title={'Brush Size'} min={1} max={100} />
+                <SketchPicker
+                    color={stateColor}
+                    onChange={colorState}
+                    onChangeComplete={colorChange}
+                    presetColors={[]}
+                    width='238px'
+                    className='canvas-tools-custom'
+                    background={'rgb(129,129,129)'}
+                />
+            </Collapse>
+            <Collapse title={'Color Palette'}>
+                <div className='canvas-tools-circle'>
+                    <CirclePicker
+                        color={colObj}
+                        onChangeComplete={colorChange}
+                        colors={canvasSettings.colorPalette}
+                    />
+                </div>
+                <AlphaPicker
+                    color={stateColor}
+                    onChange={colorState}
+                    onChangeComplete={colorChange}
+                    width='258px'
+                    className='canvas-tools-alpha'
+                />
+            </Collapse>
+            <Collapse title={'Brushes and Tools'}>
+                <div className='canvas-tools-container'>
+                    <button className={'canvas-button' + undoClass} onClick={undo}>Undo</button>
+                    <button className={'canvas-button' + redoClass} onClick={redo}>Redo</button>
+                    <button className={'canvas-button' + gridClass} onClick={swapGrid}>Grid</button>
+                    <button className={'canvas-button' + brushClass} onClick={swapBrush}>Brush</button>
+                    <button className={'canvas-button' + eraserClass} onClick={swapEraser}>Eraser</button>
+                    <button className={'canvas-button' + fillClass} onClick={swapFill}>Fill</button>
+                    <button className={'canvas-button' + colorSwapClass} onClick={swapColorSwap}>Color Swap</button>
+                    <button className={'canvas-button' + colorSwapBrushClass} onClick={swapColorSwapBrush}>Color Swap Brush</button>
+                    <button className={'canvas-button'} onClick={clearImage}>Clear Image</button>
+                </div>
+            </Collapse>
+            <Collapse title={'Configurables'}>
+                <div className='canvas-tools-container'>
+                    <AddSubtract property={'pixelSize'} title={'Pixel Size'} min={1} max={100} />
+                    <AddSubtract property={'brushSize'} title={'Brush Size'} min={1} max={100} />
+                </div>
+            </Collapse>
         </div>
     )
 }

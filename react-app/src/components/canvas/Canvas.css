@@ -15,9 +15,18 @@
   position: relative;
 }
 
-#complete-canvas-wrapper *{
-    user-select: none;
+.canvas-tools-outer-div {
+    border: 2px solid black;
+    width: auto;
+    height: auto;
+    display: inline-block;
+    /* background-color: gray; */
+    border-radius: 10px;
   }
+
+#complete-canvas-wrapper * {
+  user-select: none;
+}
 
 .canvas-div-background {
   width: 100%;
@@ -28,7 +37,6 @@
   position: absolute;
   z-index: -100;
 }
-
 
 .canvas-backdrop {
   position: absolute;
@@ -41,18 +49,16 @@
 }
 
 .canvas-grid {
-    position: absolute;
-    top: 0;
-    left: 0;
-    border: 1px solid black;
-    margin: 10px;
-    box-sizing: border-box;
-    z-index: 100;
-    box-sizing: border-box;
-    pointer-events: none
-  }
-
-
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid black;
+  margin: 10px;
+  box-sizing: border-box;
+  z-index: 100;
+  box-sizing: border-box;
+  pointer-events: none;
+}
 
 #complete-canvas-wrapper {
   display: flex;
@@ -62,28 +68,95 @@
   margin: 5px;
 }
 
-.canvas-button{
-    background: rgb(190, 190, 190);
-    border: 1px solid black;
+.canvas-button {
+  background: rgb(190, 190, 190);
+  border: 1px solid black;
 }
 
-.canvas-button:focus{
-    outline: 0;
+.canvas-button:focus {
+  outline: 0;
 }
 
-.canvas-button:hover{
-    cursor: pointer;
+.canvas-button:hover {
+  cursor: pointer;
 }
 
-.canvas-input{
-    width: 30px;
-    text-align: center;
+.canvas-input {
+  width: 30px;
+  text-align: center;
 }
 
-.selected{
-    background: rgb(105, 105, 105);
+.selected {
+  background: rgb(105, 105, 105);
 }
 
 .invalid-selection {
-    background-color: gray;
-  }
+  background-color: gray;
+}
+
+.collapse-header {
+  display: flex;
+  align-items: center;
+  align-self: start;
+}
+
+.collapse-header h3 {
+  font-size: 20px;
+  margin-left: 5px;
+}
+.canvas-tools {
+  width: 300px;
+  background-color: gray;
+  border: 2px solid black;
+  padding: 10px;
+  border-radius: 10px;
+}
+.canvas-tools h2 {
+  font-size: 24px;
+  margin: 10px;
+  text-decoration: underline;
+  font-weight: bold;
+  justify-self: center;
+  text-align: center;
+}
+.canvas-tools-container {
+  max-width: 300px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.canvas-tools-alpha {
+  border: 2px solid black;
+  border-radius: 5px;
+  margin: 10px 0;
+}
+
+.canvas-tools-custom.sketch-picker {
+    border: 2px solid black;
+    margin: 10px 0;
+    border-radius: 5px;
+
+}
+
+.canvas-tools-circle {
+    border: 2px solid black;
+    margin: 10px 0;
+    width: auto;
+    display: inline-block;
+    padding: 10px;
+    border-radius: 5px;
+    background: white;
+}
+
+.collapse-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* .collapse-button{
+    width:20px;
+    height: 20px;
+    background-color: none;
+    text-align: center;
+    vertical-align: middle;
+} */
