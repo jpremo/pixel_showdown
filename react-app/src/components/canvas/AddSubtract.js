@@ -10,6 +10,7 @@ const AddSubtract = ({ property, min, max, title }) => {
 
 
     const alterVal = (newVal) => {
+        newVal = Number(newVal)
         if(newVal < min) {
             setValue(String(min))
             return min
@@ -22,16 +23,16 @@ const AddSubtract = ({ property, min, max, title }) => {
         }
     }
     const add = () => {
-        const val = alterVal(value + 1)
+        const val = alterVal(Number(value) + 1)
         const obj = {}
-        obj[property] = Math.min(val + 1, max)
+        obj[property] = val
         dispatch(changeProperty(obj))
     }
 
     const subtract = () => {
-        const val = alterVal(value - 1)
+        const val = alterVal(Number(value) - 1)
         const obj = {}
-        obj[property] = Math.max(val - 1, min)
+        obj[property] = val
         dispatch(changeProperty(obj))
     }
 
