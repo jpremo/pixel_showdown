@@ -17,8 +17,9 @@ const Canvas = props => {
 
     const setPixel = (e) => {
         if(e.buttons == 1) {
-        let x = e.pageX - canvasRef.current.offsetLeft + 1;
-        let y = e.pageY - canvasRef.current.offsetTop + 1;
+            // debugger
+        let x = e.pageX - canvasRef.current.offsetParent.offsetLeft - canvasRef.current.offsetLeft - 3;
+        let y = e.pageY - canvasRef.current.offsetParent.offsetTop - canvasRef.current.offsetTop - 3;
         let pixelX = Math.floor(x / options.pixelSize)
         let pixelY = Math.floor(y / options.pixelSize)
 
@@ -45,7 +46,6 @@ const Canvas = props => {
 
     return (
         <>
-        {/* <div className='whole-page-div' onMouseUp={updateGrid}></div> */}
             <canvas className='pixel-canvas' ref={canvasRef} {...rest} onMouseMove={setPixel} onMouseDown={setPixel} onMouseUp={updateGrid} onMouseLeave={updateGrid}/>
         </>
     )

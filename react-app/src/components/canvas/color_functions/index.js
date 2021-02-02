@@ -3,7 +3,7 @@ export const drawPixel = (ctx, colorArr, x, y, pixelSize) => {
     ctx.fillStyle = `rgba(${colorArr[0]}, ${colorArr[1]}, ${colorArr[2]}, ${colorArr[3]})`;
     ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
     const p = Array(...ctx.getImageData(x * pixelSize, y * pixelSize, 1, 1).data);
-    p[3] = p[3]/255
+    p[3] = p[3] / 255
     return p
 }
 
@@ -11,6 +11,20 @@ export const pixelParser = (ctx, pixelSize, colorGrid) => {
     for (let pos in colorGrid) {
         let posCoord = pos.split('-')
         drawPixel(ctx, colorGrid[pos], posCoord[0], posCoord[1], pixelSize)
+    }
+}
+
+export const backDrop = (ctx, pixelSize, pxWidth, pxHeight) => {
+    const adjPixel = Math.ceil(pixelSize*1.5);
+    const width = pxWidth * pixelSize;
+    const height = pxHeight * pixelSize;
+    const backWidthPixel = Math.ceil(width / adjPixel);
+    const backHeightPixel = Math.ceil(height / adjPixel);
+    for (let x = 0; x < backWidthPixel; x++) {
+        for (let y = 0; y < backHeightPixel; y++) {
+            const color = (x + y) % 2 === 0 ? [201, 201, 201, 1] : [245, 245, 245, 1];
+            drawPixel(ctx, color, x, y, adjPixel)
+        }
     }
 }
 
