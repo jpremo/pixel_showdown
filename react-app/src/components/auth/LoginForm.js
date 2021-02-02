@@ -81,16 +81,24 @@ const LoginForm = ({ authenticated, setAuthenticated }) => {
           onChange={updatePassword}
         />
         <div className='modal-button-box'>
-          <div className='modal-link modal-button' onClick={onLogin}>Login</div>
-          <div className='modal-link modal-button' onClick={openSignup}> Sign Up</div>
-          <div className='modal-link modal-button' onClick={cancel}> Close</div>
+          <div className='modal-link-div'>
+            <div className='modal-link modal-button' onClick={onLogin}>Login</div>
+          </div>
+          <div className='modal-link-div'>
+            <div className='modal-link modal-button' onClick={openSignup}> Sign Up</div>
+          </div>
+          <div className='modal-link-div'>
+            <div className='modal-link modal-button' onClick={cancel}> Close</div>
+          </div>
         </div>
         <div className='modal-button-box'>
-          <div className='modal-link modal-button' onClick={demoLogin}>Demo Login</div>
+          <div className='modal-link-div'>
+            <div className='modal-link modal-button' onClick={demoLogin}>Demo Login</div>
+          </div>
         </div>
 
       </div>
-    </form>
+    </form >
   );
 };
 

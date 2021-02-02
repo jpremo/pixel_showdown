@@ -5,7 +5,7 @@ import { setLoginModal, setSignupModal } from '../../store/modal'
 import { useDispatch } from 'react-redux'
 import { setUser } from '../../store/session'
 
-const SignUpForm = ({authenticated, setAuthenticated}) => {
+const SignUpForm = ({ authenticated, setAuthenticated }) => {
   const [errors, setErrors] = useState([]);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -26,14 +26,14 @@ const SignUpForm = ({authenticated, setAuthenticated}) => {
   const onSignUp = async (e) => {
     e.preventDefault();
 
-      const user = await signUp(username, email, password, repeatPassword, firstName, lastName);
-      if (!user.errors) {
-        dispatch(setSignupModal(false))
-        setAuthenticated(true);
-        dispatch(setUser(user))
-      } else {
-        setErrors(user.errors);
-      }
+    const user = await signUp(username, email, password, repeatPassword, firstName, lastName);
+    if (!user.errors) {
+      dispatch(setSignupModal(false))
+      setAuthenticated(true);
+      dispatch(setUser(user))
+    } else {
+      setErrors(user.errors);
+    }
 
   };
 
@@ -73,65 +73,77 @@ const SignUpForm = ({authenticated, setAuthenticated}) => {
           <div>{error}</div>
         ))}
       </div>
-      <div className='modal-form-div'>
-        <label>First Name</label>
-        <input
-          type="text"
-          name="firstName"
-          onChange={updateFirstName}
-          value={firstName}
-        ></input>
+      <div className='side-align'>
+        <div className='modal-form-div'>
+          <label>First Name</label>
+          <input
+            type="text"
+            name="firstName"
+            onChange={updateFirstName}
+            value={firstName}
+          ></input>
+        </div>
+        <div className='modal-form-div'>
+          <label>Last Name</label>
+          <input
+            type="text"
+            name="lastName"
+            onChange={updateLastName}
+            value={lastName}
+          ></input>
+        </div>
       </div>
-      <div className='modal-form-div'>
-        <label>Last Name</label>
-        <input
-          type="text"
-          name="lastName"
-          onChange={updateLastName}
-          value={lastName}
-        ></input>
+      <div className='side-align'>
+        <div className='modal-form-div'>
+          <label>User Name</label>
+          <input
+            type="text"
+            name="username"
+            onChange={updateUsername}
+            value={username}
+          ></input>
+        </div>
+        <div className='modal-form-div'>
+          <label>Email</label>
+          <input
+            type="text"
+            name="email"
+            onChange={updateEmail}
+            value={email}
+          ></input>
+        </div>
       </div>
-      <div className='modal-form-div'>
-        <label>User Name</label>
-        <input
-          type="text"
-          name="username"
-          onChange={updateUsername}
-          value={username}
-        ></input>
-      </div>
-      <div className='modal-form-div'>
-        <label>Email</label>
-        <input
-          type="text"
-          name="email"
-          onChange={updateEmail}
-          value={email}
-        ></input>
-      </div>
-      <div className='modal-form-div'>
-        <label>Password</label>
-        <input
-          type="password"
-          name="password"
-          onChange={updatePassword}
-          value={password}
-        ></input>
-      </div>
-      <div className='modal-form-div'>
-        <label>Repeat Password</label>
-        <input
-          type="password"
-          name="repeat_password"
-          onChange={updateRepeatPassword}
-          value={repeatPassword}
-        ></input>
+      <div className='side-align'>
+        <div className='modal-form-div'>
+          <label>Password</label>
+          <input
+            type="password"
+            name="password"
+            onChange={updatePassword}
+            value={password}
+          ></input>
+        </div>
+        <div className='modal-form-div'>
+          <label>Repeat Password</label>
+          <input
+            type="password"
+            name="repeat_password"
+            onChange={updateRepeatPassword}
+            value={repeatPassword}
+          ></input>
+        </div>
       </div>
       <div className='modal-button-box'>
+        <div className='modal-link-div'>
           <div className='modal-link modal-button' onClick={onSignUp}>Sign Up</div>
+        </div>
+        <div className='modal-link-div'>
           <div className='modal-link modal-button' onClick={openLogin}> Log In</div>
+        </div>
+        <div className='modal-link-div'>
           <div className='modal-link modal-button' onClick={cancel}> Close</div>
         </div>
+      </div>
     </form>
   );
 };
