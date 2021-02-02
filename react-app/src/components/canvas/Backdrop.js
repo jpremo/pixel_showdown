@@ -4,7 +4,7 @@ import './Canvas.css'
 import { useSelector } from "react-redux";
 import { backDrop } from '../canvas/color_functions'
 
-const Canvas = () => {
+const Backdrop = () => {
     const options = useSelector(state => state.canvas)
 
     const backDraw = ctx => {
@@ -20,4 +20,4 @@ const Canvas = () => {
     )
 }
 
-export default Canvas
+export default Backdrop

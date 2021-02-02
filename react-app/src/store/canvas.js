@@ -15,6 +15,7 @@ const initialState = {
     finalGrid: {},
     moveHistory: [{}],
     historyPosition: 0,
+    displayGrid: true,
 }
 
 function reducer(state = initialState, action) {

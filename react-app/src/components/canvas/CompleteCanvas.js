@@ -5,6 +5,7 @@ import { pixelParser, backDrop } from '../canvas/color_functions'
 import { changeProperty } from '../../store/canvas'
 import { useDispatch, useSelector } from "react-redux";
 import Backdrop from './Backdrop'
+import Grid from './Grid'
 
 function CompleteCanvas() {
     const dispatch = useDispatch()
@@ -33,6 +34,7 @@ function CompleteCanvas() {
                 <div className='canvas-div-background'/>
                 <Backdrop/>
                 <Canvas draw={draw} />
+                {canvasSettings.displayGrid && <Grid/>}
             </div>
             <CanvasTools canvasSettings={canvasSettings} />
         </div>

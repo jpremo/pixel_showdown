@@ -24,6 +24,7 @@
   z-index: -100;
 }
 
+
 .canvas-backdrop {
   position: absolute;
   top: 0;
@@ -33,6 +34,18 @@
   z-index: -1;
   box-sizing: border-box;
 }
+
+.canvas-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 1px solid black;
+    margin: 10px;
+    box-sizing: border-box;
+    z-index: 100;
+    box-sizing: border-box;
+    pointer-events: none
+  }
 
 .invalid-selection {
   background-color: gray;
@@ -44,4 +57,12 @@
 
 #complete-canvas-wrapper > * {
   margin: 5px;
+}
+
+.canvas-button{
+    background: rgb(190, 190, 190)
+}
+
+.selected{
+    background: rgb(105, 105, 105);
 }

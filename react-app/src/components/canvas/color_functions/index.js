@@ -15,7 +15,7 @@ export const pixelParser = (ctx, pixelSize, colorGrid) => {
 }
 
 export const backDrop = (ctx, pixelSize, pxWidth, pxHeight) => {
-    const adjPixel = Math.ceil(pixelSize*1.5);
+    const adjPixel = Math.ceil(pixelSize * 1.5);
     const width = pxWidth * pixelSize;
     const height = pxHeight * pixelSize;
     const backWidthPixel = Math.ceil(width / adjPixel);
@@ -25,6 +25,25 @@ export const backDrop = (ctx, pixelSize, pxWidth, pxHeight) => {
             const color = (x + y) % 2 === 0 ? [201, 201, 201, 1] : [245, 245, 245, 1];
             drawPixel(ctx, color, x, y, adjPixel)
         }
+    }
+}
+
+export const drawGrid = (ctx, pixelSize, pxWidth, pxHeight) => {
+    const width = pxWidth * pixelSize;
+    const height = pxHeight * pixelSize;
+    ctx.fillStyle = `rgba(0, 0, 0, 1)`;
+    for (let x = 1; x < pxWidth; x++) {
+        ctx.beginPath();
+        ctx.moveTo(x*pixelSize, 0);
+        ctx.lineTo(x*pixelSize, height);
+        ctx.stroke();
+    }
+
+    for (let y = 1; y < pxHeight; y++) {
+        ctx.beginPath();
+        ctx.moveTo(0, y*pixelSize);
+        ctx.lineTo(width, y*pixelSize);
+        ctx.stroke();
     }
 }
 
