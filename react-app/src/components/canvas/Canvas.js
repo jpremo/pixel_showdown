@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import useCanvas from './useCanvas'
 import './Canvas.css'
-import { drawPixel, mergeColors } from '../canvas/color_functions'
+import { drawPixel, mergeColors, overwritePixel } from '../canvas/color_functions'
 import { changeProperty } from '../../store/canvas'
 import { useDispatch, useSelector } from "react-redux";
-
+import _ from 'lodash'
 const Canvas = props => {
     const { draw, ...rest } = props
     const canvasSettings = useSelector(state => state.canvas)
@@ -59,10 +59,51 @@ const Canvas = props => {
         }
     }
 
+    const swapPixels = (e) => {
+            let x = e.pageX - canvasRef.current.offsetParent.offsetLeft - canvasRef.current.offsetLeft - 3;
+            let y = e.pageY - canvasRef.current.offsetParent.offsetTop - canvasRef.current.offsetTop - 3;
+            let pixelX = Math.floor(x / canvasSettings.pixelSize)
+            let pixelY = Math.floor(y / canvasSettings.pixelSize)
+
+            const pixelXY = `${pixelX}-${pixelY}`
+            const target = canvasSettings.grid[pixelXY]
+            if (target && target != canvasSettings.color) {
+                const canvas = canvasRef.current
+                const ctx = canvas.getContext('2d')
+                for (let key in canvasSettings.grid) {
+                    if (_.isEqual(canvasSettings.grid[key], target) ) {
+                        const keySplit = key.split('-')
+                        const newCol = overwritePixel(ctx, canvasSettings.color, keySplit[0], keySplit[1], canvasSettings.pixelSize)
+                        drawGrid[key] = newCol
+                    }
+                }
+            }
+    }
+
+    const swapPixel = (e) => {
+        if (e.buttons == 1) {
+            let x = e.pageX - canvasRef.current.offsetParent.offsetLeft - canvasRef.current.offsetLeft - 3;
+            let y = e.pageY - canvasRef.current.offsetParent.offsetTop - canvasRef.current.offsetTop - 3;
+            let pixelX = Math.floor(x / canvasSettings.pixelSize)
+            let pixelY = Math.floor(y / canvasSettings.pixelSize)
+
+            const pixelXY = `${pixelX}-${pixelY}`
+            const target = canvasSettings.grid[pixelXY]
+            if (target && target != canvasSettings.color) {
+                const canvas = canvasRef.current
+                const ctx = canvas.getContext('2d')
+                    const newCol = overwritePixel(ctx, canvasSettings.color, pixelX, pixelY, canvasSettings.pixelSize)
+                    drawGrid[pixelXY] = newCol
+            }
+        }
+    }
+
     const toolAction = (e) => {
         switch (canvasSettings.currentTool) {
             case 'brush': setPixel(e); break;
             case 'eraser': erasePixel(e); break;
+            // case 'colorSwap': swapPixels(e); break;
+            case 'colorSwapBrush': swapPixel(e); break;
             default: break;
         }
     }
@@ -71,7 +112,7 @@ const Canvas = props => {
         if (Object.keys(drawGrid).length) {
             const newGrid = { ...canvasSettings.grid, ...drawGrid }
             for (let key in newGrid) {
-                if (newGrid[key] === 'deleted') {
+                if (newGrid[key] === 'deleted' || newGrid[key][3] === 0) {
                     delete newGrid[key]
                 }
             }
@@ -81,11 +122,19 @@ const Canvas = props => {
         }
     }
 
+    const toolUp = (e) => {
+        switch (canvasSettings.currentTool) {
+            case 'colorSwap': swapPixels(e); break;
+            default: break;
+        }
+
+        updateGrid()
+    }
 
 
     return (
         <>
-            <canvas className='pixel-canvas' ref={canvasRef} {...rest} onMouseMove={toolAction} onMouseDown={toolAction} onMouseUp={updateGrid} onMouseLeave={updateGrid} />
+            <canvas className='pixel-canvas' ref={canvasRef} {...rest} onMouseMove={toolAction} onMouseDown={toolAction} onMouseUp={toolUp} onMouseLeave={updateGrid} />
         </>
     )
 }

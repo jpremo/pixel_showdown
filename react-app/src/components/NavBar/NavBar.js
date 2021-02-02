@@ -40,10 +40,10 @@ const NavBar = ({ setAuthenticated }) => {
         </NavLink>
         {!user.id &&
         <>
-        <div to="/login" exact={true} onClick={openLogin} className="nav-link" activeClassName="active">
+        <div onClick={openLogin} className="nav-link">
           Login
           </div>
-        <div to="/sign-up" exact={true} onClick={openSignup} className="nav-link" activeClassName="active">
+        <div onClick={openSignup} className="nav-link">
             Sign Up
           </div>
           </>

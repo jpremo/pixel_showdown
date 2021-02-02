@@ -72,6 +72,18 @@ const CanvasTools = props => {
         dispatch(changeProperty({ currentTool: 'brush' }))
     }
 
+    const swapFill = () => {
+        dispatch(changeProperty({ currentTool: 'fill' }))
+    }
+
+    const swapColorSwap = () => {
+        dispatch(changeProperty({ currentTool: 'colorSwap' }))
+    }
+
+    const swapColorSwapBrush = () => {
+        dispatch(changeProperty({ currentTool: 'colorSwapBrush' }))
+    }
+
     const clearImage = () => {
         const newGrid = {}
         for (let key in canvasSettings.grid) {
@@ -87,6 +99,9 @@ const CanvasTools = props => {
     const gridClass = canvasSettings.displayGrid ? ' selected' : ''
     const brushClass = canvasSettings.currentTool === 'brush' ? ' selected' : ''
     const eraserClass = canvasSettings.currentTool === 'eraser' ? ' selected' : ''
+    const fillClass = canvasSettings.currentTool === 'fill' ? ' selected' : ''
+    const colorSwapClass = canvasSettings.currentTool === 'colorSwap' ? ' selected' : ''
+    const colorSwapBrushClass = canvasSettings.currentTool === 'colorSwapBrush' ? ' selected' : ''
     return (
         <div className='canvas-tools'>
             {/* <input type='color' value={hexColor} onChangeComplete={colorChange}/> */}
@@ -99,6 +114,9 @@ const CanvasTools = props => {
             <button className={'canvas-button' + gridClass} onClick={swapGrid}>Grid</button>
             <button className={'canvas-button' + brushClass} onClick={swapBrush}>Brush</button>
             <button className={'canvas-button' + eraserClass} onClick={swapEraser}>Eraser</button>
+            <button className={'canvas-button' + fillClass} onClick={swapFill}>Fill</button>
+            <button className={'canvas-button' + colorSwapClass} onClick={swapColorSwap}>Color Swap</button>
+            <button className={'canvas-button' + colorSwapBrushClass} onClick={swapColorSwapBrush}>Color Swap Brush</button>
             <button className={'canvas-button'} onClick={clearImage}>Clear Image</button>
             <AddSubtract property={'pixelSize'} title={'Pixel Size'} min={1} max={100}/>
             <AddSubtract property={'brushSize'} title={'Brush Size'} min={1} max={100}/>

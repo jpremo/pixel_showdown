@@ -11,6 +11,20 @@ export const drawPixel = (ctx, colorArr, x, y, pixelSize) => {
     return p
 }
 
+export const overwritePixel = (ctx, colorArr, x, y, pixelSize) => {
+    if(colorArr === 'deleted') {
+        ctx.clearRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+        return 'deleted'
+    }
+    ctx.clearRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+    ctx.fillStyle = `rgba(${colorArr[0]}, ${colorArr[1]}, ${colorArr[2]}, ${colorArr[3]})`;
+    ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+    const p = Array(...ctx.getImageData(x * pixelSize, y * pixelSize, 1, 1).data);
+    p[3] = p[3] / 255
+    return p
+}
+
+
 export const pixelParser = (ctx, pixelSize, colorGrid) => {
     for (let pos in colorGrid) {
         let posCoord = pos.split('-')
