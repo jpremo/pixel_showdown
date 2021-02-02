@@ -7,11 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Canvas = props => {
     const { draw, ...rest } = props
-    const options = useSelector(state => state.canvas)
+    const canvasSettings = useSelector(state => state.canvas)
     const dispatch = useDispatch()
-    const gridCopy = { ...options.finalGrid };
+    const gridCopy = { ...canvasSettings.finalGrid };
     const drawGrid = {}
-    const canvasRef = useCanvas(draw, options)
+    const canvasRef = useCanvas(draw, canvasSettings)
 
 
 
@@ -20,14 +20,14 @@ const Canvas = props => {
             // debugger
         let x = e.pageX - canvasRef.current.offsetParent.offsetLeft - canvasRef.current.offsetLeft - 3;
         let y = e.pageY - canvasRef.current.offsetParent.offsetTop - canvasRef.current.offsetTop - 3;
-        let pixelX = Math.floor(x / options.pixelSize)
-        let pixelY = Math.floor(y / options.pixelSize)
+        let pixelX = Math.floor(x / canvasSettings.pixelSize)
+        let pixelY = Math.floor(y / canvasSettings.pixelSize)
 
         const pixelXY = `${pixelX}-${pixelY}`
         if(!drawGrid[pixelXY]) {
             const canvas = canvasRef.current
             const ctx = canvas.getContext('2d')
-            const newCol = drawPixel(ctx, options.color, pixelX, pixelY, options.pixelSize)
+            const newCol = drawPixel(ctx, canvasSettings.color, pixelX, pixelY, canvasSettings.pixelSize)
             drawGrid[pixelXY] = newCol
         }
     }
@@ -38,21 +38,21 @@ const Canvas = props => {
             // debugger
         let x = e.pageX - canvasRef.current.offsetParent.offsetLeft - canvasRef.current.offsetLeft - 3;
         let y = e.pageY - canvasRef.current.offsetParent.offsetTop - canvasRef.current.offsetTop - 3;
-        let pixelX = Math.floor(x / options.pixelSize)
-        let pixelY = Math.floor(y / options.pixelSize)
+        let pixelX = Math.floor(x / canvasSettings.pixelSize)
+        let pixelY = Math.floor(y / canvasSettings.pixelSize)
 
         const pixelXY = `${pixelX}-${pixelY}`
         if(!drawGrid[pixelXY]) {
             const canvas = canvasRef.current
             const ctx = canvas.getContext('2d')
-            drawPixel(ctx, 'deleted', pixelX, pixelY, options.pixelSize)
+            drawPixel(ctx, 'deleted', pixelX, pixelY, canvasSettings.pixelSize)
             drawGrid[pixelXY] = 'deleted'
         }
     }
     }
 
     const toolAction = (e) => {
-        switch(options.currentTool) {
+        switch(canvasSettings.currentTool) {
             case 'brush': setPixel(e); break;
             case 'eraser': erasePixel(e); break;
             default: break;
@@ -61,14 +61,14 @@ const Canvas = props => {
 
     function updateGrid() {
         if(Object.keys(drawGrid).length) {
-            const newGrid = { ...options.grid, ...drawGrid}
+            const newGrid = { ...canvasSettings.grid, ...drawGrid}
             for(let key in newGrid) {
                 if(newGrid[key] === 'deleted') {
                     delete newGrid[key]
                 }
             }
-            const newPosition = options.historyPosition+1
-            const newMoveHistory = [...options.moveHistory.slice(0, newPosition),drawGrid]
+            const newPosition = canvasSettings.historyPosition+1
+            const newMoveHistory = [...canvasSettings.moveHistory.slice(0, newPosition),drawGrid]
             dispatch(changeProperty({grid: newGrid, moveHistory: newMoveHistory, historyPosition: newPosition}))
         }
     }

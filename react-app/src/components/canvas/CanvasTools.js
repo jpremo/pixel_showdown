@@ -16,14 +16,14 @@ const CanvasTools = props => {
 
     useEffect(() => {
         // debugger
-        if(z && ctrl) {
+        if (z && ctrl) {
             undo()
         }
     }, [z])
 
     useEffect(() => {
         // debugger
-        if(y && ctrl) {
+        if (y && ctrl) {
             redo()
         }
     }, [y])
@@ -45,17 +45,17 @@ const CanvasTools = props => {
         // debugger
         const newPosition = Math.max(canvasSettings.historyPosition - 1, 0)
         const newGrid = {}
-        for(let i = 0; i <= newPosition; i++){
-            Object.assign(newGrid, canvasSettings.moveHistory[i] );
+        for (let i = 0; i <= newPosition; i++) {
+            Object.assign(newGrid, canvasSettings.moveHistory[i]);
         }
         dispatch(changeProperty({ historyPosition: newPosition, grid: newGrid }))
     }
 
     const redo = () => {
-        const newPosition = Math.min(canvasSettings.historyPosition + 1, canvasSettings.moveHistory.length-1)
+        const newPosition = Math.min(canvasSettings.historyPosition + 1, canvasSettings.moveHistory.length - 1)
         const newGrid = {}
-        for(let i = 0; i <= newPosition; i++){
-            Object.assign(newGrid, canvasSettings.moveHistory[i] );
+        for (let i = 0; i <= newPosition; i++) {
+            Object.assign(newGrid, canvasSettings.moveHistory[i]);
         }
         dispatch(changeProperty({ historyPosition: newPosition, grid: newGrid }))
     }
@@ -72,8 +72,18 @@ const CanvasTools = props => {
         dispatch(changeProperty({ currentTool: 'brush' }))
     }
 
+    const clearImage = () => {
+        const newGrid = {}
+        for (let key in canvasSettings.grid) {
+            newGrid[key] = 'deleted'
+        }
+        const newPosition = canvasSettings.historyPosition + 1
+        const newMoveHistory = [...canvasSettings.moveHistory.slice(0, newPosition), newGrid]
+        dispatch(changeProperty({ grid: {}, moveHistory: newMoveHistory, historyPosition: newPosition }))
+    }
+
     const undoClass = canvasSettings.historyPosition > 0 ? '' : ' invalid-selection'
-    const redoClass = canvasSettings.historyPosition === canvasSettings.moveHistory.length-1 ? ' invalid-selection' : ''
+    const redoClass = canvasSettings.historyPosition === canvasSettings.moveHistory.length - 1 ? ' invalid-selection' : ''
     const gridClass = canvasSettings.displayGrid ? ' selected' : ''
     const brushClass = canvasSettings.currentTool === 'brush' ? ' selected' : ''
     const eraserClass = canvasSettings.currentTool === 'eraser' ? ' selected' : ''
@@ -84,11 +94,12 @@ const CanvasTools = props => {
                 color={colObj}
                 onChangeComplete={colorChange}
             />
-            <button className={'history-button'+undoClass} onClick={undo}>Undo</button>
-            <button className={'history-button'+redoClass} onClick={redo}>Redo</button>
-            <button className={'canvas-button'+gridClass} onClick={swapGrid}>Grid</button>
-            <button className={'canvas-button'+brushClass} onClick={swapBrush}>Brush</button>
-            <button className={'canvas-button'+eraserClass} onClick={swapEraser}>Eraser</button>
+            <button className={'history-button' + undoClass} onClick={undo}>Undo</button>
+            <button className={'history-button' + redoClass} onClick={redo}>Redo</button>
+            <button className={'canvas-button' + gridClass} onClick={swapGrid}>Grid</button>
+            <button className={'canvas-button' + brushClass} onClick={swapBrush}>Brush</button>
+            <button className={'canvas-button' + eraserClass} onClick={swapEraser}>Eraser</button>
+            <button className={'canvas-button'} onClick={clearImage}>Clear Image</button>
         </div>
     )
 }
