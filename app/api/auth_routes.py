@@ -43,7 +43,9 @@ def login():
         user = User.query.filter(User.email == form.data['email']).first()
         login_user(user)
         return user.to_dict()
-    return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+    error_msgs = [txt.split(': ')[1] for txt in validation_errors_to_error_messages(form.errors)]
+    return {'errors': error_msgs}
+
 
 
 @auth_routes.route('/logout')
@@ -62,17 +64,27 @@ def sign_up():
     """
     form = SignUpForm()
     form['csrf_token'].data = request.cookies['csrf_token']
+    err = ''
+    data = request.get_json()
+    if data['password'] != data['confirm_password']:
+        err='Password and confirm password must match'
     if form.validate_on_submit():
-        user = User(
-            username=form.data['username'],
-            email=form.data['email'],
-            password=form.data['password']
-        )
-        db.session.add(user)
-        db.session.commit()
-        login_user(user)
-        return user.to_dict()
-    return {'errors': validation_errors_to_error_messages(form.errors)}
+        if err == '':
+            user = User(
+                username=form.data['username'],
+                email=form.data['email'],
+                password=form.data['password'],
+                lastName=form.data['lastName'],
+                firstName=form.data['firstName'],
+            )
+            db.session.add(user)
+            db.session.commit()
+            login_user(user)
+            return user.to_dict()
+    error_msgs = [txt.split(': ')[1] for txt in validation_errors_to_error_messages(form.errors)]
+    if err:
+        error_msgs.append(err)
+    return {'errors': error_msgs}
 
 
 @auth_routes.route('/unauthorized')
