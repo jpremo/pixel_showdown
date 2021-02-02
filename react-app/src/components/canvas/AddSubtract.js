@@ -11,39 +11,48 @@ const AddSubtract = ({ property, min, max, title }) => {
 
     const alterVal = (newVal) => {
         if(newVal < min) {
-            setValue(min)
+            setValue(String(min))
+            return min
         } else if(newVal > max) {
-            setValue(max)
+            setValue(String(max))
+            return max
         } else {
-            setValue(Number(newVal))
+            setValue(String(newVal))
+            return newVal
         }
     }
     const add = () => {
-        alterVal(value + 1)
+        const val = alterVal(value + 1)
         const obj = {}
-        obj[property] = canvasSettings[property] + 1
+        obj[property] = Math.min(val + 1, max)
         dispatch(changeProperty(obj))
     }
 
     const subtract = () => {
-        alterVal(value - 1)
+        const val = alterVal(value - 1)
         const obj = {}
-        obj[property] = canvasSettings[property] - 1
+        obj[property] = Math.max(val - 1, min)
         dispatch(changeProperty(obj))
     }
 
     const setProperty = (e) => {
-        alterVal(e.target.value)
+        const val = alterVal(Number(e.target.value))
         const obj = {}
-        obj[property] = value
+        obj[property] = val
         dispatch(changeProperty(obj))
+    }
+
+    const blurSelf = (e) => {
+        if(e.key == 'Enter') {
+            e.target.blur()
+        }
     }
 
     return (
         <div>
             <h3>{title}</h3>
             <button className='canvas-button' onClick={subtract}>-</button>
-            <input className='canvas-input' type='number' value={value} onChange={(e) => setValue(Number(e.target.value))} onBlur = {setProperty}/>
+            <input className='canvas-input' type='number' value={value} onChange={(e) => setValue(e.target.value)} onKeyPress={blurSelf} onBlur = {setProperty}/>
             <button className='canvas-button' onClick={add}>+</button>
         </div>
     );

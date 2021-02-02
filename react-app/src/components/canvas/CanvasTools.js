@@ -101,6 +101,7 @@ const CanvasTools = props => {
             <button className={'canvas-button' + eraserClass} onClick={swapEraser}>Eraser</button>
             <button className={'canvas-button'} onClick={clearImage}>Clear Image</button>
             <AddSubtract property={'pixelSize'} title={'Pixel Size'} min={1} max={100}/>
+            <AddSubtract property={'brushSize'} title={'Brush Size'} min={1} max={100}/>
         </div>
     )
 }
