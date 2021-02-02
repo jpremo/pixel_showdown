@@ -1,5 +1,9 @@
 
 export const drawPixel = (ctx, colorArr, x, y, pixelSize) => {
+    if(colorArr === 'deleted') {
+        ctx.clearRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+        return 'deleted'
+    }
     ctx.fillStyle = `rgba(${colorArr[0]}, ${colorArr[1]}, ${colorArr[2]}, ${colorArr[3]})`;
     ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
     const p = Array(...ctx.getImageData(x * pixelSize, y * pixelSize, 1, 1).data);

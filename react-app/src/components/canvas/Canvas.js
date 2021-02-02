@@ -33,9 +33,40 @@ const Canvas = props => {
     }
     }
 
+    const erasePixel = (e) => {
+        if(e.buttons == 1) {
+            // debugger
+        let x = e.pageX - canvasRef.current.offsetParent.offsetLeft - canvasRef.current.offsetLeft - 3;
+        let y = e.pageY - canvasRef.current.offsetParent.offsetTop - canvasRef.current.offsetTop - 3;
+        let pixelX = Math.floor(x / options.pixelSize)
+        let pixelY = Math.floor(y / options.pixelSize)
+
+        const pixelXY = `${pixelX}-${pixelY}`
+        if(!drawGrid[pixelXY]) {
+            const canvas = canvasRef.current
+            const ctx = canvas.getContext('2d')
+            drawPixel(ctx, 'deleted', pixelX, pixelY, options.pixelSize)
+            drawGrid[pixelXY] = 'deleted'
+        }
+    }
+    }
+
+    const toolAction = (e) => {
+        switch(options.currentTool) {
+            case 'brush': setPixel(e); break;
+            case 'eraser': erasePixel(e); break;
+            default: break;
+        }
+    }
+
     function updateGrid() {
         if(Object.keys(drawGrid).length) {
             const newGrid = { ...options.grid, ...drawGrid}
+            for(let key in newGrid) {
+                if(newGrid[key] === 'deleted') {
+                    delete newGrid[key]
+                }
+            }
             const newPosition = options.historyPosition+1
             const newMoveHistory = [...options.moveHistory.slice(0, newPosition),drawGrid]
             dispatch(changeProperty({grid: newGrid, moveHistory: newMoveHistory, historyPosition: newPosition}))
@@ -46,7 +77,7 @@ const Canvas = props => {
 
     return (
         <>
-            <canvas className='pixel-canvas' ref={canvasRef} {...rest} onMouseMove={setPixel} onMouseDown={setPixel} onMouseUp={updateGrid} onMouseLeave={updateGrid}/>
+            <canvas className='pixel-canvas' ref={canvasRef} {...rest} onMouseMove={toolAction} onMouseDown={toolAction} onMouseUp={updateGrid} onMouseLeave={updateGrid}/>
         </>
     )
 }

@@ -15,7 +15,8 @@ const initialState = {
     finalGrid: {},
     moveHistory: [{}],
     historyPosition: 0,
-    displayGrid: true,
+    displayGrid: false,
+    currentTool: 'brush',
 }
 
 function reducer(state = initialState, action) {

@@ -64,9 +64,19 @@ const CanvasTools = props => {
         dispatch(changeProperty({ displayGrid: !canvasSettings.displayGrid }))
     }
 
+    const swapEraser = () => {
+        dispatch(changeProperty({ currentTool: 'eraser' }))
+    }
+
+    const swapBrush = () => {
+        dispatch(changeProperty({ currentTool: 'brush' }))
+    }
+
     const undoClass = canvasSettings.historyPosition > 0 ? '' : ' invalid-selection'
     const redoClass = canvasSettings.historyPosition === canvasSettings.moveHistory.length-1 ? ' invalid-selection' : ''
     const gridClass = canvasSettings.displayGrid ? ' selected' : ''
+    const brushClass = canvasSettings.currentTool === 'brush' ? ' selected' : ''
+    const eraserClass = canvasSettings.currentTool === 'eraser' ? ' selected' : ''
     return (
         <div className='canvas-tools'>
             {/* <input type='color' value={hexColor} onChangeComplete={colorChange}/> */}
@@ -77,6 +87,8 @@ const CanvasTools = props => {
             <button className={'history-button'+undoClass} onClick={undo}>Undo</button>
             <button className={'history-button'+redoClass} onClick={redo}>Redo</button>
             <button className={'canvas-button'+gridClass} onClick={swapGrid}>Grid</button>
+            <button className={'canvas-button'+brushClass} onClick={swapBrush}>Brush</button>
+            <button className={'canvas-button'+eraserClass} onClick={swapEraser}>Eraser</button>
         </div>
     )
 }
