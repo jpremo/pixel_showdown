@@ -60,24 +60,56 @@ const Canvas = props => {
     }
 
     const swapPixels = (e) => {
-            let x = e.pageX - canvasRef.current.offsetParent.offsetLeft - canvasRef.current.offsetLeft - 3;
-            let y = e.pageY - canvasRef.current.offsetParent.offsetTop - canvasRef.current.offsetTop - 3;
-            let pixelX = Math.floor(x / canvasSettings.pixelSize)
-            let pixelY = Math.floor(y / canvasSettings.pixelSize)
+        let x = e.pageX - canvasRef.current.offsetParent.offsetLeft - canvasRef.current.offsetLeft - 3;
+        let y = e.pageY - canvasRef.current.offsetParent.offsetTop - canvasRef.current.offsetTop - 3;
+        let pixelX = Math.floor(x / canvasSettings.pixelSize)
+        let pixelY = Math.floor(y / canvasSettings.pixelSize)
 
-            const pixelXY = `${pixelX}-${pixelY}`
-            const target = canvasSettings.grid[pixelXY]
-            if (target && target != canvasSettings.color) {
-                const canvas = canvasRef.current
-                const ctx = canvas.getContext('2d')
-                for (let key in canvasSettings.grid) {
-                    if (_.isEqual(canvasSettings.grid[key], target) ) {
-                        const keySplit = key.split('-')
-                        const newCol = overwritePixel(ctx, canvasSettings.color, keySplit[0], keySplit[1], canvasSettings.pixelSize)
-                        drawGrid[key] = newCol
-                    }
+        const pixelXY = `${pixelX}-${pixelY}`
+        const target = canvasSettings.grid[pixelXY]
+        if (target && target != canvasSettings.color) {
+            const canvas = canvasRef.current
+            const ctx = canvas.getContext('2d')
+            for (let key in canvasSettings.grid) {
+                if (_.isEqual(canvasSettings.grid[key], target)) {
+                    const keySplit = key.split('-')
+                    const newCol = overwritePixel(ctx, canvasSettings.color, keySplit[0], keySplit[1], canvasSettings.pixelSize)
+                    drawGrid[key] = newCol
                 }
             }
+        }
+    }
+
+    const fillPixels = (e) => {
+        let x = e.pageX - canvasRef.current.offsetParent.offsetLeft - canvasRef.current.offsetLeft - 3;
+        let y = e.pageY - canvasRef.current.offsetParent.offsetTop - canvasRef.current.offsetTop - 3;
+        let pixelX = Math.floor(x / canvasSettings.pixelSize)
+        let pixelY = Math.floor(y / canvasSettings.pixelSize)
+
+        const pixelXY = `${pixelX}-${pixelY}`
+        const color = canvasSettings.color
+        const overallTarget = canvasSettings.grid[pixelXY]
+        const canvas = canvasRef.current
+        const ctx = canvas.getContext('2d')
+        const recursiveFill = (x, y, memo = {}) => {
+            const pixelXY = `${x}-${y}`
+            if (memo[pixelXY] || x >= canvasSettings.width || x < 0 || y > canvasSettings.height || y < 0) {
+                memo[pixelXY] = true
+                return
+            }
+            const target = canvasSettings.grid[pixelXY]
+            if (_.isEqual(target, overallTarget)) {
+                const newCol = overwritePixel(ctx, color, x, y, canvasSettings.pixelSize)
+                drawGrid[pixelXY] = newCol
+                memo[pixelXY] = true
+                recursiveFill(x + 1, y, memo)
+                recursiveFill(x - 1, y, memo)
+                recursiveFill(x, y + 1, memo)
+                recursiveFill(x, y - 1, memo)
+            }
+        }
+
+        recursiveFill(pixelX, pixelY)
     }
 
     const swapPixel = (e) => {
@@ -92,8 +124,8 @@ const Canvas = props => {
             if (target && target != canvasSettings.color) {
                 const canvas = canvasRef.current
                 const ctx = canvas.getContext('2d')
-                    const newCol = overwritePixel(ctx, canvasSettings.color, pixelX, pixelY, canvasSettings.pixelSize)
-                    drawGrid[pixelXY] = newCol
+                const newCol = overwritePixel(ctx, canvasSettings.color, pixelX, pixelY, canvasSettings.pixelSize)
+                drawGrid[pixelXY] = newCol
             }
         }
     }
@@ -102,7 +134,6 @@ const Canvas = props => {
         switch (canvasSettings.currentTool) {
             case 'brush': setPixel(e); break;
             case 'eraser': erasePixel(e); break;
-            // case 'colorSwap': swapPixels(e); break;
             case 'colorSwapBrush': swapPixel(e); break;
             default: break;
         }
@@ -125,6 +156,7 @@ const Canvas = props => {
     const toolUp = (e) => {
         switch (canvasSettings.currentTool) {
             case 'colorSwap': swapPixels(e); break;
+            case 'fill': fillPixels(e); break;
             default: break;
         }
 
