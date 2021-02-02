@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import './Canvas.css'
-import { rgbToHex, hexToRgb } from '../canvas/color_functions'
+import { rgbaToHex, hexToRgba } from '../canvas/color_functions'
 import { changeProperty } from '../../store/canvas'
 import { useDispatch, useSelector } from "react-redux";
-import { SketchPicker } from 'react-color'
+import { SketchPicker, AlphaPicker, CirclePicker, PhotoshopPicker } from 'react-color'
 import useKeyPress from './useKeyPress'
 import AddSubtract from './AddSubtract'
 
@@ -13,16 +13,30 @@ const CanvasTools = props => {
     const z = useKeyPress('z')
     const y = useKeyPress('y')
     const ctrl = useKeyPress('Control')
+    const [alpha, setAlpha] = useState(canvasSettings.color[3])
+    const [stateColor, setStateColor] = useState({
+        r: canvasSettings.color[0],
+        g: canvasSettings.color[1],
+        b: canvasSettings.color[2],
+        a: canvasSettings.color[3]
+    })
 
     useEffect(() => {
-        // debugger
+        setStateColor({
+            r: canvasSettings.color[0],
+            g: canvasSettings.color[1],
+            b: canvasSettings.color[2],
+            a: canvasSettings.color[3]
+        })
+    }, [canvasSettings])
+
+    useEffect(() => {
         if (z && ctrl) {
             undo()
         }
     }, [z])
 
     useEffect(() => {
-        // debugger
         if (y && ctrl) {
             redo()
         }
@@ -31,6 +45,24 @@ const CanvasTools = props => {
     const colorChange = (e) => {
         const colArr = [e.rgb.r, e.rgb.g, e.rgb.b, e.rgb.a,]
         dispatch(changeProperty({ color: colArr }))
+        setStateColor(e.rgb)
+        setAlpha(e.rgb.a)
+    }
+
+    const colorState = (e) => {
+        setStateColor(e.rgb)
+    }
+
+    const alphaChange = (e) => {
+        const colArr = [...canvasSettings.color]
+        colArr[3] = e.rgb.a
+        // debugger
+        // setStateColor(colArr)
+        dispatch(changeProperty({ color: colArr }))
+    }
+
+    const alphaState = (e) => {
+        setAlpha(e.rgb.a)
     }
 
     let a = canvasSettings.color[3] ? canvasSettings.color[3] : 1
@@ -106,9 +138,22 @@ const CanvasTools = props => {
         <div className='canvas-tools'>
             {/* <input type='color' value={hexColor} onChangeComplete={colorChange}/> */}
             <SketchPicker
+                color={stateColor}
+                onChange={colorState}
+                onChangeComplete={colorChange}
+                presetColors = {[]}
+            />
+            <AlphaPicker
+                color={{ r: 100, g: 100, b: 100, a: alpha }}
+                onChange={alphaState}
+                onChangeComplete={alphaChange}
+
+            />
+            <CirclePicker
                 color={colObj}
                 onChangeComplete={colorChange}
-            />
+                colors={canvasSettings.colorPalette} />
+            {/* <GithubPicker color={colObj}/> */}
             <button className={'canvas-button' + undoClass} onClick={undo}>Undo</button>
             <button className={'canvas-button' + redoClass} onClick={redo}>Redo</button>
             <button className={'canvas-button' + gridClass} onClick={swapGrid}>Grid</button>
@@ -118,8 +163,8 @@ const CanvasTools = props => {
             <button className={'canvas-button' + colorSwapClass} onClick={swapColorSwap}>Color Swap</button>
             <button className={'canvas-button' + colorSwapBrushClass} onClick={swapColorSwapBrush}>Color Swap Brush</button>
             <button className={'canvas-button'} onClick={clearImage}>Clear Image</button>
-            <AddSubtract property={'pixelSize'} title={'Pixel Size'} min={1} max={100}/>
-            <AddSubtract property={'brushSize'} title={'Brush Size'} min={1} max={100}/>
+            <AddSubtract property={'pixelSize'} title={'Pixel Size'} min={1} max={100} />
+            <AddSubtract property={'brushSize'} title={'Brush Size'} min={1} max={100} />
         </div>
     )
 }

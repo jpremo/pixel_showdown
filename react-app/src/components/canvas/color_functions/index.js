@@ -79,15 +79,16 @@ function componentToHex(c) {
     return hex.length == 1 ? "0" + hex : hex;
 }
 
-export function rgbToHex(colorArr) {
-    return "#" + componentToHex(colorArr[0]) + componentToHex(colorArr[1]) + componentToHex(colorArr[2]);
+export function rgbaToHex(colorArr) {
+    return "#" + componentToHex(colorArr[0]) + componentToHex(colorArr[1]) + componentToHex(colorArr[2]) + componentToHex(Math.floor(colorArr[3]*255));
 }
 
-export function hexToRgb(hex) {
+export function hexToRgba(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return [
         parseInt(result[1], 16),
         parseInt(result[2], 16),
-        parseInt(result[3], 16)
+        parseInt(result[3], 16),
+        parseInt(result[4], 16)/255
     ]
 }
