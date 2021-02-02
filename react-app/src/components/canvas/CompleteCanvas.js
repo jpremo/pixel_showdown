@@ -27,12 +27,12 @@ function CompleteCanvas() {
       }
 
     return (
-        <>
-            <CanvasTools canvasSettings={canvasSettings}/>
+        <div id='complete-canvas-wrapper'>
             <div className='canvas-div'>
             <Canvas draw={draw}/>
             </div>
-        </>
+            <CanvasTools canvasSettings={canvasSettings}/>
+        </div>
     );
 }
 export default CompleteCanvas;

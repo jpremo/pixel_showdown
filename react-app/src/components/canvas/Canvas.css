@@ -15,3 +15,10 @@
     background-color: gray;
 }
 
+#complete-canvas-wrapper{
+    display: flex;
+}
+
+#complete-canvas-wrapper > *{
+    margin:5px;
+}
