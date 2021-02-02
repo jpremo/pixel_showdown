@@ -30,11 +30,13 @@ function CompleteCanvas() {
 
     return (
         <div id='complete-canvas-wrapper'>
+            <div>
             <div className='canvas-div'>
                 <div className='canvas-div-background'/>
                 <Backdrop/>
                 <Canvas draw={draw} />
                 {canvasSettings.displayGrid && <Grid/>}
+            </div>
             </div>
             <CanvasTools canvasSettings={canvasSettings} />
         </div>

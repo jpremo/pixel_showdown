@@ -8,11 +8,16 @@
 .canvas-div {
   border: 2px solid black;
   width: auto;
+  height: auto;
   display: inline-block;
   /* background-color: gray; */
   border-radius: 10px;
   position: relative;
 }
+
+.canvas-div *{
+    user-select: none;
+  }
 
 .canvas-div-background {
   width: 100%;
@@ -47,9 +52,7 @@
     pointer-events: none
   }
 
-.invalid-selection {
-  background-color: gray;
-}
+
 
 #complete-canvas-wrapper {
   display: flex;
@@ -60,9 +63,27 @@
 }
 
 .canvas-button{
-    background: rgb(190, 190, 190)
+    background: rgb(190, 190, 190);
+    border: 1px solid black;
+}
+
+.canvas-button:focus{
+    outline: 0;
+}
+
+.canvas-button:hover{
+    cursor: pointer;
+}
+
+.canvas-input{
+    width: 30px;
+    text-align: center;
 }
 
 .selected{
     background: rgb(105, 105, 105);
 }
+
+.invalid-selection {
+    background-color: gray;
+  }

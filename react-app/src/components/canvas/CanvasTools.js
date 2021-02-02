@@ -5,7 +5,7 @@ import { changeProperty } from '../../store/canvas'
 import { useDispatch, useSelector } from "react-redux";
 import { SketchPicker } from 'react-color'
 import useKeyPress from './useKeyPress'
-
+import AddSubtract from './AddSubtract'
 
 const CanvasTools = props => {
     const dispatch = useDispatch()
@@ -94,12 +94,13 @@ const CanvasTools = props => {
                 color={colObj}
                 onChangeComplete={colorChange}
             />
-            <button className={'history-button' + undoClass} onClick={undo}>Undo</button>
-            <button className={'history-button' + redoClass} onClick={redo}>Redo</button>
+            <button className={'canvas-button' + undoClass} onClick={undo}>Undo</button>
+            <button className={'canvas-button' + redoClass} onClick={redo}>Redo</button>
             <button className={'canvas-button' + gridClass} onClick={swapGrid}>Grid</button>
             <button className={'canvas-button' + brushClass} onClick={swapBrush}>Brush</button>
             <button className={'canvas-button' + eraserClass} onClick={swapEraser}>Eraser</button>
             <button className={'canvas-button'} onClick={clearImage}>Clear Image</button>
+            <AddSubtract property={'pixelSize'} title={'Pixel Size'} min={1} max={100}/>
         </div>
     )
 }
