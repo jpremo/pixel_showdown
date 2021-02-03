@@ -72,7 +72,7 @@ const DownloadModal = () => {
 
     return (
         <form>
-            <h1 className='modal-title'>Download Format:</h1>
+            <h1 className='modal-title'>Download Format</h1>
             <div className='radio-list'>
                 <input type="radio" id="png" name="download" value="png" onChange={swapRadio}
                     checked={currentOption === 'png' ? 'checked' : ''} />

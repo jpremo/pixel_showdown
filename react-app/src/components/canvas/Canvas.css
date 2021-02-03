@@ -211,4 +211,12 @@ button.deleting{
 
 .radio-list label{
   color: white;
+  margin-left: 5px;
+  margin-bottom: 5px;
+}
+
+.radio-list input{
+  color: white;
+  margin-left: 20px;
+  margin-bottom: 5px;
 }
