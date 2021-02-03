@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import LogoutButton from '../auth/LogoutButton';
 import './NavBar.css';
 import picture from "./pixel_showdown_logo.png"
-import { setLoginModal, setSignupModal, setIncompleteModal, setTextModal } from '../../store/modal'
+import { setLoginModal, setSignupModal } from '../../store/modal'
 import { useDispatch, useSelector } from 'react-redux';
 import ModalContainer from './ModalContainer'
 import LoginForm from '../auth/LoginForm'

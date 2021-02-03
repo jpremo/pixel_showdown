@@ -13,35 +13,6 @@ const Canvas = props => {
     const drawGrid = {}
     const canvasRef = useCanvas(draw, canvasSettings)
 
-    function imageToDataUri(img, width, height) {
-        let canvas = document.createElement('canvas')
-        let ctx = canvas.getContext('2d');
-        canvas.width = width;
-        canvas.height = height;
-        // debugger
-        pixelParser(ctx, 1, canvasSettings.grid)
-
-        // ctx.drawImage(img, 0, 0, width, height);
-
-        return canvas.toDataURL();
-    }
-
-    function download(){
-        let base = canvasRef.current.toDataURL("image/png");
-        let url = imageToDataUri(canvasRef.current, canvasSettings.width, canvasSettings.height)
-        let link = document.createElement('a');
-        link.download = 'filename.png';
-        link.href = url;
-        link.click();
-        dispatch(changeProperty({downloading:false}))
-      }
-
-    useEffect(() => {
-        if(canvasSettings.downloading) {
-            download()
-        }
-    }, [canvasSettings.downloading])
-
     const setPixel = (e) => {
         if (e.buttons == 1) {
             let x = e.pageX - canvasRef.current.offsetParent.offsetLeft - canvasRef.current.offsetLeft - 3;

@@ -179,6 +179,15 @@
   font-weight: 600;
 }
 
+h3.modal-title{
+  text-align: center;
+  color: white;
+  font-size: 22px;
+  margin: 5px;
+  /* text-decoration: underline; */
+  font-weight: 500;
+}
+
 .side-align {
   display: flex;
 }

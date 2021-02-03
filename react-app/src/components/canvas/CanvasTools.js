@@ -7,10 +7,13 @@ import { SketchPicker, AlphaPicker, CirclePicker, PhotoshopPicker } from 'react-
 import useKeyPress from './useKeyPress'
 import AddSubtract from './AddSubtract'
 import Collapse from './Collapse'
-
+import ModalContainer from '../NavBar/ModalContainer'
+import DownloadModal from './DownloadModal'
+import { setDownloadModal } from '../../store/modal'
 const CanvasTools = props => {
     const dispatch = useDispatch()
     const canvasSettings = props.canvasSettings
+    const modals = useSelector(state => state.modal)
     const z = useKeyPress('z')
     const y = useKeyPress('y')
     const ctrl = useKeyPress('Control')
@@ -43,6 +46,10 @@ const CanvasTools = props => {
             redo()
         }
     }, [y])
+
+    const openDownload = () => {
+        dispatch(setDownloadModal(true))
+    }
 
     const colorChange = (e) => {
         const colArr = [e.rgb.r, e.rgb.g, e.rgb.b, e.rgb.a,]
@@ -131,7 +138,7 @@ const CanvasTools = props => {
     }
 
     const downloadImage = () => {
-        dispatch(changeProperty({ downloading:true }))
+        dispatch(changeProperty({ downloading: true }))
     }
 
 
@@ -177,9 +184,11 @@ const CanvasTools = props => {
 
     return (
         <div className='canvas-tools'>
+            <ModalContainer hidden={!modals.download} cancel={setDownloadModal}>
+                <DownloadModal/>
+            </ModalContainer>
             <h2>Canvas Tools</h2>
             <Collapse title={'Color Selector'}>
-
                 <SketchPicker
                     color={stateColor}
                     onChange={colorState}
@@ -238,7 +247,7 @@ const CanvasTools = props => {
             </Collapse>
             <div className='canvas-tools-container-centered'>
                 <div className='nav-link'>Save</div>
-                <div className='nav-link' onClick={downloadImage}>Download</div>
+                <div className='nav-link' onClick={openDownload}>Download</div>
             </div>
         </div >
     )

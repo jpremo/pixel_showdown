@@ -208,3 +208,7 @@ button.deleting{
   flex-direction: column;
   align-items: center;
 }
+
+.radio-list label{
+  color: white;
+}

@@ -2,10 +2,16 @@ const LOGIN = '/modal/login'
 const SIGNUP = '/modal/login'
 const INCOMPLETE = 'modal/incomplete'
 const TEXT = 'modal/text'
+const DOWNLOAD = 'modal/download'
 
 export const setLoginModal = (bool) => ({
     type: LOGIN,
     payload: { login: bool }
+});
+
+export const setDownloadModal = (bool) => ({
+    type: DOWNLOAD,
+    payload: { download: bool }
 });
 
 export const setSignupModal = (bool) => ({
@@ -36,10 +42,7 @@ function reducer(state = initialState, action) {
         case SIGNUP:
             newState = Object.assign({}, state, { ...action.payload });
             return newState;
-        case INCOMPLETE:
-            newState = Object.assign({}, state, { ...action.payload });
-            return newState;
-        case TEXT:
+        case DOWNLOAD:
             newState = Object.assign({}, state, { ...action.payload });
             return newState;
         default:
