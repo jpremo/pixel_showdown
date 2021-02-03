@@ -50,8 +50,8 @@ const AddSubtract = ({ property, min, max, title }) => {
     }
 
     return (
-        <div>
-            <h3>{title}</h3>
+        <div className='add-subtract'>
+            <h3 className='add-subtract-title'>{title}</h3>
             <button className='canvas-button' onClick={subtract}>-</button>
             <input className='canvas-input' type='number' value={value} onChange={(e) => setValue(e.target.value)} onKeyPress={blurSelf} onBlur = {setProperty}/>
             <button className='canvas-button' onClick={add}>+</button>

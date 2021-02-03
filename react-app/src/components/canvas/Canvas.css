@@ -84,6 +84,7 @@
 .canvas-input {
   width: 30px;
   text-align: center;
+  border: 1px solid black;
 }
 
 .selected {
@@ -121,6 +122,15 @@
   flex-wrap: wrap;
 }
 
+.canvas-tools-container-centered{
+  max-width: 300px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  height: 30px;
+  margin: 10px;
+}
+
 .canvas-tools-alpha {
   border: 2px solid black;
   border-radius: 5px;
@@ -155,4 +165,46 @@
 
 .invalid-selection:hover{
     cursor: auto;
+}
+
+.deleting span div:hover{
+  cursor: not-allowed !important;
+}
+
+button.deleting{
+  border: 3px solid white;
+}
+
+.add-subtract-title{
+  text-align: center;
+}
+
+.add-subtract{
+  margin: 5px;
+}
+
+.title-wrapper{
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.title-text{
+  font-size: 40px;
+  text-align: center;
+  border-radius: 15px;
+  padding:3px;
+  background-color: white;
+  border: 1px solid black;
+}
+
+.title-text:focus {
+  background-color: #ede6f2;
+  outline: none;
+}
+
+#canvas-and-title-div{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
 }

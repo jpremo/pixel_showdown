@@ -15,6 +15,7 @@ const CanvasTools = props => {
     const y = useKeyPress('y')
     const ctrl = useKeyPress('Control')
     const [alpha, setAlpha] = useState(canvasSettings.color[3])
+    const [deleteColor, setDeleteColor] = useState(false)
     const [stateColor, setStateColor] = useState({
         r: canvasSettings.color[0],
         g: canvasSettings.color[1],
@@ -115,6 +116,10 @@ const CanvasTools = props => {
         dispatch(changeProperty({ currentTool: 'colorSwapBrush' }))
     }
 
+    const swapColorGrab = () => {
+        dispatch(changeProperty({ currentTool: 'colorGrab' }))
+    }
+
     const clearImage = () => {
         const newGrid = {}
         for (let key in canvasSettings.grid) {
@@ -125,18 +130,51 @@ const CanvasTools = props => {
         dispatch(changeProperty({ grid: {}, moveHistory: newMoveHistory, historyPosition: newPosition }))
     }
 
+    const downloadImage = () => {
+        dispatch(changeProperty({ downloading:true }))
+    }
+
+
+
     const undoClass = canvasSettings.historyPosition > 0 ? '' : ' invalid-selection'
     const redoClass = canvasSettings.historyPosition === canvasSettings.moveHistory.length - 1 ? ' invalid-selection' : ''
     const gridClass = canvasSettings.displayGrid ? ' selected' : ''
     const brushClass = canvasSettings.currentTool === 'brush' ? ' selected' : ''
     const eraserClass = canvasSettings.currentTool === 'eraser' ? ' selected' : ''
     const fillClass = canvasSettings.currentTool === 'fill' ? ' selected' : ''
+    const colorGrabClass = canvasSettings.currentTool === 'colorGrab' ? ' selected' : ''
     const colorSwapClass = canvasSettings.currentTool === 'colorSwap' ? ' selected' : ''
     const colorSwapBrushClass = canvasSettings.currentTool === 'colorSwapBrush' ? ' selected' : ''
     const removeFromPalette = !canvasSettings.colorPalette.length ? ' invalid-selection' : ''
-    // console.log(rgbaToHex(canvasSettings.color))
     const addToPalette = canvasSettings.colorPalette.includes(rgbaToHex(canvasSettings.color)) ? ' invalid-selection' : ''
-    // debugger
+
+    const addColor = () => {
+        if (!addToPalette) {
+            dispatch(changeProperty({ colorPalette: [...canvasSettings.colorPalette, rgbaToHex(canvasSettings.color)] }))
+        }
+    }
+
+    const removeColor = () => {
+        if (!removeFromPalette) {
+            setDeleteColor(!deleteColor)
+        }
+    }
+
+    const deleteSelectedColor = (e) => {
+        if (deleteColor && !e.target.children.length) {
+            const color = e.target.attributes[0].nodeValue
+            const arr = [...canvasSettings.colorPalette]
+            const arrInd = arr.indexOf(color)
+            if (arrInd !== -1) {
+                arr.splice(arrInd, 1)
+            }
+            dispatch(changeProperty({ colorPalette: arr }))
+            if (arr.length === 0) setDeleteColor(false)
+        }
+    }
+
+    const removeFromPalette2 = deleteColor ? ' deleting' : ''
+
     return (
         <div className='canvas-tools'>
             <h2>Canvas Tools</h2>
@@ -152,16 +190,17 @@ const CanvasTools = props => {
                 />
             </Collapse>
             <Collapse title={'Color Palette'}>
-                <div className='canvas-tools-circle'>
+                <div className='canvas-tools-circle' onMouseUp={deleteSelectedColor}>
                     <CirclePicker
                         color={colObj}
                         onChangeComplete={colorChange}
                         colors={canvasSettings.colorPalette}
+                        className={removeFromPalette2}
                     />
                 </div>
                 <div className='canvas-tools-container'>
-                    <button className={'canvas-button' + addToPalette} onClick={undo}>Add Current Color to Palette</button>
-                    <button className={'canvas-button' + removeFromPalette} onClick={redo}>Remove from Palette</button>
+                    <button className={'canvas-button' + addToPalette} onClick={addColor}>Add Current Color to Palette</button>
+                    <button className={'canvas-button' + removeFromPalette + removeFromPalette2} onClick={removeColor}>Remove from Palette</button>
                 </div>
                 <AlphaPicker
                     color={stateColor}
@@ -178,6 +217,7 @@ const CanvasTools = props => {
                     <button className={'canvas-button' + gridClass} onClick={swapGrid}>Grid</button>
                     <button className={'canvas-button' + brushClass} onClick={swapBrush}>Brush</button>
                     <button className={'canvas-button' + eraserClass} onClick={swapEraser}>Eraser</button>
+                    <button className={'canvas-button' + colorGrabClass} onClick={swapColorGrab}>Grab Color</button>
                     <button className={'canvas-button' + fillClass} onClick={swapFill}>Fill</button>
                     <button className={'canvas-button' + colorSwapClass} onClick={swapColorSwap}>Color Swap</button>
                     <button className={'canvas-button' + colorSwapBrushClass} onClick={swapColorSwapBrush}>Color Swap Brush</button>
@@ -186,10 +226,20 @@ const CanvasTools = props => {
             </Collapse>
             <Collapse title={'Configurables'}>
                 <div className='canvas-tools-container'>
-                    <AddSubtract property={'pixelSize'} title={'Pixel Size'} min={1} max={100} />
-                    <AddSubtract property={'brushSize'} title={'Brush Size'} min={1} max={100} />
+                    <div className='canvas-tools-container'>
+                        <AddSubtract property={'pixelSize'} title={'Pixel Size'} min={1} max={100} />
+                        <AddSubtract property={'brushSize'} title={'Brush Size'} min={1} max={100} />
+                    </div>
+                    <div className='canvas-tools-container'>
+                        <AddSubtract property={'width'} title={'Width'} min={1} max={100} />
+                        <AddSubtract property={'height'} title={'Height'} min={1} max={100} />
+                    </div>
                 </div>
             </Collapse>
+            <div className='canvas-tools-container-centered'>
+                <div className='nav-link'>Save</div>
+                <div className='nav-link' onClick={downloadImage}>Download</div>
+            </div>
         </div >
     )
 }

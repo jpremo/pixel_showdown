@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import useCanvas from './useCanvas'
 import './Canvas.css'
-import { drawPixel, mergeColors, overwritePixel } from '../canvas/color_functions'
+import { drawPixel, mergeColors, overwritePixel, pixelParser } from '../canvas/color_functions'
 import { changeProperty } from '../../store/canvas'
 import { useDispatch, useSelector } from "react-redux";
 import _ from 'lodash'
@@ -13,11 +13,37 @@ const Canvas = props => {
     const drawGrid = {}
     const canvasRef = useCanvas(draw, canvasSettings)
 
+    function imageToDataUri(img, width, height) {
+        let canvas = document.createElement('canvas')
+        let ctx = canvas.getContext('2d');
+        canvas.width = width;
+        canvas.height = height;
+        // debugger
+        pixelParser(ctx, 1, canvasSettings.grid)
 
+        // ctx.drawImage(img, 0, 0, width, height);
+
+        return canvas.toDataURL();
+    }
+
+    function download(){
+        let base = canvasRef.current.toDataURL("image/png");
+        let url = imageToDataUri(canvasRef.current, canvasSettings.width, canvasSettings.height)
+        let link = document.createElement('a');
+        link.download = 'filename.png';
+        link.href = url;
+        link.click();
+        dispatch(changeProperty({downloading:false}))
+      }
+
+    useEffect(() => {
+        if(canvasSettings.downloading) {
+            download()
+        }
+    }, [canvasSettings.downloading])
 
     const setPixel = (e) => {
         if (e.buttons == 1) {
-            // debugger
             let x = e.pageX - canvasRef.current.offsetParent.offsetLeft - canvasRef.current.offsetLeft - 3;
             let y = e.pageY - canvasRef.current.offsetParent.offsetTop - canvasRef.current.offsetTop - 3;
             let pixelX = Math.floor(x / canvasSettings.pixelSize)
@@ -78,6 +104,20 @@ const Canvas = props => {
                 }
             }
         }
+    }
+
+    const grabColor = (e) => {
+        let x = e.pageX - canvasRef.current.offsetParent.offsetLeft - canvasRef.current.offsetLeft - 3;
+        let y = e.pageY - canvasRef.current.offsetParent.offsetTop - canvasRef.current.offsetTop - 3;
+        let pixelX = Math.floor(x / canvasSettings.pixelSize)
+        let pixelY = Math.floor(y / canvasSettings.pixelSize)
+
+        const pixelXY = `${pixelX}-${pixelY}`
+        const target = canvasSettings.grid[pixelXY]
+        if (target && target!='deleted' && target != canvasSettings.color) {
+            dispatch(changeProperty({color: target, currentTool: 'brush'}))
+        }
+
     }
 
     const fillPixels = (e) => {
@@ -157,6 +197,7 @@ const Canvas = props => {
         switch (canvasSettings.currentTool) {
             case 'colorSwap': swapPixels(e); break;
             case 'fill': fillPixels(e); break;
+            case 'colorGrab': grabColor(e); break;
             default: break;
         }
 

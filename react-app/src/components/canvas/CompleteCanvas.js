@@ -6,6 +6,7 @@ import { changeProperty } from '../../store/canvas'
 import { useDispatch, useSelector } from "react-redux";
 import Backdrop from './Backdrop'
 import Grid from './Grid'
+import TitleCard from './TitleCard'
 
 function CompleteCanvas() {
     const dispatch = useDispatch()
@@ -24,13 +25,16 @@ function CompleteCanvas() {
 
     }, [dispatch])
 
+
+
     const draw = ctx => {
         pixelParser(ctx, canvasSettings.pixelSize, canvasSettings.grid)
     }
 
     return (
         <div id='complete-canvas-wrapper'>
-            <div>
+            <div id='canvas-and-title-div'>
+                <TitleCard />
                 <div className='canvas-div'>
                     <div className='canvas-div-background' />
                     <Backdrop />
