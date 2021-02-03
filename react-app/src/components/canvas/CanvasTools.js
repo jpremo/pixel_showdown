@@ -133,6 +133,10 @@ const CanvasTools = props => {
     const fillClass = canvasSettings.currentTool === 'fill' ? ' selected' : ''
     const colorSwapClass = canvasSettings.currentTool === 'colorSwap' ? ' selected' : ''
     const colorSwapBrushClass = canvasSettings.currentTool === 'colorSwapBrush' ? ' selected' : ''
+    const removeFromPalette = !canvasSettings.colorPalette.length ? ' invalid-selection' : ''
+    // console.log(rgbaToHex(canvasSettings.color))
+    const addToPalette = canvasSettings.colorPalette.includes(rgbaToHex(canvasSettings.color)) ? ' invalid-selection' : ''
+    // debugger
     return (
         <div className='canvas-tools'>
             <h2>Canvas Tools</h2>
@@ -145,7 +149,6 @@ const CanvasTools = props => {
                     presetColors={[]}
                     width='238px'
                     className='canvas-tools-custom'
-                    background={'rgb(129,129,129)'}
                 />
             </Collapse>
             <Collapse title={'Color Palette'}>
@@ -155,6 +158,10 @@ const CanvasTools = props => {
                         onChangeComplete={colorChange}
                         colors={canvasSettings.colorPalette}
                     />
+                </div>
+                <div className='canvas-tools-container'>
+                    <button className={'canvas-button' + addToPalette} onClick={undo}>Add Current Color to Palette</button>
+                    <button className={'canvas-button' + removeFromPalette} onClick={redo}>Remove from Palette</button>
                 </div>
                 <AlphaPicker
                     color={stateColor}
@@ -183,7 +190,7 @@ const CanvasTools = props => {
                     <AddSubtract property={'brushSize'} title={'Brush Size'} min={1} max={100} />
                 </div>
             </Collapse>
-        </div>
+        </div >
     )
 }
 
