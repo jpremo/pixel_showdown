@@ -2,15 +2,17 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeProperty } from '../../store/canvas'
 
+//This component allows for the title of an image to be altered
 function TitleCard() {
     const dispatch = useDispatch()
     const canvasSettings = useSelector(state => state.canvas)
-    const [value, setValue] = useState(canvasSettings.title)
+    const [value, setValue] = useState(canvasSettings.title) //Current value of input
 
     useEffect(() => {
         setValue(canvasSettings.title)
     }, [canvasSettings.title])
 
+    //Sets redux value to current input value at end of change (blur)
     const sendTitle = () => {
         let title = value;
         if(!title) {

@@ -4,6 +4,8 @@ import { login } from "../../services/auth";
 import { useDispatch } from 'react-redux'
 import { setUser } from '../../store/session'
 import { setLoginModal, setSignupModal } from '../../store/modal'
+
+//login form component; used inside of ModalContainer
 const LoginForm = ({ authenticated, setAuthenticated }) => {
   const [errors, setErrors] = useState([]);
   const [email, setEmail] = useState("");

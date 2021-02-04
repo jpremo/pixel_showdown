@@ -4,6 +4,7 @@ import './Canvas.css'
 import { useSelector } from "react-redux";
 import { drawGrid } from '../canvas/color_functions'
 
+//This component creates the grid overlay used in the CompleteCanvas component
 const Grid = () => {
     const options = useSelector(state => state.canvas)
 

@@ -10,18 +10,25 @@ import LoginForm from '../auth/LoginForm'
 import SignUpForm from '../auth/SignUpForm'
 import { changeProperty } from '../../store/canvas'
 
+//Handles the display of the navbar
 const NavBar = ({ setAuthenticated }) => {
   const modals = useSelector(state => state.modal)
   const user = useSelector(state => state.session.user)
   const dispatch = useDispatch()
+
+  //opens login modal
   const openLogin = (e) => {
     dispatch(setLoginModal(true))
     dispatch(setSignupModal(false))
   }
+
+  //opens signup modal
   const openSignup = (e) => {
     dispatch(setSignupModal(true))
     dispatch(setLoginModal(false))
   }
+
+  //Resets redux store is sketch nav-button is pressed
   const resetSketch = () => {
     const initialSettings = {
       pixelSize: 20,

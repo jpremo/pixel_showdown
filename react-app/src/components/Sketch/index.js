@@ -4,13 +4,17 @@ import './Sketch.css'
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { changeProperty } from '../../store/canvas'
+
+//This component organizes the sketch page; it distinguishes whether the page is a new sketch or being edited by the
+//correct user
 function Sketch() {
     const history = useHistory()
     const dispatch = useDispatch()
     const user = useSelector(state => state.session.user)
     let params = useParams()
     let { id } = params;
-    console.log('id', id)
+
+    //Fetches data from backend server if an image id is specified in the url
     useEffect(() => {
         if (id) {
             const fetchData = async () => {

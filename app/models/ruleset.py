@@ -4,6 +4,7 @@ import datetime
 
 
 class Ruleset(db.Model):
+    """A class used to represent ruleset information"""
     __tablename__ = 'rulesets'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -18,6 +19,7 @@ class Ruleset(db.Model):
     posts = db.relationship("Post", back_populates="ruleset")
 
     def to_dict(self):
+        """A function that returns key object information in a readable format"""
         return {
             "id": self.id,
             "rules": self.rules,

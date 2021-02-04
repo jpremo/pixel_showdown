@@ -4,6 +4,7 @@ import datetime
 
 
 class Post(db.Model):
+    """A class used to represent post information"""
     __tablename__ = 'posts'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -20,6 +21,7 @@ class Post(db.Model):
     comments = db.relationship("Comment", back_populates="post")
 
     def to_dict(self):
+        """A function that returns key object information in a readable format"""
         return {
             "id": self.id,
             "body": self.body,

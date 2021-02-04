@@ -4,8 +4,7 @@ import { removeUser } from '../../store/session'
 import { useDispatch } from 'react-redux'
 import { useHistory } from "react-router-dom";
 
-
-
+//Component that logs out user on click
 const LogoutButton = ({setAuthenticated}) => {
   const history = useHistory()
   const dispatch = useDispatch()

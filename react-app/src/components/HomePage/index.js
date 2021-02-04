@@ -6,6 +6,7 @@ import { changeProperty } from '../../store/canvas'
 import { useDispatch, useSelector } from "react-redux";
 import CompleteCanvas from '../canvas/CompleteCanvas'
 
+//This component organizes the home page
 function HomePage() {
     return (
         <>

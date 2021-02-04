@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import './Canvas.css'
-import { rgbaToHex, hexToRgba, pixelParser } from '../canvas/color_functions'
+import { rgbaToHex } from '../canvas/color_functions'
 import { changeProperty } from '../../store/canvas'
 import { useDispatch, useSelector } from "react-redux";
-import { SketchPicker, AlphaPicker, CirclePicker, PhotoshopPicker } from 'react-color'
+import { SketchPicker, AlphaPicker, CirclePicker } from 'react-color'
 import useKeyPress from './useKeyPress'
 import AddSubtract from './AddSubtract'
 import Collapse from './Collapse'
 import ModalContainer from '../NavBar/ModalContainer'
 import DownloadModal from './DownloadModal'
 import { setDownloadModal } from '../../store/modal'
-import uniqid from 'uniqid'
 import { useHistory } from 'react-router-dom';
 import { saveImage, updateImage } from './aws/index'
+
+//This component organizes all of the tools within the tools sidebar of the CompleteCanvas element
 const CanvasTools = props => {
     const history = useHistory()
     const dispatch = useDispatch()
@@ -49,6 +50,7 @@ const CanvasTools = props => {
     const colorSwapBrushClass = canvasSettings.currentTool === 'colorSwapBrush' ? ' selected' : ''
     const removeFromPalette = !canvasSettings.colorPalette.length ? ' invalid-selection' : ''
     const addToPalette = canvasSettings.colorPalette.includes(rgbaToHex(canvasSettings.color)) ? ' invalid-selection' : ''
+    const removeFromPalette2 = deleteColor ? ' deleting' : ''
 
     //These settings are used to adapt color state for components in the react-color package
     let a = canvasSettings.color[3] ? canvasSettings.color[3] : 1
@@ -181,108 +183,6 @@ const CanvasTools = props => {
         }
     }
 
-    // function dataURItoBlob(dataURI) {
-    //     var binary = atob(dataURI.split(',')[1]);
-    //     var array = [];
-    //     for (var i = 0; i < binary.length; i++) {
-    //         array.push(binary.charCodeAt(i));
-    //     }
-    //     return new Blob([new Uint8Array(array)], { type: 'image/png' });
-    // }
-
-    // async function addPhotoAWS(str, id) {
-    //     if (!id) id = uniqid()
-    //     const AWS = window.AWS
-    //     let IdentityPoolId = "us-east-1:013e5b90-632f-4e59-aa4f-ed9acdd8a8c3";
-    //     let bucketRegion = "us-east-1";
-
-    //     AWS.config.update({
-    //         region: bucketRegion,
-    //         credentials: new AWS.CognitoIdentityCredentials({
-    //             IdentityPoolId: IdentityPoolId
-    //         })
-    //     });
-
-    //     let fileName = `${id}.png`;
-    //     let photoKey = 'app-content/' + fileName;
-    //     let buf = dataURItoBlob(str)
-    //     let upload = new AWS.S3.ManagedUpload({
-    //         params: {
-    //             Bucket: 'pixel-showdown',
-    //             Key: photoKey,
-    //             Body: buf,
-    //             AWS_SDK_LOAD_CONFIG: 1
-    //         }
-    //     });
-
-    //     await upload.promise();
-    //     return fileName
-    // }
-
-    // function imageToDataUri(width, height, pixelSize, format) {
-    //     let canvas = document.createElement('canvas')
-    //     let ctx = canvas.getContext('2d');
-    //     canvas.width = width;
-    //     canvas.height = height;
-    //     pixelParser(ctx, pixelSize, canvasSettings.grid)
-
-    //     return canvas.toDataURL(`image/${format}`);
-    // }
-
-    // const saveImage = async () => {
-    //     let uri = imageToDataUri(canvasSettings.width, canvasSettings.height, 1, 'png')
-    //     let fileName = await addPhotoAWS(uri)
-    //     let imgUrl = `https://pixel-showdown.s3.amazonaws.com/app-content/${fileName}`
-    //     const response = await fetch("/api/images/", {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify({
-    //             imgUrl,
-    //             title: canvasSettings.title,
-    //             grid: canvasSettings.grid,
-    //             userId: user.id,
-    //             competitionId: null
-    //         }),
-    //     });
-
-    //     const parsed = await response.json();
-    //     if (response && response.ok) {
-    //         history.push(`/sketch/${parsed.id}`)
-    //     } else {
-    //         alert('There was an error saving your image! Please try again')
-    //     }
-    //     return
-    // }
-
-    // const updateImage = async () => {
-    //     let uri = imageToDataUri(canvasSettings.width, canvasSettings.height, 1, 'png')
-    //     let urlId = canvasSettings.editLink.split('/')
-    //     urlId = urlId[urlId.length - 1]
-    //     urlId = urlId.split('.')[0]
-    //     await addPhotoAWS(uri, urlId)
-    //     const response = await fetch(`/api/images/${canvasSettings.editing}`, {
-    //         method: "PUT",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify({
-    //             title: canvasSettings.title,
-    //             grid: canvasSettings.grid
-    //         }),
-    //     });
-
-    //     // const parsed = await response.json();
-    //     if (response && response.ok) {
-
-    //     } else {
-    //         console.log('alerrererert')
-    //         alert('There was an error saving your image! Please try again')
-    //     }
-    //     return
-    // }
-
     //If the user is working on a new image this function creates it in the database and saves a PNG copy to AWS
     //If the user is editing an existing image it updates the database entry and the AWS PNG image
     const changeImage = () => {
@@ -293,7 +193,7 @@ const CanvasTools = props => {
         }
     }
 
-    const removeFromPalette2 = deleteColor ? ' deleting' : ''
+
 
     return (
         <div className='canvas-tools'>

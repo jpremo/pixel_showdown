@@ -1,6 +1,7 @@
+//This reducer stores information about the canvas being drawn on
 const CHANGE_PROPERTY = 'canvas/changeProperty';
 
-
+//Changes property specified in payload
 export const changeProperty = (payload) => ({
   type: CHANGE_PROPERTY,
   payload

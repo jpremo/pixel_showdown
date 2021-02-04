@@ -1,31 +1,24 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
-import { login } from "../../services/auth";
 import { useDispatch, useSelector } from 'react-redux'
-import { setUser } from '../../store/session'
 import { setDownloadModal } from '../../store/modal'
-import { drawPixel, mergeColors, overwritePixel, pixelParser } from '../canvas/color_functions'
 import { changeProperty } from '../../store/canvas'
+import { imageToDataUri } from './aws'
+
+//This component handles the download modal display and will download the current image to the user's local device at their request
 const DownloadModal = () => {
     const canvasSettings = useSelector(state => state.canvas)
-    const [currentOption, setCurrentOption] = useState('png');
+    const [currentOption, setCurrentOption] = useState('png'); //specifies download option selected by user
     const dispatch = useDispatch()
+
+    //this function closes the modal
     const cancel = (e) => {
         dispatch(setDownloadModal(false))
     }
 
+    //Swaps the current download option
     const swapRadio = (e) => setCurrentOption(e.target.value)
 
-    function imageToDataUri(width, height, pixelSize, format) {
-        let canvas = document.createElement('canvas')
-        let ctx = canvas.getContext('2d');
-        canvas.width = width;
-        canvas.height = height;
-        pixelParser(ctx, pixelSize, canvasSettings.grid)
-
-        return canvas.toDataURL(`image/${format}`);
-    }
-
+    //Downloads correct image type as specified by user
     function download() {
         let width, height, pixelSize, format
         switch (currentOption) {
@@ -61,8 +54,7 @@ const DownloadModal = () => {
                 break;
         }
 
-        let url = imageToDataUri(width, height, pixelSize, format)
-        debugger
+        let url = imageToDataUri(width, height, pixelSize, format, canvasSettings)
         let link = document.createElement('a');
         link.download = `${canvasSettings.title}.${format}`;
         link.href = url;

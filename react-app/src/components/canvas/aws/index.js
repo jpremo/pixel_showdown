@@ -42,7 +42,7 @@ async function addPhotoAWS(str, id) {
 }
 
 //Converts the current grid to a data uri using an invisible canvas element
-function imageToDataUri(width, height, pixelSize, format, canvasSettings) {
+export function imageToDataUri(width, height, pixelSize, format, canvasSettings) {
     let canvas = document.createElement('canvas')
     let ctx = canvas.getContext('2d');
     canvas.width = width;

@@ -1,18 +1,20 @@
 import React, { useEffect } from 'react'
 import useCanvas from './useCanvas'
 import './Canvas.css'
-import { drawPixel, mergeColors, overwritePixel, pixelParser } from '../canvas/color_functions'
+import { drawPixel, overwritePixel } from '../canvas/color_functions'
 import { changeProperty } from '../../store/canvas'
 import { useDispatch, useSelector } from "react-redux";
 import _ from 'lodash'
+
+//This component is what actually handles drawing and displays the image constructed by the user
 const Canvas = props => {
     const { draw, ...rest } = props
     const canvasSettings = useSelector(state => state.canvas)
     const dispatch = useDispatch()
-    const gridCopy = { ...canvasSettings.finalGrid };
-    const drawGrid = {}
+    const drawGrid = {} //stores edits to grid during brush strokes; redux state is altered on stroke completion
     const canvasRef = useCanvas(draw, canvasSettings)
 
+    //This function will set the pixel the mouse is over to the color currently selected
     const setPixel = (e) => {
         if (e.buttons == 1) {
             let x = e.pageX - canvasRef.current.offsetParent.offsetLeft - canvasRef.current.offsetLeft - 3;
@@ -34,9 +36,9 @@ const Canvas = props => {
         }
     }
 
+    //Erases pixel at mouse location
     const erasePixel = (e) => {
         if (e.buttons == 1) {
-            // debugger
             let x = e.pageX - canvasRef.current.offsetParent.offsetLeft - canvasRef.current.offsetLeft - 3;
             let y = e.pageY - canvasRef.current.offsetParent.offsetTop - canvasRef.current.offsetTop - 3;
             let pixelX = Math.floor(x / canvasSettings.pixelSize)
@@ -56,6 +58,8 @@ const Canvas = props => {
         }
     }
 
+    //This function is used with the color swapper tool. It replaces all pixels with the color at the mouse position
+    //with the currently selected color
     const swapPixels = (e) => {
         let x = e.pageX - canvasRef.current.offsetParent.offsetLeft - canvasRef.current.offsetLeft - 3;
         let y = e.pageY - canvasRef.current.offsetParent.offsetTop - canvasRef.current.offsetTop - 3;
@@ -77,6 +81,27 @@ const Canvas = props => {
         }
     }
 
+    //This function is used with the color swapper brush tool and swaps only filled pixels with the current color.
+    //This overides opacity eliminating the need to erase and then fill with a low alpha color
+    const swapPixel = (e) => {
+        if (e.buttons == 1) {
+            let x = e.pageX - canvasRef.current.offsetParent.offsetLeft - canvasRef.current.offsetLeft - 3;
+            let y = e.pageY - canvasRef.current.offsetParent.offsetTop - canvasRef.current.offsetTop - 3;
+            let pixelX = Math.floor(x / canvasSettings.pixelSize)
+            let pixelY = Math.floor(y / canvasSettings.pixelSize)
+
+            const pixelXY = `${pixelX}-${pixelY}`
+            const target = canvasSettings.grid[pixelXY]
+            if (target && target != canvasSettings.color) {
+                const canvas = canvasRef.current
+                const ctx = canvas.getContext('2d')
+                const newCol = overwritePixel(ctx, canvasSettings.color, pixelX, pixelY, canvasSettings.pixelSize)
+                drawGrid[pixelXY] = newCol
+            }
+        }
+    }
+
+    //This function is used with the color grabber tool and sets current color to the color at the mouse location
     const grabColor = (e) => {
         let x = e.pageX - canvasRef.current.offsetParent.offsetLeft - canvasRef.current.offsetLeft - 3;
         let y = e.pageY - canvasRef.current.offsetParent.offsetTop - canvasRef.current.offsetTop - 3;
@@ -85,12 +110,13 @@ const Canvas = props => {
 
         const pixelXY = `${pixelX}-${pixelY}`
         const target = canvasSettings.grid[pixelXY]
-        if (target && target!='deleted' && target != canvasSettings.color) {
-            dispatch(changeProperty({color: target, currentTool: 'brush'}))
+        if (target && target != 'deleted' && target != canvasSettings.color) {
+            dispatch(changeProperty({ color: target, currentTool: 'brush' }))
         }
 
     }
 
+    //This function is used with the fill function and recursively replaces the selected color within bounds set by other colors
     const fillPixels = (e) => {
         let x = e.pageX - canvasRef.current.offsetParent.offsetLeft - canvasRef.current.offsetLeft - 3;
         let y = e.pageY - canvasRef.current.offsetParent.offsetTop - canvasRef.current.offsetTop - 3;
@@ -123,24 +149,7 @@ const Canvas = props => {
         recursiveFill(pixelX, pixelY)
     }
 
-    const swapPixel = (e) => {
-        if (e.buttons == 1) {
-            let x = e.pageX - canvasRef.current.offsetParent.offsetLeft - canvasRef.current.offsetLeft - 3;
-            let y = e.pageY - canvasRef.current.offsetParent.offsetTop - canvasRef.current.offsetTop - 3;
-            let pixelX = Math.floor(x / canvasSettings.pixelSize)
-            let pixelY = Math.floor(y / canvasSettings.pixelSize)
-
-            const pixelXY = `${pixelX}-${pixelY}`
-            const target = canvasSettings.grid[pixelXY]
-            if (target && target != canvasSettings.color) {
-                const canvas = canvasRef.current
-                const ctx = canvas.getContext('2d')
-                const newCol = overwritePixel(ctx, canvasSettings.color, pixelX, pixelY, canvasSettings.pixelSize)
-                drawGrid[pixelXY] = newCol
-            }
-        }
-    }
-
+    //Does the correct action for the specified tool when the mouse is held down
     const toolAction = (e) => {
         switch (canvasSettings.currentTool) {
             case 'brush': setPixel(e); break;
@@ -150,6 +159,19 @@ const Canvas = props => {
         }
     }
 
+    //Does the correct action for the specified tool when the mouse is released
+    const toolUp = (e) => {
+        switch (canvasSettings.currentTool) {
+            case 'colorSwap': swapPixels(e); break;
+            case 'fill': fillPixels(e); break;
+            case 'colorGrab': grabColor(e); break;
+            default: break;
+        }
+
+        updateGrid()
+    }
+
+    //This function updates the grid in the redux store upon stroke completion
     function updateGrid() {
         if (Object.keys(drawGrid).length) {
             const newGrid = { ...canvasSettings.grid, ...drawGrid }
@@ -163,18 +185,6 @@ const Canvas = props => {
             dispatch(changeProperty({ grid: newGrid, moveHistory: newMoveHistory, historyPosition: newPosition }))
         }
     }
-
-    const toolUp = (e) => {
-        switch (canvasSettings.currentTool) {
-            case 'colorSwap': swapPixels(e); break;
-            case 'fill': fillPixels(e); break;
-            case 'colorGrab': grabColor(e); break;
-            default: break;
-        }
-
-        updateGrid()
-    }
-
 
     return (
         <>

@@ -4,6 +4,7 @@ import './Canvas.css'
 import { useSelector } from "react-redux";
 import { backDrop } from '../canvas/color_functions'
 
+//The component creates the backdrop/background for the CompleteCanvas component
 const Backdrop = () => {
     const options = useSelector(state => state.canvas)
 

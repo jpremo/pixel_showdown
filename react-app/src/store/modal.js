@@ -4,6 +4,8 @@ const INCOMPLETE = 'modal/incomplete'
 const TEXT = 'modal/text'
 const DOWNLOAD = 'modal/download'
 
+//These functions/reducer handle modal display
+
 export const setLoginModal = (bool) => ({
     type: LOGIN,
     payload: { login: bool }

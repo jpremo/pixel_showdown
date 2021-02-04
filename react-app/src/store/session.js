@@ -3,6 +3,8 @@ import {authenticate} from '../services/auth'
 const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
 
+//These functions/reducer handle session information and user information
+
 export const setUser = (user) => ({
   type: SET_USER,
   payload: user

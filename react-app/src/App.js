@@ -17,9 +17,10 @@ function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const dispatch = useDispatch();
+
+  //Sets user session information on page load
   useEffect(() => {
     (async() => {
-      // awsInit()
       const user = await dispatch(restoreUser())
       if(user.id) setAuthenticated(true);
       setLoaded(true);

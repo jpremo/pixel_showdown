@@ -5,6 +5,7 @@ import { setLoginModal, setSignupModal } from '../../store/modal'
 import { useDispatch } from 'react-redux'
 import { setUser } from '../../store/session'
 
+//sign up form component; used inside of ModalContainer
 const SignUpForm = ({ authenticated, setAuthenticated }) => {
   const [errors, setErrors] = useState([]);
   const [username, setUsername] = useState("");

@@ -6,6 +6,7 @@ from .following import followings
 from sqlalchemy.orm import relationship, backref
 
 class User(db.Model, UserMixin):
+    """A class used to represent user information"""
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -23,13 +24,6 @@ class User(db.Model, UserMixin):
     posts = db.relationship("Post", back_populates="user")
     rulesets = db.relationship("Ruleset", back_populates="user")
     comments = db.relationship("Comment", back_populates="user")
-
-    # followings = db.relationship(
-    #     "User",
-    #     secondary=followings,
-    #     back_populates='followers',
-    #     primaryjoin=(followings.c.follower == id),
-    #     secondaryjoin=(followings.c.following == id))
 
     followers = db.relationship(
         "User",
@@ -50,6 +44,7 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.password, password)
 
     def to_dict(self):
+        """A function that returns key object information in a readable format"""
         return {
             "id": self.id,
             "username": self.username,

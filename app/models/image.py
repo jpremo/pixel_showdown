@@ -4,6 +4,7 @@ import datetime
 
 
 class Image(db.Model):
+    """A class used to represent image information"""
     __tablename__ = 'images'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -20,6 +21,7 @@ class Image(db.Model):
     competition = db.relationship("Post", back_populates="competition_images")
 
     def to_dict(self):
+        """A function that returns key object information in a readable format"""
         return {
             "id": self.id,
             "title": self.title,
