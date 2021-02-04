@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ModalContainer from './ModalContainer'
 import LoginForm from '../auth/LoginForm'
 import SignUpForm from '../auth/SignUpForm'
+import { changeProperty } from '../../store/canvas'
 
 const NavBar = ({ setAuthenticated }) => {
   const modals = useSelector(state => state.modal)
@@ -20,6 +21,20 @@ const NavBar = ({ setAuthenticated }) => {
   const openSignup = (e) => {
     dispatch(setSignupModal(true))
     dispatch(setLoginModal(false))
+  }
+  const resetSketch = () => {
+    const initialSettings = {
+      pixelSize: 20,
+      height: 32,
+      width: 32,
+      color: [180, 180, 180, 1],
+      grid: {},
+      finalGrid: {},
+      editing: null,
+      editLink: null
+  }
+
+  dispatch(changeProperty(initialSettings))
   }
   return (
     <nav id='nav-bar'>
@@ -35,7 +50,7 @@ const NavBar = ({ setAuthenticated }) => {
       </NavLink>
       </div>
       <div id="nav-bar-menu">
-      <NavLink to={'/sketch'} exact={true} className="nav-link" activeClassName="active">
+      <NavLink to={'/sketch'} onClick = {resetSketch} exact={true} className="nav-link" activeClassName="active">
         Sketch
         </NavLink>
         {!user.id &&

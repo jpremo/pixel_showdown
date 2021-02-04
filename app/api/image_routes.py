@@ -7,7 +7,7 @@ image_routes = Blueprint('images', __name__)
 @image_routes.route('/', methods=['POST'])
 def image_post():
     data = request.get_json(force=True)
-    # user = Image.query.filter(Image.imgUrl.contains(data.code)).all()
+
     image = Image(
         title=data['title'],
         grid=data['grid'],
@@ -19,8 +19,16 @@ def image_post():
     db.session.commit()
     return image.to_dict()
 
-@image_routes.route('/<int:id>')
+@image_routes.route('/<int:id>', methods=['GET'])
 def image_get(id):
-    print('route hit \n \n')
     image = Image.query.get(int(id))
+    return image.to_dict()
+
+@image_routes.route('/<int:id>', methods=['PUT'])
+def image_put(id):
+    data = request.get_json(force=True)
+    image = Image.query.get(int(id))
+    image.title = data['title']
+    image.grid = data['grid']
+    db.session.commit()
     return image.to_dict()

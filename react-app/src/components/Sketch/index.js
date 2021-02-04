@@ -20,14 +20,27 @@ function Sketch() {
                     if (!res.ok || user.id != parsed.userId) {
                         throw new Error()
                     }
-                    dispatch(changeProperty({grid: parsed.grid}))
+                    dispatch(changeProperty({grid: parsed.grid, editing: parsed.id, editLink: parsed.imgUrl, title: parsed.title}))
                 } catch (e) {
                     history.push('/sketch')
                 }
             }
             fetchData()
-        }
-    }, [])
+        } else {
+                const initialSettings = {
+                    pixelSize: 20,
+                    height: 32,
+                    width: 32,
+                    color: [180, 180, 180, 1],
+                    grid: {},
+                    finalGrid: {},
+                    editing: null
+                }
+
+                dispatch(changeProperty(initialSettings))
+
+            }
+        }, [dispatch])
 
     return (
         <div id='sketch-content-wrapper'>

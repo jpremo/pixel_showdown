@@ -22,8 +22,8 @@ const initialState = {
     alphaPickerAllowed: true,
     colorPaletteAllowed: true,
     customColorAllowed: true,
-    downloading: false,
-    title: 'Title'
+    title: 'Title',
+    editing: null
 }
 
 function reducer(state = initialState, action) {

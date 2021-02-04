@@ -9,6 +9,30 @@ AWS.config.update({
     })
 });
 
+// AWS.config.region = bucketRegion; // Region
+// AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+//     IdentityPoolId: IdentityPoolId
+// });
+
+// AWSCognito.config.region = bucketRegion;
+// AWSCognito.config.credentials = new AWS.CognitoIdentityCredentials({
+//     IdentityPoolId: IdentityPoolId
+// });
+
+// AWSCognito.config.update({accessKeyId: 'asdfasdfweefq', secretAccessKey: 'asdfewqffsdfadfa'})
+
+// var poolData = {
+//     UserPoolId : 'user pool id collected from user pool',
+//     ClientId : 'application client id of app subscribed to user pool'
+// };
+
+
+// CognitoCachingCredentialsProvider, credentialsProvider = new CognitoCachingCredentialsProvider(
+//     getApplicationContext(),
+//     "us-east-1:013e5b90-632f-4e59-aa4f-ed9acdd8a8c3", // Identity pool ID
+//     Regions.US_EAST_1 // Region
+// );
+
 let s3 = new AWS.S3({
     apiVersion: "2006-03-01",
     params: { Bucket: albumBucketName }
@@ -17,14 +41,14 @@ let s3 = new AWS.S3({
 function listAlbums() {
     s3.listObjects({ Delimiter: "/" }, function (err, data) {
         if (err) {
-            return alert("There was an error listing your albums: " + err.message);
+            // return alert("There was an error listing your albums: " + err.message);
         } else {
             var albums = data.CommonPrefixes.map(function (commonPrefix) {
                 var prefix = commonPrefix.Prefix;
                 var albumName = decodeURIComponent(prefix.replace("/", ""));
             });
             var message = albums.length
-            console.log(albums, data)
+            // console.log('data', data)
         }
     });
 }
@@ -144,5 +168,5 @@ function addPhotoTest(albumName) {
 // }
 //   createAlbum('testalbum')
 //   addPhotoTest('testalbum')
-//   listAlbums()
-console.log(s3)
+  listAlbums()
+// console.log(s3)

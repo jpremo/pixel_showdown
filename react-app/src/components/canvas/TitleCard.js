@@ -7,6 +7,10 @@ function TitleCard() {
     const canvasSettings = useSelector(state => state.canvas)
     const [value, setValue] = useState(canvasSettings.title)
 
+    useEffect(() => {
+        setValue(canvasSettings.title)
+    }, [canvasSettings.title])
+
     const sendTitle = () => {
         let title = value;
         if(!title) {

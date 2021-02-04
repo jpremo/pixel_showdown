@@ -28,7 +28,6 @@ const DownloadModal = () => {
 
     function download() {
         let width, height, pixelSize, format
-        debugger
         switch (currentOption) {
             case 'png':
                 width = canvasSettings.width;

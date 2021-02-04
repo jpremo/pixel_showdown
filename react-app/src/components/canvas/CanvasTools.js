@@ -142,9 +142,6 @@ const CanvasTools = props => {
         dispatch(changeProperty({ grid: {}, moveHistory: newMoveHistory, historyPosition: newPosition }))
     }
 
-    const downloadImage = () => {
-        dispatch(changeProperty({ downloading: true }))
-    }
 
 
 
@@ -194,16 +191,28 @@ const CanvasTools = props => {
         return new Blob([new Uint8Array(array)], { type: 'image/png' });
     }
 
-    async function addPhotoAWS(str) {
+    async function addPhotoAWS(str, id) {
+        if (!id) id = uniqid()
         const AWS = window.AWS
-        let fileName = `${uniqid()}.png`;
+        let IdentityPoolId = "us-east-1:013e5b90-632f-4e59-aa4f-ed9acdd8a8c3";
+        let bucketRegion = "us-east-1";
+
+        AWS.config.update({
+            region: bucketRegion,
+            credentials: new AWS.CognitoIdentityCredentials({
+                IdentityPoolId: IdentityPoolId
+            })
+        });
+
+        let fileName = `${id}.png`;
         let photoKey = 'app-content/' + fileName;
         let buf = dataURItoBlob(str)
         let upload = new AWS.S3.ManagedUpload({
             params: {
                 Bucket: 'pixel-showdown',
                 Key: photoKey,
-                Body: buf
+                Body: buf,
+                AWS_SDK_LOAD_CONFIG: 1
             }
         });
 
@@ -240,12 +249,48 @@ const CanvasTools = props => {
         });
 
         const parsed = await response.json();
-        if(response.ok) {
+        if (response && response.ok) {
             history.push(`/sketch/${parsed.id}`)
         } else {
             alert('There was an error saving your image! Please try again')
         }
         return
+    }
+
+    const updateImage = async () => {
+        let uri = imageToDataUri(canvasSettings.width, canvasSettings.height, 1, 'png')
+        let urlId = canvasSettings.editLink.split('/')
+        urlId = urlId[urlId.length - 1]
+        urlId = urlId.split('.')[0]
+        debugger
+        await addPhotoAWS(uri, urlId)
+        const response = await fetch(`/api/images/${canvasSettings.editing}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                title: canvasSettings.title,
+                grid: canvasSettings.grid
+            }),
+        });
+
+        // const parsed = await response.json();
+        if (response && response.ok) {
+
+        } else {
+            console.log('alerrererert')
+            alert('There was an error saving your image! Please try again')
+        }
+        return
+    }
+
+    const changeImage = () => {
+        if (canvasSettings.editing) {
+            updateImage()
+        } else {
+            saveImage()
+        }
     }
 
     const removeFromPalette2 = deleteColor ? ' deleting' : ''
@@ -314,7 +359,7 @@ const CanvasTools = props => {
                 </div>
             </Collapse>
             <div className='canvas-tools-container-centered'>
-                <div className='nav-link' onClick={saveImage}>Save</div>
+                <div className='nav-link' onClick={changeImage}>Save</div>
                 <div className='nav-link' onClick={openDownload}>Download</div>
             </div>
         </div >

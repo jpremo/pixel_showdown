@@ -9,21 +9,9 @@ import Grid from './Grid'
 import TitleCard from './TitleCard'
 
 function CompleteCanvas() {
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
     const canvasSettings = useSelector(state => state.canvas)
-    useEffect(() => {
-        const initialSettings = {
-            pixelSize: 20,
-            height: 32,
-            width: 32,
-            color: [180, 180, 180, 1],
-            grid: {},
-            finalGrid: {}
-        }
 
-        dispatch(changeProperty(initialSettings))
-
-    }, [dispatch])
 
 
 
