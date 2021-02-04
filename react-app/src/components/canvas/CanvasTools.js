@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './Canvas.css'
-import { rgbaToHex, hexToRgba } from '../canvas/color_functions'
+import { rgbaToHex, hexToRgba, pixelParser } from '../canvas/color_functions'
 import { changeProperty } from '../../store/canvas'
 import { useDispatch, useSelector } from "react-redux";
 import { SketchPicker, AlphaPicker, CirclePicker, PhotoshopPicker } from 'react-color'
@@ -10,6 +10,8 @@ import Collapse from './Collapse'
 import ModalContainer from '../NavBar/ModalContainer'
 import DownloadModal from './DownloadModal'
 import { setDownloadModal } from '../../store/modal'
+import uniqid from 'uniqid'
+
 const CanvasTools = props => {
     const dispatch = useDispatch()
     const canvasSettings = props.canvasSettings
@@ -180,12 +182,52 @@ const CanvasTools = props => {
         }
     }
 
+    function dataURItoBlob(dataURI) {
+        var binary = atob(dataURI.split(',')[1]);
+        var array = [];
+        for (var i = 0; i < binary.length; i++) {
+            array.push(binary.charCodeAt(i));
+        }
+        return new Blob([new Uint8Array(array)], { type: 'image/png' });
+    }
+
+    async function addPhotoAWS(str) {
+        const AWS = window.AWS
+        let fileName = `${uniqid()}.png`;
+        let photoKey = 'app-content/' + fileName;
+        let buf = dataURItoBlob(str)
+        let upload = new AWS.S3.ManagedUpload({
+            params: {
+                Bucket: 'pixel-showdown',
+                Key: photoKey,
+                Body: buf
+            }
+        });
+
+        await upload.promise();
+    }
+
+    function imageToDataUri(width, height, pixelSize, format) {
+        let canvas = document.createElement('canvas')
+        let ctx = canvas.getContext('2d');
+        canvas.width = width;
+        canvas.height = height;
+        pixelParser(ctx, pixelSize, canvasSettings.grid)
+
+        return canvas.toDataURL(`image/${format}`);
+    }
+
+    const saveImage = async () => {
+        let uri = imageToDataUri(canvasSettings.width, canvasSettings.height, 1, 'png')
+        await addPhotoAWS(uri)
+    }
+
     const removeFromPalette2 = deleteColor ? ' deleting' : ''
 
     return (
         <div className='canvas-tools'>
             <ModalContainer hidden={!modals.download} cancel={setDownloadModal}>
-                <DownloadModal/>
+                <DownloadModal />
             </ModalContainer>
             <h2>Canvas Tools</h2>
             <Collapse title={'Color Selector'}>
@@ -246,7 +288,7 @@ const CanvasTools = props => {
                 </div>
             </Collapse>
             <div className='canvas-tools-container-centered'>
-                <div className='nav-link'>Save</div>
+                <div className='nav-link' onClick={saveImage}>Save</div>
                 <div className='nav-link' onClick={openDownload}>Download</div>
             </div>
         </div >

@@ -11,7 +11,7 @@ import { authenticate } from "./services/auth";
 import Sketch from './components/Sketch'
 import { restoreUser } from "./store/session";
 import { useDispatch } from "react-redux";
-
+import { awsInit } from './components/canvas/aws'
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -19,6 +19,7 @@ function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     (async() => {
+      // awsInit()
       const user = await dispatch(restoreUser())
       if(user.id) setAuthenticated(true);
       setLoaded(true);

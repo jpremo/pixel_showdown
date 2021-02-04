@@ -63,6 +63,7 @@ const DownloadModal = () => {
         }
 
         let url = imageToDataUri(width, height, pixelSize, format)
+        debugger
         let link = document.createElement('a');
         link.download = `${canvasSettings.title}.${format}`;
         link.href = url;

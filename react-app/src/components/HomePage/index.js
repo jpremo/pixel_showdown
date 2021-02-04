@@ -10,6 +10,7 @@ function HomePage() {
     return (
         <>
             <h1>Home</h1>
+            <img src='https://pixel-showdown.s3.amazonaws.com/testalbum/testUpload3.png'/>
         </>
     );
 }
