@@ -25,7 +25,14 @@ function Sketch() {
                     if (!res.ok || user.id !== parsed.userId) {
                         throw new Error()
                     }
-                    dispatch(changeProperty({grid: parsed.grid, editing: parsed.id, editLink: parsed.imgUrl, title: parsed.title}))
+                    dispatch(changeProperty({
+                        grid: parsed.grid,
+                        editing: parsed.id,
+                        editLink: parsed.imgUrl,
+                        title: parsed.title,
+                        moveHistory: [parsed.grid],
+                        historyPosition: 0,
+                    }))
                     setLoaded(true)
                 } catch (e) {
                     history.push('/sketch')
@@ -33,31 +40,33 @@ function Sketch() {
             }
             fetchData()
         } else {
-                const initialSettings = {
-                    pixelSize: 20,
-                    height: 32,
-                    width: 32,
-                    color: [180, 180, 180, 1],
-                    grid: {},
-                    finalGrid: {},
-                    editing: null
-                }
-
-                dispatch(changeProperty(initialSettings))
-                setLoaded(true)
+            const initialSettings = {
+                pixelSize: 20,
+                height: 32,
+                width: 32,
+                color: [180, 180, 180, 1],
+                grid: {},
+                finalGrid: {},
+                editing: null,
+                moveHistory: [{}],
+                historyPosition: 0,
             }
-        }, [dispatch])
 
-        if(loaded) {
-            return (
-                <div id='sketch-content-wrapper'>
-                    <CompleteCanvas />
-                </div>
-            );
-        } else {
-            return(
-                <></>
-            )
+            dispatch(changeProperty(initialSettings))
+            setLoaded(true)
         }
+    }, [dispatch])
+
+    if (loaded) {
+        return (
+            <div id='sketch-content-wrapper'>
+                <CompleteCanvas />
+            </div>
+        );
+    } else {
+        return (
+            <></>
+        )
+    }
 }
 export default Sketch;

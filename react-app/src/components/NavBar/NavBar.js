@@ -39,7 +39,9 @@ const NavBar = ({ setAuthenticated }) => {
       finalGrid: {},
       editing: null,
       editLink: null,
-      title: 'Title'
+      title: 'Title',
+      moveHistory: [{}],
+      historyPosition: 0,
   }
 
   dispatch(changeProperty(initialSettings))
