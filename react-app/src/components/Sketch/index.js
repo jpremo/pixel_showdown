@@ -28,7 +28,7 @@ function Sketch() {
                     dispatch(changeProperty({
                         grid: parsed.grid,
                         editing: parsed.id,
-                        editLink: parsed.imgUrl,
+                        editLink: parsed.apngImgUrl,
                         title: parsed.title,
                         moveHistory: [parsed.grid],
                         historyPosition: 0,

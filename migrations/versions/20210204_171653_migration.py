@@ -1,8 +1,8 @@
-"""Initial Migration
+"""Migration
 
-Revision ID: e7cd3bb1a4e4
+Revision ID: fdad3a8d8731
 Revises: 
-Create Date: 2021-02-03 14:43:43.102722
+Create Date: 2021-02-04 17:16:53.244974
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = 'e7cd3bb1a4e4'
+revision = 'fdad3a8d8731'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -81,7 +81,8 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(length=50), nullable=False),
     sa.Column('grid', postgresql.JSON(astext_type=sa.Text()), nullable=False),
-    sa.Column('imgUrl', sa.String(length=1000), nullable=False),
+    sa.Column('gifImgUrl', sa.String(length=1000), nullable=False),
+    sa.Column('apngImgUrl', sa.String(length=1000), nullable=False),
     sa.Column('competitionId', sa.Integer(), nullable=True),
     sa.Column('userId', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=True),

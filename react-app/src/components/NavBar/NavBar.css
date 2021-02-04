@@ -191,3 +191,9 @@ h3.modal-title{
 .side-align {
   display: flex;
 }
+
+.test-image{
+  width: 128px;
+  height: 128px;
+  image-rendering: pixelated;
+}

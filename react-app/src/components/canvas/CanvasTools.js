@@ -192,7 +192,7 @@ const CanvasTools = props => {
                 await updateImage(canvasSettings)
             } else {
                 const info = await saveImage(canvasSettings, user, history)
-                dispatch(changeProperty({editing: info.id, editLink: info.imgUrl}))
+                dispatch(changeProperty({editing: info.id, editLink: info.apngImgUrl}))
             }
         } else {
             dispatch(setLoginModal(true))

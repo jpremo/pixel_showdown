@@ -10,7 +10,8 @@ class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False)
     grid = db.Column(JSON, nullable=False)
-    imgUrl = db.Column(db.String(1000), nullable=False, default='')
+    gifImgUrl = db.Column(db.String(1000), nullable=False, default='')
+    apngImgUrl = db.Column(db.String(1000), nullable=False, default='')
     competitionId = db.Column(
         db.Integer, db.ForeignKey("posts.id"), nullable=True)
     userId = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
@@ -26,7 +27,8 @@ class Image(db.Model):
             "id": self.id,
             "title": self.title,
             "grid": self.grid,
-            "imgUrl": self.imgUrl,
+            "gifImgUrl": self.gifImgUrl,
+            "apngImgUrl": self.apngImgUrl,
             "competitionId": self.competitionId,
             "userId": self.userId,
             "created_at": self.created_at,
