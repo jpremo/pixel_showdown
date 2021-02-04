@@ -11,11 +11,14 @@ import ModalContainer from '../NavBar/ModalContainer'
 import DownloadModal from './DownloadModal'
 import { setDownloadModal } from '../../store/modal'
 import uniqid from 'uniqid'
+import { useHistory } from 'react-router-dom';
 
 const CanvasTools = props => {
+    const history = useHistory()
     const dispatch = useDispatch()
     const canvasSettings = props.canvasSettings
     const modals = useSelector(state => state.modal)
+    const user = useSelector(state => state.session.user)
     const z = useKeyPress('z')
     const y = useKeyPress('y')
     const ctrl = useKeyPress('Control')
@@ -205,6 +208,7 @@ const CanvasTools = props => {
         });
 
         await upload.promise();
+        return fileName
     }
 
     function imageToDataUri(width, height, pixelSize, format) {
@@ -219,7 +223,29 @@ const CanvasTools = props => {
 
     const saveImage = async () => {
         let uri = imageToDataUri(canvasSettings.width, canvasSettings.height, 1, 'png')
-        await addPhotoAWS(uri)
+        let fileName = await addPhotoAWS(uri)
+        let imgUrl = `https://pixel-showdown.s3.amazonaws.com/app-content/${fileName}`
+        const response = await fetch("/api/images/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                imgUrl,
+                title: canvasSettings.title,
+                grid: canvasSettings.grid,
+                userId: user.id,
+                competitionId: null
+            }),
+        });
+
+        const parsed = await response.json();
+        if(response.ok) {
+            history.push(`/sketch/${parsed.id}`)
+        } else {
+            alert('There was an error saving your image! Please try again')
+        }
+        return
     }
 
     const removeFromPalette2 = deleteColor ? ' deleting' : ''

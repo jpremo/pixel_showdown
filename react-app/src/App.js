@@ -44,7 +44,10 @@ function App() {
             setAuthenticated={setAuthenticated}
           />
         </Route>
-        <Route path="/sketch" exact={true}>
+        <Route path={"/sketch"} exact={true}>
+          <Sketch/>
+        </Route>
+        <Route path={"/sketch/:id"} exact={true}>
           <Sketch/>
         </Route>
         <Route path="/sign-up" exact={true}>
