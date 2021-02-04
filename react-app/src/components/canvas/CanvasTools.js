@@ -12,19 +12,16 @@ import DownloadModal from './DownloadModal'
 import { setDownloadModal } from '../../store/modal'
 import uniqid from 'uniqid'
 import { useHistory } from 'react-router-dom';
-
+import { saveImage, updateImage } from './aws/index'
 const CanvasTools = props => {
     const history = useHistory()
     const dispatch = useDispatch()
     const canvasSettings = props.canvasSettings
     const modals = useSelector(state => state.modal)
     const user = useSelector(state => state.session.user)
-    const z = useKeyPress('z')
-    const y = useKeyPress('y')
-    const ctrl = useKeyPress('Control')
-    const [alpha, setAlpha] = useState(canvasSettings.color[3])
-    const [deleteColor, setDeleteColor] = useState(false)
-    const [stateColor, setStateColor] = useState({
+
+    const [deleteColor, setDeleteColor] = useState(false) //controls whether user is deleting colors in palette
+    const [stateColor, setStateColor] = useState({ //current color selected
         r: canvasSettings.color[0],
         g: canvasSettings.color[1],
         b: canvasSettings.color[2],
@@ -40,6 +37,33 @@ const CanvasTools = props => {
         })
     }, [canvasSettings])
 
+    //These are variables to set the appropriate class for tool icons based on redux state
+    const undoClass = canvasSettings.historyPosition > 0 ? '' : ' invalid-selection'
+    const redoClass = canvasSettings.historyPosition === canvasSettings.moveHistory.length - 1 ? ' invalid-selection' : ''
+    const gridClass = canvasSettings.displayGrid ? ' selected' : ''
+    const brushClass = canvasSettings.currentTool === 'brush' ? ' selected' : ''
+    const eraserClass = canvasSettings.currentTool === 'eraser' ? ' selected' : ''
+    const fillClass = canvasSettings.currentTool === 'fill' ? ' selected' : ''
+    const colorGrabClass = canvasSettings.currentTool === 'colorGrab' ? ' selected' : ''
+    const colorSwapClass = canvasSettings.currentTool === 'colorSwap' ? ' selected' : ''
+    const colorSwapBrushClass = canvasSettings.currentTool === 'colorSwapBrush' ? ' selected' : ''
+    const removeFromPalette = !canvasSettings.colorPalette.length ? ' invalid-selection' : ''
+    const addToPalette = canvasSettings.colorPalette.includes(rgbaToHex(canvasSettings.color)) ? ' invalid-selection' : ''
+
+    //These settings are used to adapt color state for components in the react-color package
+    let a = canvasSettings.color[3] ? canvasSettings.color[3] : 1
+    let colObj = {
+        r: canvasSettings.color[0],
+        g: canvasSettings.color[1],
+        b: canvasSettings.color[2],
+        a
+    }
+
+    //This code sets up undoing/redoing canvas strokes with ctrl+Z and ctrl+Y
+    const ctrl = useKeyPress('Control')
+    const z = useKeyPress('z')
+    const y = useKeyPress('y')
+
     useEffect(() => {
         if (z && ctrl) {
             undo()
@@ -52,41 +76,25 @@ const CanvasTools = props => {
         }
     }, [y])
 
+    //opens download modal by dispatching to redux
     const openDownload = () => {
         dispatch(setDownloadModal(true))
     }
 
+    //Changes color state and updates redux after color selection process is over
     const colorChange = (e) => {
         const colArr = [e.rgb.r, e.rgb.g, e.rgb.b, e.rgb.a,]
         dispatch(changeProperty({ color: colArr }))
         setStateColor(e.rgb)
-        setAlpha(e.rgb.a)
     }
 
+    //Changes color state during color selection process
     const colorState = (e) => {
         setStateColor(e.rgb)
     }
 
-    const alphaChange = (e) => {
-        const colArr = [...canvasSettings.color]
-        colArr[3] = e.rgb.a
-        dispatch(changeProperty({ color: colArr }))
-    }
-
-    const alphaState = (e) => {
-        setAlpha(e.rgb.a)
-    }
-
-    let a = canvasSettings.color[3] ? canvasSettings.color[3] : 1
-    let colObj = {
-        r: canvasSettings.color[0],
-        g: canvasSettings.color[1],
-        b: canvasSettings.color[2],
-        a
-    }
-
+    //Reverts history back by one index; undoes previous canvas stroke
     const undo = () => {
-        // debugger
         const newPosition = Math.max(canvasSettings.historyPosition - 1, 0)
         const newGrid = {}
         for (let i = 0; i <= newPosition; i++) {
@@ -95,6 +103,7 @@ const CanvasTools = props => {
         dispatch(changeProperty({ historyPosition: newPosition, grid: newGrid }))
     }
 
+    //pushes history forward by one index; redoes next canvas stroke
     const redo = () => {
         const newPosition = Math.min(canvasSettings.historyPosition + 1, canvasSettings.moveHistory.length - 1)
         const newGrid = {}
@@ -104,6 +113,7 @@ const CanvasTools = props => {
         dispatch(changeProperty({ historyPosition: newPosition, grid: newGrid }))
     }
 
+    //The functions below change redux state on button presses to set the appropriate tool/property
     const swapGrid = () => {
         dispatch(changeProperty({ displayGrid: !canvasSettings.displayGrid }))
     }
@@ -132,6 +142,7 @@ const CanvasTools = props => {
         dispatch(changeProperty({ currentTool: 'colorGrab' }))
     }
 
+    //Resets the image to a blank slate
     const clearImage = () => {
         const newGrid = {}
         for (let key in canvasSettings.grid) {
@@ -142,33 +153,21 @@ const CanvasTools = props => {
         dispatch(changeProperty({ grid: {}, moveHistory: newMoveHistory, historyPosition: newPosition }))
     }
 
-
-
-
-    const undoClass = canvasSettings.historyPosition > 0 ? '' : ' invalid-selection'
-    const redoClass = canvasSettings.historyPosition === canvasSettings.moveHistory.length - 1 ? ' invalid-selection' : ''
-    const gridClass = canvasSettings.displayGrid ? ' selected' : ''
-    const brushClass = canvasSettings.currentTool === 'brush' ? ' selected' : ''
-    const eraserClass = canvasSettings.currentTool === 'eraser' ? ' selected' : ''
-    const fillClass = canvasSettings.currentTool === 'fill' ? ' selected' : ''
-    const colorGrabClass = canvasSettings.currentTool === 'colorGrab' ? ' selected' : ''
-    const colorSwapClass = canvasSettings.currentTool === 'colorSwap' ? ' selected' : ''
-    const colorSwapBrushClass = canvasSettings.currentTool === 'colorSwapBrush' ? ' selected' : ''
-    const removeFromPalette = !canvasSettings.colorPalette.length ? ' invalid-selection' : ''
-    const addToPalette = canvasSettings.colorPalette.includes(rgbaToHex(canvasSettings.color)) ? ' invalid-selection' : ''
-
+    //Adds the current color to the palette providing it is not already in the palette
     const addColor = () => {
         if (!addToPalette) {
             dispatch(changeProperty({ colorPalette: [...canvasSettings.colorPalette, rgbaToHex(canvasSettings.color)] }))
         }
     }
 
+    //Toggles whether user is in delete color from palette mode
     const removeColor = () => {
         if (!removeFromPalette) {
             setDeleteColor(!deleteColor)
         }
     }
 
+    //Removes the selected palette color provided the user is in delete color mode
     const deleteSelectedColor = (e) => {
         if (deleteColor && !e.target.children.length) {
             const color = e.target.attributes[0].nodeValue
@@ -182,114 +181,115 @@ const CanvasTools = props => {
         }
     }
 
-    function dataURItoBlob(dataURI) {
-        var binary = atob(dataURI.split(',')[1]);
-        var array = [];
-        for (var i = 0; i < binary.length; i++) {
-            array.push(binary.charCodeAt(i));
-        }
-        return new Blob([new Uint8Array(array)], { type: 'image/png' });
-    }
+    // function dataURItoBlob(dataURI) {
+    //     var binary = atob(dataURI.split(',')[1]);
+    //     var array = [];
+    //     for (var i = 0; i < binary.length; i++) {
+    //         array.push(binary.charCodeAt(i));
+    //     }
+    //     return new Blob([new Uint8Array(array)], { type: 'image/png' });
+    // }
 
-    async function addPhotoAWS(str, id) {
-        if (!id) id = uniqid()
-        const AWS = window.AWS
-        let IdentityPoolId = "us-east-1:013e5b90-632f-4e59-aa4f-ed9acdd8a8c3";
-        let bucketRegion = "us-east-1";
+    // async function addPhotoAWS(str, id) {
+    //     if (!id) id = uniqid()
+    //     const AWS = window.AWS
+    //     let IdentityPoolId = "us-east-1:013e5b90-632f-4e59-aa4f-ed9acdd8a8c3";
+    //     let bucketRegion = "us-east-1";
 
-        AWS.config.update({
-            region: bucketRegion,
-            credentials: new AWS.CognitoIdentityCredentials({
-                IdentityPoolId: IdentityPoolId
-            })
-        });
+    //     AWS.config.update({
+    //         region: bucketRegion,
+    //         credentials: new AWS.CognitoIdentityCredentials({
+    //             IdentityPoolId: IdentityPoolId
+    //         })
+    //     });
 
-        let fileName = `${id}.png`;
-        let photoKey = 'app-content/' + fileName;
-        let buf = dataURItoBlob(str)
-        let upload = new AWS.S3.ManagedUpload({
-            params: {
-                Bucket: 'pixel-showdown',
-                Key: photoKey,
-                Body: buf,
-                AWS_SDK_LOAD_CONFIG: 1
-            }
-        });
+    //     let fileName = `${id}.png`;
+    //     let photoKey = 'app-content/' + fileName;
+    //     let buf = dataURItoBlob(str)
+    //     let upload = new AWS.S3.ManagedUpload({
+    //         params: {
+    //             Bucket: 'pixel-showdown',
+    //             Key: photoKey,
+    //             Body: buf,
+    //             AWS_SDK_LOAD_CONFIG: 1
+    //         }
+    //     });
 
-        await upload.promise();
-        return fileName
-    }
+    //     await upload.promise();
+    //     return fileName
+    // }
 
-    function imageToDataUri(width, height, pixelSize, format) {
-        let canvas = document.createElement('canvas')
-        let ctx = canvas.getContext('2d');
-        canvas.width = width;
-        canvas.height = height;
-        pixelParser(ctx, pixelSize, canvasSettings.grid)
+    // function imageToDataUri(width, height, pixelSize, format) {
+    //     let canvas = document.createElement('canvas')
+    //     let ctx = canvas.getContext('2d');
+    //     canvas.width = width;
+    //     canvas.height = height;
+    //     pixelParser(ctx, pixelSize, canvasSettings.grid)
 
-        return canvas.toDataURL(`image/${format}`);
-    }
+    //     return canvas.toDataURL(`image/${format}`);
+    // }
 
-    const saveImage = async () => {
-        let uri = imageToDataUri(canvasSettings.width, canvasSettings.height, 1, 'png')
-        let fileName = await addPhotoAWS(uri)
-        let imgUrl = `https://pixel-showdown.s3.amazonaws.com/app-content/${fileName}`
-        const response = await fetch("/api/images/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                imgUrl,
-                title: canvasSettings.title,
-                grid: canvasSettings.grid,
-                userId: user.id,
-                competitionId: null
-            }),
-        });
+    // const saveImage = async () => {
+    //     let uri = imageToDataUri(canvasSettings.width, canvasSettings.height, 1, 'png')
+    //     let fileName = await addPhotoAWS(uri)
+    //     let imgUrl = `https://pixel-showdown.s3.amazonaws.com/app-content/${fileName}`
+    //     const response = await fetch("/api/images/", {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //         body: JSON.stringify({
+    //             imgUrl,
+    //             title: canvasSettings.title,
+    //             grid: canvasSettings.grid,
+    //             userId: user.id,
+    //             competitionId: null
+    //         }),
+    //     });
 
-        const parsed = await response.json();
-        if (response && response.ok) {
-            history.push(`/sketch/${parsed.id}`)
-        } else {
-            alert('There was an error saving your image! Please try again')
-        }
-        return
-    }
+    //     const parsed = await response.json();
+    //     if (response && response.ok) {
+    //         history.push(`/sketch/${parsed.id}`)
+    //     } else {
+    //         alert('There was an error saving your image! Please try again')
+    //     }
+    //     return
+    // }
 
-    const updateImage = async () => {
-        let uri = imageToDataUri(canvasSettings.width, canvasSettings.height, 1, 'png')
-        let urlId = canvasSettings.editLink.split('/')
-        urlId = urlId[urlId.length - 1]
-        urlId = urlId.split('.')[0]
-        debugger
-        await addPhotoAWS(uri, urlId)
-        const response = await fetch(`/api/images/${canvasSettings.editing}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                title: canvasSettings.title,
-                grid: canvasSettings.grid
-            }),
-        });
+    // const updateImage = async () => {
+    //     let uri = imageToDataUri(canvasSettings.width, canvasSettings.height, 1, 'png')
+    //     let urlId = canvasSettings.editLink.split('/')
+    //     urlId = urlId[urlId.length - 1]
+    //     urlId = urlId.split('.')[0]
+    //     await addPhotoAWS(uri, urlId)
+    //     const response = await fetch(`/api/images/${canvasSettings.editing}`, {
+    //         method: "PUT",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //         body: JSON.stringify({
+    //             title: canvasSettings.title,
+    //             grid: canvasSettings.grid
+    //         }),
+    //     });
 
-        // const parsed = await response.json();
-        if (response && response.ok) {
+    //     // const parsed = await response.json();
+    //     if (response && response.ok) {
 
-        } else {
-            console.log('alerrererert')
-            alert('There was an error saving your image! Please try again')
-        }
-        return
-    }
+    //     } else {
+    //         console.log('alerrererert')
+    //         alert('There was an error saving your image! Please try again')
+    //     }
+    //     return
+    // }
 
+    //If the user is working on a new image this function creates it in the database and saves a PNG copy to AWS
+    //If the user is editing an existing image it updates the database entry and the AWS PNG image
     const changeImage = () => {
         if (canvasSettings.editing) {
-            updateImage()
+            updateImage(canvasSettings)
         } else {
-            saveImage()
+            saveImage(canvasSettings, user, history)
         }
     }
 

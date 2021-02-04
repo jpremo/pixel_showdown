@@ -1,4 +1,5 @@
-
+//Draws pixel to canvas specified in ctx; pixel location and size scale appropriately with the input pixelSize
+//Will merge colors if a color already exists in that space
 export const drawPixel = (ctx, colorArr, x, y, pixelSize) => {
     if(colorArr === 'deleted') {
         ctx.clearRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
@@ -11,6 +12,7 @@ export const drawPixel = (ctx, colorArr, x, y, pixelSize) => {
     return p
 }
 
+//Same as drawPixel except it will not merge colors
 export const overwritePixel = (ctx, colorArr, x, y, pixelSize) => {
     if(colorArr === 'deleted') {
         ctx.clearRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
@@ -24,7 +26,7 @@ export const overwritePixel = (ctx, colorArr, x, y, pixelSize) => {
     return p
 }
 
-
+//Draws out an entire image at the specified ctx using the input grid
 export const pixelParser = (ctx, pixelSize, colorGrid) => {
     for (let pos in colorGrid) {
         let posCoord = pos.split('-')
@@ -32,6 +34,7 @@ export const pixelParser = (ctx, pixelSize, colorGrid) => {
     }
 }
 
+//draws checkerboard background used to represent low alpha
 export const backDrop = (ctx, pixelSize, pxWidth, pxHeight) => {
     const adjPixel = Math.ceil(pixelSize * 1.5);
     const width = pxWidth * pixelSize;
@@ -46,6 +49,7 @@ export const backDrop = (ctx, pixelSize, pxWidth, pxHeight) => {
     }
 }
 
+//draws grid overlay
 export const drawGrid = (ctx, pixelSize, pxWidth, pxHeight) => {
     const width = pxWidth * pixelSize;
     const height = pxHeight * pixelSize;
@@ -65,6 +69,7 @@ export const drawGrid = (ctx, pixelSize, pxWidth, pxHeight) => {
     }
 }
 
+//Merges two colors together and returns the value in array format
 export const mergeColors = (col1, col2) => {
     let mix = [];
     mix[3] = 1 - (1 - col2[3]) * (1 - col1[3]); // alpha
@@ -74,15 +79,18 @@ export const mergeColors = (col1, col2) => {
     return mix
 }
 
+//converts input to hex format
 function componentToHex(c) {
     let hex = c.toString(16);
     return hex.length == 1 ? "0" + hex : hex;
 }
 
+//converts rgba array to hexadecimal
 export function rgbaToHex(colorArr) {
     return "#" + componentToHex(colorArr[0]) + componentToHex(colorArr[1]) + componentToHex(colorArr[2]) + componentToHex(Math.floor(colorArr[3]*255));
 }
 
+//converts hexadecimal to rgba array
 export function hexToRgba(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return [
