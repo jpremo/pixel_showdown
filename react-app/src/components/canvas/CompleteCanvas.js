@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Canvas from '../canvas/Canvas'
 import CanvasTools from '../canvas/CanvasTools'
 import { pixelParser } from '../canvas/color_functions'

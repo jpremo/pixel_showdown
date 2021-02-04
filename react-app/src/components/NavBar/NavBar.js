@@ -38,7 +38,8 @@ const NavBar = ({ setAuthenticated }) => {
       grid: {},
       finalGrid: {},
       editing: null,
-      editLink: null
+      editLink: null,
+      title: 'Title'
   }
 
   dispatch(changeProperty(initialSettings))

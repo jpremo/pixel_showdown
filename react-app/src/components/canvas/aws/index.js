@@ -77,7 +77,7 @@ export const saveImage = async (canvasSettings, user, history) => {
     } else {
         alert('There was an error saving your image! Please try again')
     }
-    return
+    return parsed
 }
 
 //updates images in AWS and database; should be used for existing images
@@ -98,11 +98,11 @@ export const updateImage = async (canvasSettings) => {
         }),
     });
 
-    if (response && response.ok) {
+    const parsed = await response.json();
 
+    if (response && response.ok) {
     } else {
-        console.log('alerrererert')
         alert('There was an error saving your image! Please try again')
     }
-    return
+    return parsed
 }

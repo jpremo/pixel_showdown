@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import CompleteCanvas from '../canvas/CompleteCanvas'
 import './Sketch.css'
 import { useHistory, useParams } from "react-router-dom";
@@ -10,6 +10,7 @@ import { changeProperty } from '../../store/canvas'
 function Sketch() {
     const history = useHistory()
     const dispatch = useDispatch()
+    const [loaded, setLoaded] = useState(false)
     const user = useSelector(state => state.session.user)
     let params = useParams()
     let { id } = params;
@@ -25,6 +26,7 @@ function Sketch() {
                         throw new Error()
                     }
                     dispatch(changeProperty({grid: parsed.grid, editing: parsed.id, editLink: parsed.imgUrl, title: parsed.title}))
+                    setLoaded(true)
                 } catch (e) {
                     history.push('/sketch')
                 }
@@ -42,14 +44,20 @@ function Sketch() {
                 }
 
                 dispatch(changeProperty(initialSettings))
-
+                setLoaded(true)
             }
         }, [dispatch])
 
-    return (
-        <div id='sketch-content-wrapper'>
-            <CompleteCanvas />
-        </div>
-    );
+        if(loaded) {
+            return (
+                <div id='sketch-content-wrapper'>
+                    <CompleteCanvas />
+                </div>
+            );
+        } else {
+            return(
+                <h1></h1>
+            )
+        }
 }
 export default Sketch;

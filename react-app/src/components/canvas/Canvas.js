@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import useCanvas from './useCanvas'
 import './Canvas.css'
 import { drawPixel, overwritePixel } from '../canvas/color_functions'
@@ -16,7 +16,7 @@ const Canvas = props => {
 
     //This function will set the pixel the mouse is over to the color currently selected
     const setPixel = (e) => {
-        if (e.buttons == 1) {
+        if (e.buttons === 1) {
             let x = e.pageX - canvasRef.current.offsetParent.offsetLeft - canvasRef.current.offsetLeft - 3;
             let y = e.pageY - canvasRef.current.offsetParent.offsetTop - canvasRef.current.offsetTop - 3;
             let pixelX = Math.floor(x / canvasSettings.pixelSize)

@@ -12,6 +12,7 @@ import DownloadModal from './DownloadModal'
 import { setDownloadModal } from '../../store/modal'
 import { useHistory } from 'react-router-dom';
 import { saveImage, updateImage } from './aws/index'
+import { setLoginModal } from '../../store/modal'
 
 //This component organizes all of the tools within the tools sidebar of the CompleteCanvas element
 const CanvasTools = props => {
@@ -185,11 +186,16 @@ const CanvasTools = props => {
 
     //If the user is working on a new image this function creates it in the database and saves a PNG copy to AWS
     //If the user is editing an existing image it updates the database entry and the AWS PNG image
-    const changeImage = () => {
-        if (canvasSettings.editing) {
-            updateImage(canvasSettings)
+    const changeImage = async () => {
+        if (user.id) {
+            if (canvasSettings.editing) {
+                await updateImage(canvasSettings)
+            } else {
+                const info = await saveImage(canvasSettings, user, history)
+                dispatch(changeProperty({editing: info.id, editLink: info.imgUrl}))
+            }
         } else {
-            saveImage(canvasSettings, user, history)
+            dispatch(setLoginModal(true))
         }
     }
 

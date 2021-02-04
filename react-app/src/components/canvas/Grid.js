@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import useCanvas from './useCanvas'
 import './Canvas.css'
 import { useSelector } from "react-redux";
