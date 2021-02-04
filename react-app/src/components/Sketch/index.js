@@ -22,7 +22,7 @@ function Sketch() {
                 try {
                     const res = await fetch('/api/images/' + id + '')
                     const parsed = await res.json()
-                    if (!res.ok || user.id != parsed.userId) {
+                    if (!res.ok || user.id !== parsed.userId) {
                         throw new Error()
                     }
                     dispatch(changeProperty({grid: parsed.grid, editing: parsed.id, editLink: parsed.imgUrl, title: parsed.title}))
@@ -56,7 +56,7 @@ function Sketch() {
             );
         } else {
             return(
-                <h1></h1>
+                <></>
             )
         }
 }

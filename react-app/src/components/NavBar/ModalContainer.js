@@ -1,5 +1,4 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
 //Component used to wrap elements that should be displayed in a modal; hidden prop is used to specify the property that
 //checks whether the modal should be visible

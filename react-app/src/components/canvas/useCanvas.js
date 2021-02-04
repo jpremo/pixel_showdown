@@ -15,7 +15,7 @@ const useCanvas = (draw, options) => {
         const canvas = canvasRef.current
         const context = canvas.getContext('2d')
         formattedDraw(context)
-    }, [draw, formattedDraw])
+    }, [draw])
 
     return canvasRef
 }

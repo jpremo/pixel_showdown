@@ -38,7 +38,7 @@ const Canvas = props => {
 
     //Erases pixel at mouse location
     const erasePixel = (e) => {
-        if (e.buttons == 1) {
+        if (e.buttons === 1) {
             let x = e.pageX - canvasRef.current.offsetParent.offsetLeft - canvasRef.current.offsetLeft - 3;
             let y = e.pageY - canvasRef.current.offsetParent.offsetTop - canvasRef.current.offsetTop - 3;
             let pixelX = Math.floor(x / canvasSettings.pixelSize)
@@ -68,7 +68,7 @@ const Canvas = props => {
 
         const pixelXY = `${pixelX}-${pixelY}`
         const target = canvasSettings.grid[pixelXY]
-        if (target && target != canvasSettings.color) {
+        if (target && target !== canvasSettings.color) {
             const canvas = canvasRef.current
             const ctx = canvas.getContext('2d')
             for (let key in canvasSettings.grid) {
@@ -84,7 +84,7 @@ const Canvas = props => {
     //This function is used with the color swapper brush tool and swaps only filled pixels with the current color.
     //This overides opacity eliminating the need to erase and then fill with a low alpha color
     const swapPixel = (e) => {
-        if (e.buttons == 1) {
+        if (e.buttons === 1) {
             let x = e.pageX - canvasRef.current.offsetParent.offsetLeft - canvasRef.current.offsetLeft - 3;
             let y = e.pageY - canvasRef.current.offsetParent.offsetTop - canvasRef.current.offsetTop - 3;
             let pixelX = Math.floor(x / canvasSettings.pixelSize)
@@ -92,7 +92,7 @@ const Canvas = props => {
 
             const pixelXY = `${pixelX}-${pixelY}`
             const target = canvasSettings.grid[pixelXY]
-            if (target && target != canvasSettings.color) {
+            if (target && target !== canvasSettings.color) {
                 const canvas = canvasRef.current
                 const ctx = canvas.getContext('2d')
                 const newCol = overwritePixel(ctx, canvasSettings.color, pixelX, pixelY, canvasSettings.pixelSize)
@@ -110,7 +110,7 @@ const Canvas = props => {
 
         const pixelXY = `${pixelX}-${pixelY}`
         const target = canvasSettings.grid[pixelXY]
-        if (target && target != 'deleted' && target != canvasSettings.color) {
+        if (target && target !== 'deleted' && target !== canvasSettings.color) {
             dispatch(changeProperty({ color: target, currentTool: 'brush' }))
         }
 

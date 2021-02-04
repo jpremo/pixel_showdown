@@ -48,7 +48,7 @@ const AddSubtract = ({ property, min, max, title }) => {
 
     //blurs element when enter is pressed; used in onKeyPress event
     const blurSelf = (e) => {
-        if(e.key == 'Enter') {
+        if(e.key === 'Enter') {
             e.target.blur()
         }
     }
