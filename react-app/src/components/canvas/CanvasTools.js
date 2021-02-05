@@ -24,7 +24,6 @@ const CanvasTools = props => {
 
     const [stateInterval, setStateInterval] = useState(null) //used for playing animations
     const [addFrame, setAddFrame] = useState(null) //toggles back and forth while animation is playing
-    const [playing, setPlaying] = useState(false)
     const [deleteColor, setDeleteColor] = useState(false) //controls whether user is deleting colors in palette
     const [stateColor, setStateColor] = useState({ //current color selected
         r: canvasSettings.color[0],
@@ -69,7 +68,7 @@ const CanvasTools = props => {
 
     //resets animation playing speed upon change in fps
     useEffect(() => {
-        if (playing) {
+        if (canvasSettings.playing) {
             clearInterval(stateInterval)
             let addit = true
             let interval = setInterval(() => {
@@ -93,8 +92,8 @@ const CanvasTools = props => {
     const removeFromPalette = !canvasSettings.colorPalette.length ? ' invalid-selection' : ''
     const addToPalette = canvasSettings.colorPalette.includes(rgbaToHex(canvasSettings.color)) ? ' invalid-selection' : ''
     const removeFromPalette2 = deleteColor ? ' deleting' : ''
-    const playingClass = (playing || canvasSettings.totalFrames === 1) ? ' invalid-selection' : ''
-    const pausedClass = !playing ? ' invalid-selection' : ''
+    const playingClass = (canvasSettings.playing || canvasSettings.totalFrames === 1) ? ' invalid-selection' : ''
+    const pausedClass = !canvasSettings.playing ? ' invalid-selection' : ''
     const advanceClass = canvasSettings.totalFrames === 1 ? ' invalid-selection' : ''
 
     //These settings are used to adapt color state for components in the react-color package
@@ -180,8 +179,8 @@ const CanvasTools = props => {
 
     //starts the animation
     const playAnimation = () => {
-        if (!playing && canvasSettings.totalFrames > 1) {
-            setPlaying(true)
+        if (!canvasSettings.playing && canvasSettings.totalFrames > 1) {
+            dispatch(changeProperty({playing:true}))
             let addit = true
             let interval = setInterval(() => {
                 addit = !addit
@@ -193,8 +192,8 @@ const CanvasTools = props => {
 
     //pauses the animation
     const pauseAnimation = () => {
-        if (playing) {
-            setPlaying(false)
+        if (canvasSettings.playing) {
+            dispatch(changeProperty({playing:false}))
             clearInterval(stateInterval)
         }
     }

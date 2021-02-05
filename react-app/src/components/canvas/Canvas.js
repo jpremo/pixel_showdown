@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import useCanvas from './useCanvas'
 import './Canvas.css'
 import { drawPixel, overwritePixel } from '../canvas/color_functions'
 import { changeProperty } from '../../store/canvas'
 import { useDispatch, useSelector } from "react-redux";
 import _ from 'lodash'
-import {updateGrid} from './grid-utilities'
+// import {updateGrid} from './grid-utilities'
 
 //This component is what actually handles drawing and displays the image constructed by the user
 const Canvas = props => {
@@ -152,34 +152,53 @@ const Canvas = props => {
 
     //Does the correct action for the specified tool when the mouse is held down
     const toolAction = (e) => {
-        switch (canvasSettings.currentTool) {
-            case 'brush': setPixel(e); break;
-            case 'eraser': erasePixel(e); break;
-            case 'colorSwapBrush': swapPixel(e); break;
-            default: break;
+        if (!canvasSettings.playing) {
+            switch (canvasSettings.currentTool) {
+                case 'brush': setPixel(e); break;
+                case 'eraser': erasePixel(e); break;
+                case 'colorSwapBrush': swapPixel(e); break;
+                default: break;
+            }
         }
     }
 
     //Does the correct action for the specified tool when the mouse is released
     const toolUp = (e) => {
-        switch (canvasSettings.currentTool) {
-            case 'colorSwap': swapPixels(e); break;
-            case 'fill': fillPixels(e); break;
-            case 'colorGrab': grabColor(e); break;
-            default: break;
+        if (!canvasSettings.playing) {
+            switch (canvasSettings.currentTool) {
+                case 'colorSwap': swapPixels(e); break;
+                case 'fill': fillPixels(e); break;
+                case 'colorGrab': grabColor(e); break;
+                default: break;
+            }
+            updateGrid()
         }
-
-        alterGrid()
     }
 
     //This function updates the grid in the redux store upon stroke completion
-    function alterGrid() {
-        updateGrid(drawGrid, canvasSettings, dispatch, changeProperty)
+    function updateGrid() {
+        if (Object.keys(drawGrid).length) {
+            const newGrid = { ...canvasSettings.currentGrid, ...drawGrid }
+            for (let key in newGrid) {
+                if (newGrid[key] === 'deleted' || newGrid[key][3] === 0) {
+                    delete newGrid[key]
+                }
+            }
+            const newPosition = canvasSettings.historyPosition[canvasSettings.currentFrame - 1] + 1
+            const newPositionFinal = [...canvasSettings.historyPosition]
+            newPositionFinal[canvasSettings.currentFrame - 1] = newPosition
+            const newMoveHistory = [...canvasSettings.moveHistory[canvasSettings.currentFrame - 1].slice(0, newPosition), drawGrid]
+            const newMoveHistoryFinal = [...canvasSettings.moveHistory]
+            newMoveHistoryFinal[canvasSettings.currentFrame - 1] = newMoveHistory
+            const wholeGridCopy = [...canvasSettings.grid]
+            wholeGridCopy[canvasSettings.currentFrame - 1] = newGrid
+            dispatch(changeProperty({ currentGrid: newGrid, grid: wholeGridCopy, moveHistory: newMoveHistoryFinal, historyPosition: newPositionFinal }))
+        }
     }
 
     return (
         <>
-            <canvas className='pixel-canvas' ref={canvasRef} {...rest} onMouseMove={toolAction} onMouseDown={toolAction} onMouseUp={toolUp} onMouseLeave={alterGrid} />
+            <canvas className='pixel-canvas' ref={canvasRef} {...rest} onMouseMove={toolAction} onMouseDown={toolAction} onMouseUp={toolUp} onMouseLeave={updateGrid} />
         </>
     )
 }
