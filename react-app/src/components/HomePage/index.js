@@ -11,7 +11,7 @@ function HomePage() {
     return (
         <>
             <h1>Home</h1>
-            <img className='test-image' alt='alt' src='https://pixel-showdown.s3.amazonaws.com/app-content/980b14d2-92ea-4521-bf9d-6f8cbe7b384b.png'/>
+            <img className='test-image' alt='alt' src='https://pixel-showdown.s3.amazonaws.com/app-content/d807d859-3a20-4e7a-afe3-22446d310b6e.png'/>
         </>
     );
 }

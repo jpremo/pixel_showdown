@@ -43,18 +43,24 @@ async function addPhotoAWS(str, id) {
 
 //Converts the current grid to a data uri using an invisible canvas element
 export function imageToDataUri(width, height, pixelSize, format, canvasSettings) {
-    let canvas = document.createElement('canvas')
-    let ctx = canvas.getContext('2d');
-    canvas.width = width;
-    canvas.height = height;
-    pixelParser(ctx, pixelSize, canvasSettings.grid)
+    const dataArr = []
 
-    return canvas.toDataURL(`image/${format}`);
+    for (let i = 0; i < canvasSettings.totalFrames; i++) {
+        let canvas = document.createElement('canvas')
+        let ctx = canvas.getContext('2d');
+        canvas.width = width;
+        canvas.height = height;
+        pixelParser(ctx, pixelSize, canvasSettings.grid[i])
+        const data = canvas.toDataURL(`image/${format}`);
+        dataArr.push(data.split(',')[1])
+    }
+
+    return dataArr
 }
 
 //saves current image to database and AWS; should only be used for new images
 export const saveImage = async (canvasSettings, user, history) => {
-    let uri = imageToDataUri(canvasSettings.width, canvasSettings.height, 1, 'png', canvasSettings)
+    let data = imageToDataUri(canvasSettings.width, canvasSettings.height, 1, 'png', canvasSettings)
     const response = await fetch("/api/images/", {
         method: "POST",
         headers: {
@@ -66,11 +72,13 @@ export const saveImage = async (canvasSettings, user, history) => {
                 gridColors: canvasSettings.grid,
                 width: canvasSettings.width,
                 height: canvasSettings.height,
-                fps: 2,
+                fps: canvasSettings.fps,
+                totalFrames: canvasSettings.totalFrames
             },
             userId: user.id,
             competitionId: null,
-            file: [uri.split(',')[1],'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA/UlEQVRYR+2UXQ7DIAyD2/txXO7XiYdIXpYfBzpVldjjGsD5Yuc8Hv6dD79/vE9A7/1Caq21pSaow/pRa2yzQsoCrIdWqKQC5PKow1Ej35l6JEgLmEkLMxZXAGLF7rwRaAJD8LQAb6aIGono/y3xHkGTgJ5pRMCbOesFSoDgtAh4VMaZ6JsQcQXgDD0/yCVRNDMf0Ca0llEWTcaIf43hLQI892brOUMfemBm6cyeWR4B22lpD0gxk2WmJqITxpAxkeSdrdVifgRgR5XumKVjkfgSYD3IXszWhQRW9votArT5cNVGm1ALr4hJY4gmq2SdjScloPJwtXYL2AQ2gQ9Vktgh9v0V+AAAAABJRU5ErkJggg==']
+            file: data
+            // [uri.split(',')[1], 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA/UlEQVRYR+2UXQ7DIAyD2/txXO7XiYdIXpYfBzpVldjjGsD5Yuc8Hv6dD79/vE9A7/1Caq21pSaow/pRa2yzQsoCrIdWqKQC5PKow1Ej35l6JEgLmEkLMxZXAGLF7rwRaAJD8LQAb6aIGono/y3xHkGTgJ5pRMCbOesFSoDgtAh4VMaZ6JsQcQXgDD0/yCVRNDMf0Ca0llEWTcaIf43hLQI892brOUMfemBm6cyeWR4B22lpD0gxk2WmJqITxpAxkeSdrdVifgRgR5XumKVjkfgSYD3IXszWhQRW9votArT5cNVGm1ALr4hJY4gmq2SdjScloPJwtXYL2AQ2gQ9Vktgh9v0V+AAAAABJRU5ErkJggg==']
         }),
     });
 
@@ -99,7 +107,7 @@ export const updateImage = async (canvasSettings) => {
                 height: canvasSettings.height,
                 fps: 2,
             },
-            file: [uri.split(',')[1],'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA/UlEQVRYR+2UXQ7DIAyD2/txXO7XiYdIXpYfBzpVldjjGsD5Yuc8Hv6dD79/vE9A7/1Caq21pSaow/pRa2yzQsoCrIdWqKQC5PKow1Ej35l6JEgLmEkLMxZXAGLF7rwRaAJD8LQAb6aIGono/y3xHkGTgJ5pRMCbOesFSoDgtAh4VMaZ6JsQcQXgDD0/yCVRNDMf0Ca0llEWTcaIf43hLQI892brOUMfemBm6cyeWR4B22lpD0gxk2WmJqITxpAxkeSdrdVifgRgR5XumKVjkfgSYD3IXszWhQRW9votArT5cNVGm1ALr4hJY4gmq2SdjScloPJwtXYL2AQ2gQ9Vktgh9v0V+AAAAABJRU5ErkJggg==']
+            file: [uri.split(',')[1], 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA/UlEQVRYR+2UXQ7DIAyD2/txXO7XiYdIXpYfBzpVldjjGsD5Yuc8Hv6dD79/vE9A7/1Caq21pSaow/pRa2yzQsoCrIdWqKQC5PKow1Ej35l6JEgLmEkLMxZXAGLF7rwRaAJD8LQAb6aIGono/y3xHkGTgJ5pRMCbOesFSoDgtAh4VMaZ6JsQcQXgDD0/yCVRNDMf0Ca0llEWTcaIf43hLQI892brOUMfemBm6cyeWR4B22lpD0gxk2WmJqITxpAxkeSdrdVifgRgR5XumKVjkfgSYD3IXszWhQRW9votArT5cNVGm1ALr4hJY4gmq2SdjScloPJwtXYL2AQ2gQ9Vktgh9v0V+AAAAABJRU5ErkJggg==']
         }),
     });
 

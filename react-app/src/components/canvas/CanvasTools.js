@@ -80,8 +80,8 @@ const CanvasTools = props => {
     }, [canvasSettings.fps])
 
     //These are variables to set the appropriate class for tool icons based on redux state
-    const undoClass = canvasSettings.historyPosition > 0 ? '' : ' invalid-selection'
-    const redoClass = canvasSettings.historyPosition === canvasSettings.moveHistory.length - 1 ? ' invalid-selection' : ''
+    const undoClass = canvasSettings.historyPosition[canvasSettings.currentFrame-1] > 0 ? '' : ' invalid-selection'
+    const redoClass = canvasSettings.historyPosition[canvasSettings.currentFrame-1] === canvasSettings.moveHistory[canvasSettings.currentFrame-1].length - 1 ? ' invalid-selection' : ''
     const gridClass = canvasSettings.displayGrid ? ' selected' : ''
     const brushClass = canvasSettings.currentTool === 'brush' ? ' selected' : ''
     const eraserClass = canvasSettings.currentTool === 'eraser' ? ' selected' : ''
@@ -141,22 +141,32 @@ const CanvasTools = props => {
 
     //Reverts history back by one index; undoes previous canvas stroke
     const undo = () => {
-        const newPosition = Math.max(canvasSettings.historyPosition - 1, 0)
+        const frame = canvasSettings.currentFrame - 1
+        const newPosition = Math.max(canvasSettings.historyPosition[frame] - 1, 0)
+        const positionArrCopy = [...canvasSettings.historyPosition]
+        positionArrCopy[frame] = newPosition
         const newGrid = {}
         for (let i = 0; i <= newPosition; i++) {
-            Object.assign(newGrid, canvasSettings.moveHistory[i]);
+            Object.assign(newGrid, canvasSettings.moveHistory[frame][i]);
         }
-        dispatch(changeProperty({ historyPosition: newPosition, grid: newGrid }))
+        const gridCopy = [...canvasSettings.grid]
+        gridCopy[frame] = newGrid
+        dispatch(changeProperty({ historyPosition: positionArrCopy, currentGrid: newGrid, grid: gridCopy }))
     }
 
     //pushes history forward by one index; redoes next canvas stroke
     const redo = () => {
-        const newPosition = Math.min(canvasSettings.historyPosition + 1, canvasSettings.moveHistory.length - 1)
+        const frame = canvasSettings.currentFrame - 1
+        const newPosition = Math.min(canvasSettings.historyPosition[frame] + 1, canvasSettings.moveHistory[frame].length - 1)
+        const positionArrCopy = [...canvasSettings.historyPosition]
+        positionArrCopy[frame] = newPosition
         const newGrid = {}
         for (let i = 0; i <= newPosition; i++) {
-            Object.assign(newGrid, canvasSettings.moveHistory[i]);
+            Object.assign(newGrid, canvasSettings.moveHistory[frame][i]);
         }
-        dispatch(changeProperty({ historyPosition: newPosition, grid: newGrid }))
+        const gridCopy = [...canvasSettings.grid]
+        gridCopy[frame] = newGrid
+        dispatch(changeProperty({ historyPosition: positionArrCopy, currentGrid: newGrid, grid: gridCopy }))
     }
 
     //increases frame number by one looping if at maximum
