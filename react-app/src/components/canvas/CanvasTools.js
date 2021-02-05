@@ -112,18 +112,61 @@ const CanvasTools = props => {
     const ctrl = useKeyPress('Control')
     const z = useKeyPress('z')
     const y = useKeyPress('y')
+    const f = useKeyPress('f')
+    const d = useKeyPress('d')
+    const e = useKeyPress('e')
+    const g = useKeyPress('g')
+    const s = useKeyPress('s')
+    const r = useKeyPress('r')
 
     useEffect(() => {
-        if (z && ctrl) {
+        if (z && ctrl && !canvasSettings.editingTitle) {
             undo()
         }
     }, [z])
 
     useEffect(() => {
-        if (y && ctrl) {
+        if (y && ctrl && !canvasSettings.editingTitle) {
             redo()
         }
     }, [y])
+
+    useEffect(() => {
+        if (f && !canvasSettings.editingTitle) {
+            dispatch(changeProperty({ currentTool: 'fill' }))
+        }
+    }, [f])
+
+    useEffect(() => {
+        if (d && !canvasSettings.editingTitle) {
+            dispatch(changeProperty({ currentTool: 'brush' }))
+        }
+    }, [d])
+
+    useEffect(() => {
+        if (e && !canvasSettings.editingTitle) {
+            dispatch(changeProperty({ currentTool: 'eraser' }))
+        }
+    }, [e])
+
+    useEffect(() => {
+        if (g && !canvasSettings.editingTitle) {
+            dispatch(changeProperty({ currentTool: 'colorGrab' }))
+        }
+    }, [g])
+
+    useEffect(() => {
+        if (s && !canvasSettings.editingTitle) {
+            dispatch(changeProperty({ currentTool: 'colorSwapBrush' }))
+        }
+    }, [s])
+
+    useEffect(() => {
+        if (r && !canvasSettings.editingTitle) {
+            dispatch(changeProperty({ currentTool: 'colorSwap' }))
+        }
+    }, [r])
+
 
     //Changes color state and updates redux after color selection process is over
     const colorChange = (e) => {
@@ -305,7 +348,9 @@ const CanvasTools = props => {
     //opens download modal by dispatching to redux
     const openDownload = async () => {
         await changeImage()
-        dispatch(setDownloadModal(true))
+        if (user.id) {
+            dispatch(setDownloadModal(true))
+        }
     }
 
     return (
@@ -364,22 +409,22 @@ const CanvasTools = props => {
                     className='canvas-tools-alpha'
                 />
             </Collapse>
+            <Collapse title={'Brushes'}>
+                <div className='canvas-tools-container'>
+                    <button style={{title: 'tester'}} className={'canvas-button' + brushClass} onClick={swapBrush}><i class="fas fa-paint-brush"></i></button>
+                    <button className={'canvas-button' + eraserClass} onClick={swapEraser}><i class="fas fa-eraser"></i></button>
+                    <button className={'canvas-button' + colorGrabClass} onClick={swapColorGrab}><i class="fas fa-eye-dropper"></i></button>
+                    <button className={'canvas-button' + fillClass} onClick={swapFill}><i class="fas fa-fill"></i></button>
+                    <button className={'canvas-button' + colorSwapClass} onClick={swapColorSwap}><i class="fas fa-exchange-alt"></i></button>
+                    <button className={'canvas-button' + colorSwapBrushClass} onClick={swapColorSwapBrush}><i class="fas fa-paint-brush"></i><span>/</span><i class="fas fa-exchange-alt"></i></button>
+                </div>
+            </Collapse>
             <Collapse title={'Tools'}>
                 <div className='canvas-tools-container'>
                     <button className={'canvas-button' + undoClass} onClick={undo}><i class="fas fa-undo"></i></button>
                     <button className={'canvas-button' + redoClass} onClick={redo}><i class="fas fa-redo"></i></button>
                     <button className={'canvas-button' + gridClass} onClick={swapGrid}><i class="fas fa-th"></i></button>
                     <button className={'canvas-button'} onClick={clearImage}><i class="fas fa-ban"></i></button>
-                </div>
-            </Collapse>
-            <Collapse title={'Brushes'}>
-                <div className='canvas-tools-container'>
-                    <button className={'canvas-button' + brushClass} onClick={swapBrush}><i class="fas fa-paint-brush"></i></button>
-                    <button className={'canvas-button' + eraserClass} onClick={swapEraser}><i class="fas fa-eraser"></i></button>
-                    <button className={'canvas-button' + colorGrabClass} onClick={swapColorGrab}><i class="fas fa-eye-dropper"></i></button>
-                    <button className={'canvas-button' + fillClass} onClick={swapFill}><i class="fas fa-fill"></i></button>
-                    <button className={'canvas-button' + colorSwapClass} onClick={swapColorSwap}><i class="fas fa-exchange-alt"></i></button>
-                    <button className={'canvas-button' + colorSwapBrushClass} onClick={swapColorSwapBrush}><i class="fas fa-paint-brush"></i><span>/</span><i class="fas fa-exchange-alt"></i></button>
                 </div>
             </Collapse>
             <Collapse title={'Configurables'}>

@@ -20,7 +20,7 @@ function TitleCard() {
             title = 'Title'
             setValue('Title')
         }
-        dispatch(changeProperty({ title: title }))
+        dispatch(changeProperty({ title: title, editingTitle: false }))
     }
 
     return (
@@ -29,7 +29,7 @@ function TitleCard() {
                 <div className='color-circle' style={{ backgroundColor: `${rgbaToHex(canvasSettings.color)}` }}>
                 </div>
             </div>
-            <input className='title-text' maxLength='50' value={value} onChange={(e) => setValue(e.target.value)} onBlur={sendTitle} />
+            <input className='title-text' maxLength='50' value={value} onChange={(e) => setValue(e.target.value)} onBlur={sendTitle} onFocus={() => dispatch(changeProperty({ editingTitle: true }))}/>
             <div className='color-circle-background'>
                 <div className='color-circle' style={{ backgroundColor: `${rgbaToHex(canvasSettings.color)}` }}>
                 </div>
