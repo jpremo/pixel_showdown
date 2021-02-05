@@ -43,7 +43,8 @@ const NavBar = ({ setAuthenticated }) => {
       editing: null,
       editLink: null,
       title: 'Title',
-      fps: 1
+      fps: 1,
+      totalFrames: 1,
     }
 
     dispatch(changeProperty(initialSettings))

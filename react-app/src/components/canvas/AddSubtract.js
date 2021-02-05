@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { changeProperty } from '../../store/canvas'
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -8,6 +8,9 @@ const AddSubtract = ({ property, min, max, title }) => {
     const dispatch = useDispatch()
     const [value, setValue] = useState(canvasSettings[property])
 
+    useEffect(() => {
+        setValue(canvasSettings[property])
+    }, [canvasSettings[property]])
 
     //3 functions below are used in changing the value and setting it in redux state
     const alterVal = (newVal) => {

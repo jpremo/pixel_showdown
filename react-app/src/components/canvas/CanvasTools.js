@@ -43,11 +43,13 @@ const CanvasTools = props => {
 
     //advances the animation by one frame based on interval set in playAnimation function
     useEffect(() => {
-        let newFrame = canvasSettings.currentFrame + 1
-        if (newFrame > canvasSettings.totalFrames) {
-            newFrame = 1
+        if (canvasSettings.playing) {
+            let newFrame = canvasSettings.currentFrame + 1
+            if (newFrame > canvasSettings.totalFrames) {
+                newFrame = 1
+            }
+            dispatch(changeProperty({ currentFrame: newFrame, currentGrid: canvasSettings.grid[newFrame - 1] }))
         }
-        dispatch(changeProperty({ currentFrame: newFrame, currentGrid: canvasSettings.grid[newFrame - 1] }))
     }, [addFrame])
 
     useEffect(() => {
@@ -55,7 +57,7 @@ const CanvasTools = props => {
             const gridCopy = [...canvasSettings.grid]
             const historyCopy = [...canvasSettings.moveHistory]
             const currentMoveCopy = [...canvasSettings.historyPosition]
-            for(let i = 0; i < canvasSettings.totalFrames; i++) {
+            for (let i = 0; i < canvasSettings.totalFrames; i++) {
                 if (!canvasSettings.grid[i]) {
                     gridCopy[i] = {}
                     historyCopy[i] = [{}]
@@ -80,8 +82,8 @@ const CanvasTools = props => {
     }, [canvasSettings.fps])
 
     //These are variables to set the appropriate class for tool icons based on redux state
-    const undoClass = canvasSettings.historyPosition[canvasSettings.currentFrame-1] > 0 ? '' : ' invalid-selection'
-    const redoClass = canvasSettings.historyPosition[canvasSettings.currentFrame-1] === canvasSettings.moveHistory[canvasSettings.currentFrame-1].length - 1 ? ' invalid-selection' : ''
+    const undoClass = canvasSettings.historyPosition[canvasSettings.currentFrame - 1] > 0 ? '' : ' invalid-selection'
+    const redoClass = canvasSettings.historyPosition[canvasSettings.currentFrame - 1] === canvasSettings.moveHistory[canvasSettings.currentFrame - 1].length - 1 ? ' invalid-selection' : ''
     const gridClass = canvasSettings.displayGrid ? ' selected' : ''
     const brushClass = canvasSettings.currentTool === 'brush' ? ' selected' : ''
     const eraserClass = canvasSettings.currentTool === 'eraser' ? ' selected' : ''
@@ -190,7 +192,7 @@ const CanvasTools = props => {
     //starts the animation
     const playAnimation = () => {
         if (!canvasSettings.playing && canvasSettings.totalFrames > 1) {
-            dispatch(changeProperty({playing:true}))
+            dispatch(changeProperty({ playing: true }))
             let addit = true
             let interval = setInterval(() => {
                 addit = !addit
@@ -203,7 +205,7 @@ const CanvasTools = props => {
     //pauses the animation
     const pauseAnimation = () => {
         if (canvasSettings.playing) {
-            dispatch(changeProperty({playing:false}))
+            dispatch(changeProperty({ playing: false }))
             clearInterval(stateInterval)
         }
     }

@@ -25,16 +25,27 @@ function Sketch() {
                     if (!res.ok || user.id !== parsed.userId) {
                         throw new Error()
                     }
+                    const moveHistoryNew = []
+                    const historyPositionNew = []
+                    for(let i = 0; i < parsed.grid.gridColors.length; i++) {
+                        moveHistoryNew.push(parsed.grid.gridColors[i])
+                        historyPositionNew.push(0)
+                    }
+
                     dispatch(changeProperty({
                         grid: parsed.grid.gridColors,
                         width: parsed.grid.width,
                         height: parsed.grid.height,
                         fps: parsed.grid.fps,
+                        totalFrames: parsed.grid.totalFrames,
+                        currentFrame: 1,
+                        currentGrid: parsed.grid.gridColors[0],
                         editing: parsed.id,
                         editLink: parsed.apngImgUrl,
                         title: parsed.title,
-                        moveHistory: [parsed.grid.gridColors],
-                        historyPosition: 0,
+                        moveHistory: moveHistoryNew,
+                        historyPosition: historyPositionNew,
+                        playing:false
                     }))
                     setLoaded(true)
                 } catch (e) {
@@ -54,6 +65,7 @@ function Sketch() {
                 moveHistory: [[{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}]],
                 historyPosition: [0, 0, 0, 0, 0, 0, 0, 0],
                 editing: null,
+                fps: 1,
             }
 
             dispatch(changeProperty(initialSettings))
