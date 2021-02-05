@@ -118,6 +118,7 @@ const CanvasTools = props => {
     const g = useKeyPress('g')
     const s = useKeyPress('s')
     const r = useKeyPress('r')
+    const c = useKeyPress('r')
 
     useEffect(() => {
         if (z && ctrl && !canvasSettings.editingTitle) {
@@ -150,8 +151,14 @@ const CanvasTools = props => {
     }, [e])
 
     useEffect(() => {
-        if (g && !canvasSettings.editingTitle) {
+        if (c && !canvasSettings.editingTitle) {
             dispatch(changeProperty({ currentTool: 'colorGrab' }))
+        }
+    }, [c])
+
+    useEffect(() => {
+        if (g && !canvasSettings.editingTitle) {
+            dispatch(changeProperty({ displayGrid: !canvasSettings.displayGrid }))
         }
     }, [g])
 

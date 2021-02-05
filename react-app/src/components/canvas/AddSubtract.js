@@ -66,13 +66,16 @@ const AddSubtract = ({ property, min, max, title, loops }) => {
         }
     }
 
+    const addClass = canvasSettings[property] === max ? ' invalid-selection' : ''
+    const subtractClass = canvasSettings[property] === min ? ' invalid-selection' : ''
+
     return (
         <div>
             <h3 className='add-subtract-title'>{title}</h3>
             <div className='add-subtract'>
-                <button className='canvas-button' onClick={subtract}><i className="fas fa-minus"></i></button>
+                <button className={'canvas-button' + subtractClass} onClick={subtract}><i className="fas fa-minus"></i></button>
                 <input className='canvas-input' type='number' value={value} onChange={(e) => setValue(e.target.value)} onKeyPress={blurSelf} onBlur={setProperty} />
-                <button className='canvas-button' onClick={add}><i className="fas fa-plus"></i></button>
+                <button className={'canvas-button' + addClass} onClick={add}><i className="fas fa-plus"></i></button>
             </div>
         </div>
     );
