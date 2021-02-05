@@ -395,8 +395,8 @@ const CanvasTools = props => {
                 </div>
             </Collapse>
             <div className='canvas-tools-container-centered'>
-                <div className='nav-link' onClick={changeImage}>Save</div>
-                <div className='nav-link' onClick={openDownload}>Download</div>
+                <div className='canvas-button' onClick={changeImage}>Save</div>
+                <div className='canvas-button' onClick={openDownload}>Download</div>
             </div>
         </div >
     )
