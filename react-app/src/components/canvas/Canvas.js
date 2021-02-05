@@ -5,6 +5,7 @@ import { drawPixel, overwritePixel } from '../canvas/color_functions'
 import { changeProperty } from '../../store/canvas'
 import { useDispatch, useSelector } from "react-redux";
 import _ from 'lodash'
+import {updateGrid} from './grid-utilities'
 
 //This component is what actually handles drawing and displays the image constructed by the user
 const Canvas = props => {
@@ -67,12 +68,12 @@ const Canvas = props => {
         let pixelY = Math.floor(y / canvasSettings.pixelSize)
 
         const pixelXY = `${pixelX}-${pixelY}`
-        const target = canvasSettings.grid[pixelXY]
+        const target = canvasSettings.currentGrid[pixelXY]
         if (target && target !== canvasSettings.color) {
             const canvas = canvasRef.current
             const ctx = canvas.getContext('2d')
-            for (let key in canvasSettings.grid) {
-                if (_.isEqual(canvasSettings.grid[key], target)) {
+            for (let key in canvasSettings.currentGrid) {
+                if (_.isEqual(canvasSettings.currentGrid[key], target)) {
                     const keySplit = key.split('-')
                     const newCol = overwritePixel(ctx, canvasSettings.color, keySplit[0], keySplit[1], canvasSettings.pixelSize)
                     drawGrid[key] = newCol
@@ -91,7 +92,7 @@ const Canvas = props => {
             let pixelY = Math.floor(y / canvasSettings.pixelSize)
 
             const pixelXY = `${pixelX}-${pixelY}`
-            const target = canvasSettings.grid[pixelXY]
+            const target = canvasSettings.currentGrid[pixelXY]
             if (target && target !== canvasSettings.color) {
                 const canvas = canvasRef.current
                 const ctx = canvas.getContext('2d')
@@ -109,7 +110,7 @@ const Canvas = props => {
         let pixelY = Math.floor(y / canvasSettings.pixelSize)
 
         const pixelXY = `${pixelX}-${pixelY}`
-        const target = canvasSettings.grid[pixelXY]
+        const target = canvasSettings.currentGrid[pixelXY]
         if (target && target !== 'deleted' && target !== canvasSettings.color) {
             dispatch(changeProperty({ color: target, currentTool: 'brush' }))
         }
@@ -125,7 +126,7 @@ const Canvas = props => {
 
         const pixelXY = `${pixelX}-${pixelY}`
         const color = canvasSettings.color
-        const overallTarget = canvasSettings.grid[pixelXY]
+        const overallTarget = canvasSettings.currentGrid[pixelXY]
         const canvas = canvasRef.current
         const ctx = canvas.getContext('2d')
         const recursiveFill = (x, y, memo = {}) => {
@@ -134,7 +135,7 @@ const Canvas = props => {
                 memo[pixelXY] = true
                 return
             }
-            const target = canvasSettings.grid[pixelXY]
+            const target = canvasSettings.currentGrid[pixelXY]
             if (_.isEqual(target, overallTarget)) {
                 const newCol = overwritePixel(ctx, color, x, y, canvasSettings.pixelSize)
                 drawGrid[pixelXY] = newCol
@@ -168,27 +169,17 @@ const Canvas = props => {
             default: break;
         }
 
-        updateGrid()
+        alterGrid()
     }
 
     //This function updates the grid in the redux store upon stroke completion
-    function updateGrid() {
-        if (Object.keys(drawGrid).length) {
-            const newGrid = { ...canvasSettings.grid, ...drawGrid }
-            for (let key in newGrid) {
-                if (newGrid[key] === 'deleted' || newGrid[key][3] === 0) {
-                    delete newGrid[key]
-                }
-            }
-            const newPosition = canvasSettings.historyPosition + 1
-            const newMoveHistory = [...canvasSettings.moveHistory.slice(0, newPosition), drawGrid]
-            dispatch(changeProperty({ grid: newGrid, moveHistory: newMoveHistory, historyPosition: newPosition }))
-        }
+    function alterGrid() {
+        updateGrid(drawGrid, canvasSettings, dispatch, changeProperty)
     }
 
     return (
         <>
-            <canvas className='pixel-canvas' ref={canvasRef} {...rest} onMouseMove={toolAction} onMouseDown={toolAction} onMouseUp={toolUp} onMouseLeave={updateGrid} />
+            <canvas className='pixel-canvas' ref={canvasRef} {...rest} onMouseMove={toolAction} onMouseDown={toolAction} onMouseUp={toolUp} onMouseLeave={alterGrid} />
         </>
     )
 }

@@ -44,22 +44,38 @@ const CanvasTools = props => {
 
     //advances the animation by one frame based on interval set in playAnimation function
     useEffect(() => {
-        let newFrame = canvasSettings.currentFrame+1
-        if(newFrame > canvasSettings.totalFrames) {
+        let newFrame = canvasSettings.currentFrame + 1
+        if (newFrame > canvasSettings.totalFrames) {
             newFrame = 1
         }
-        dispatch(changeProperty({ currentFrame: newFrame }))
+        dispatch(changeProperty({ currentFrame: newFrame, currentGrid: canvasSettings.grid[newFrame - 1] }))
     }, [addFrame])
+
+    useEffect(() => {
+        if (!canvasSettings.grid[canvasSettings.totalFrames - 1]) {
+            const gridCopy = [...canvasSettings.grid]
+            const historyCopy = [...canvasSettings.moveHistory]
+            const currentMoveCopy = [...canvasSettings.historyPosition]
+            for(let i = 0; i < canvasSettings.totalFrames; i++) {
+                if (!canvasSettings.grid[i]) {
+                    gridCopy[i] = {}
+                    historyCopy[i] = [{}]
+                    currentMoveCopy[i] = 0
+                }
+            }
+            dispatch(changeProperty({ grid: gridCopy, moveHistory: historyCopy, historyPosition: currentMoveCopy }))
+        }
+    }, [canvasSettings.totalFrames])
 
     //resets animation playing speed upon change in fps
     useEffect(() => {
-        if(playing) {
+        if (playing) {
             clearInterval(stateInterval)
             let addit = true
             let interval = setInterval(() => {
                 addit = !addit
                 setAddFrame(addit)
-            }, 1000/canvasSettings.fps)
+            }, 1000 / canvasSettings.fps)
             setStateInterval(interval)
         }
     }, [canvasSettings.fps])
@@ -146,38 +162,38 @@ const CanvasTools = props => {
 
     //increases frame number by one looping if at maximum
     const addOneFrame = () => {
-        let newFrame = canvasSettings.currentFrame+1
-        if(newFrame > canvasSettings.totalFrames) {
+        let newFrame = canvasSettings.currentFrame + 1
+        if (newFrame > canvasSettings.totalFrames) {
             newFrame = 1
         }
-        dispatch(changeProperty({ currentFrame: newFrame }))
+        dispatch(changeProperty({ currentFrame: newFrame, currentGrid: canvasSettings.grid[newFrame - 1] }))
     }
 
     //lowers frame number by one looping if at minimum
     const subtractOneFrame = () => {
-        let newFrame = canvasSettings.currentFrame-1
-        if(newFrame <= 0) {
+        let newFrame = canvasSettings.currentFrame - 1
+        if (newFrame <= 0) {
             newFrame = canvasSettings.totalFrames
         }
-        dispatch(changeProperty({ currentFrame: newFrame }))
+        dispatch(changeProperty({ currentFrame: newFrame, currentGrid: canvasSettings.grid[newFrame - 1] }))
     }
 
     //starts the animation
     const playAnimation = () => {
-        if(!playing && canvasSettings.totalFrames > 1) {
+        if (!playing && canvasSettings.totalFrames > 1) {
             setPlaying(true)
             let addit = true
             let interval = setInterval(() => {
                 addit = !addit
                 setAddFrame(addit)
-            }, 1000/canvasSettings.fps)
+            }, 1000 / canvasSettings.fps)
             setStateInterval(interval)
         }
     }
 
     //pauses the animation
     const pauseAnimation = () => {
-        if(playing) {
+        if (playing) {
             setPlaying(false)
             clearInterval(stateInterval)
         }
@@ -335,14 +351,14 @@ const CanvasTools = props => {
             <Collapse title={'Animation'}>
                 <div className='canvas-tools-container'>
                     <div className='canvas-tools-container'>
-                        <AddSubtract property={'totalFrames'} title={'Total Frames'} min={1} max={8} />
+                        <AddSubtract property={'totalFrames'} title={'Total Frames'} min={1} max={100} />
                         <AddSubtract property={'fps'} title={'FPS'} min={1} max={100} />
                     </div>
                     <div className='canvas-tools-container'>
                         <button className={'canvas-button' + playingClass} onClick={playAnimation}>Play</button>
-                        <button className={'canvas-button'+ pausedClass} onClick={pauseAnimation}>Pause</button>
+                        <button className={'canvas-button' + pausedClass} onClick={pauseAnimation}>Pause</button>
+                        <button className={'canvas-button' + advanceClass} onClick={subtractOneFrame}>Previous Frame</button>
                         <button className={'canvas-button' + advanceClass} onClick={addOneFrame}>Next Frame</button>
-                        <button className={'canvas-button'+ advanceClass} onClick={subtractOneFrame}>Previous Frame</button>
                         <span> Frame: {canvasSettings.currentFrame} </span>
                     </div>
                 </div>

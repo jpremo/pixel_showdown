@@ -48,11 +48,12 @@ function Sketch() {
                 height: 32,
                 width: 32,
                 color: [180, 180, 180, 1],
-                grid: {},
+                grid: [{}, {}, {}, {}, {}, {}, {}, {}],
+                currentGrid: {},
                 finalGrid: {},
+                moveHistory: [[{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}]],
+                historyPosition: [0, 0, 0, 0, 0, 0, 0, 0],
                 editing: null,
-                moveHistory: [{}],
-                historyPosition: 0,
             }
 
             dispatch(changeProperty(initialSettings))

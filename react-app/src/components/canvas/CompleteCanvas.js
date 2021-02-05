@@ -13,7 +13,7 @@ function CompleteCanvas() {
 
     //Function passes in props to Cavas component to specify what it should do on initialization
     const draw = ctx => {
-        pixelParser(ctx, canvasSettings.pixelSize, canvasSettings.grid)
+        pixelParser(ctx, canvasSettings.pixelSize, canvasSettings.currentGrid)
     }
 
     return (

@@ -35,17 +35,18 @@ const NavBar = ({ setAuthenticated }) => {
       height: 32,
       width: 32,
       color: [180, 180, 180, 1],
-      grid: {},
+      grid: [{}, {}, {}, {}, {}, {}, {}, {}],
+      currentGrid: {},
       finalGrid: {},
+      moveHistory: [[{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}]],
+      historyPosition: [0, 0, 0, 0, 0, 0, 0, 0],
       editing: null,
       editLink: null,
       title: 'Title',
-      moveHistory: [{}],
-      historyPosition: 0,
       fps: 1
-  }
+    }
 
-  dispatch(changeProperty(initialSettings))
+    dispatch(changeProperty(initialSettings))
   }
   return (
     <nav id='nav-bar'>
@@ -56,30 +57,30 @@ const NavBar = ({ setAuthenticated }) => {
         <SignUpForm setAuthenticated={setAuthenticated}></SignUpForm>
       </ModalContainer>
       <div id='nav-bar-logo-picture-div'>
-      <NavLink exact to="/" activeClassName="home-active">
-        <img id="nav-bar-logo-picture" src={picture} alt=''/>
-      </NavLink>
+        <NavLink exact to="/" activeClassName="home-active">
+          <img id="nav-bar-logo-picture" src={picture} alt='' />
+        </NavLink>
       </div>
       <div id="nav-bar-menu">
-      <NavLink to={'/sketch'} onClick = {resetSketch} exact={true} className="nav-link" activeClassName="active">
-        Sketch
+        <NavLink to={'/sketch'} onClick={resetSketch} exact={true} className="nav-link" activeClassName="active">
+          Sketch
         </NavLink>
         {!user.id &&
-        <>
-        <div onClick={openLogin} className="nav-link">
-          Login
+          <>
+            <div onClick={openLogin} className="nav-link">
+              Login
           </div>
-        <div onClick={openSignup} className="nav-link">
-            Sign Up
+            <div onClick={openSignup} className="nav-link">
+              Sign Up
           </div>
           </>
-          }
+        }
 
         {user.id && <>
-        <NavLink to={`/users/${user.id}`} exact={true} className="nav-link" activeClassName="active">
-        Profile
+          <NavLink to={`/users/${user.id}`} exact={true} className="nav-link" activeClassName="active">
+            Profile
         </NavLink>
-        <LogoutButton setAuthenticated={setAuthenticated} />
+          <LogoutButton setAuthenticated={setAuthenticated} />
         </>}
 
       </div>
