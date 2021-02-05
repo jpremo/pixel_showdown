@@ -66,6 +66,9 @@ const NavBar = ({ setAuthenticated }) => {
         <NavLink to={'/sketch'} onClick={resetSketch} exact={true} className="nav-link" activeClassName="active">
           Sketch
         </NavLink>
+        <NavLink to={'/rulesets/create'} onClick={resetSketch} exact={true} className="nav-link" activeClassName="active">
+          Create Ruleset
+        </NavLink>
         {!user.id &&
           <>
             <div onClick={openLogin} className="nav-link">

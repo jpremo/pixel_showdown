@@ -5,7 +5,6 @@ import { drawPixel, overwritePixel } from '../canvas/color_functions'
 import { changeProperty } from '../../store/canvas'
 import { useDispatch, useSelector } from "react-redux";
 import _ from 'lodash'
-import pencil from "./cursors/pencil.cur"
 // import {updateGrid} from './grid-utilities'
 
 //This component is what actually handles drawing and displays the image constructed by the user
