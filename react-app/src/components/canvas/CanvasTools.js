@@ -184,6 +184,11 @@ const CanvasTools = props => {
         dispatch(changeProperty({ currentFrame: newFrame, currentGrid: canvasSettings.grid[newFrame - 1] }))
     }
 
+    // useEffect(() => {
+    //     let newFrame = canvasSettings.currentFrame - 1
+    //     dispatch(changeProperty({ currentFrame: newFrame, currentGrid: canvasSettings.grid[newFrame - 1] }))
+    // }, [canvasSettings.currentFrame])
+
     //starts the animation
     const playAnimation = () => {
         if (!canvasSettings.playing && canvasSettings.totalFrames > 1) {
@@ -238,12 +243,19 @@ const CanvasTools = props => {
     //Resets the image to a blank slate
     const clearImage = () => {
         const newGrid = {}
-        for (let key in canvasSettings.grid) {
+        const frame = canvasSettings.currentFrame - 1
+        for (let key in canvasSettings.grid[frame]) {
             newGrid[key] = 'deleted'
         }
-        const newPosition = canvasSettings.historyPosition + 1
-        const newMoveHistory = [...canvasSettings.moveHistory.slice(0, newPosition), newGrid]
-        dispatch(changeProperty({ grid: {}, moveHistory: newMoveHistory, historyPosition: newPosition }))
+        const newPosition = canvasSettings.historyPosition[frame] + 1
+        const newMoveHistory = [...canvasSettings.moveHistory[frame].slice(0, newPosition), newGrid]
+        const moveHistoryCopy = [...canvasSettings.moveHistory]
+        moveHistoryCopy[frame] = newMoveHistory
+        const positionCopy = [...canvasSettings.historyPosition]
+        positionCopy[frame] = newPosition
+        const gridCopy = [...canvasSettings.grid]
+        gridCopy[frame] = {}
+        dispatch(changeProperty({ grid: gridCopy, moveHistory: moveHistoryCopy, historyPosition: positionCopy, currentGrid: {} }))
     }
 
     //Adds the current color to the palette providing it is not already in the palette
@@ -332,18 +344,22 @@ const CanvasTools = props => {
                     className='canvas-tools-alpha'
                 />
             </Collapse>
-            <Collapse title={'Brushes and Tools'}>
+            <Collapse title={'Tools'}>
                 <div className='canvas-tools-container'>
-                    <button className={'canvas-button' + undoClass} onClick={undo}>Undo</button>
-                    <button className={'canvas-button' + redoClass} onClick={redo}>Redo</button>
-                    <button className={'canvas-button' + gridClass} onClick={swapGrid}>Grid</button>
-                    <button className={'canvas-button' + brushClass} onClick={swapBrush}>Brush</button>
-                    <button className={'canvas-button' + eraserClass} onClick={swapEraser}>Eraser</button>
-                    <button className={'canvas-button' + colorGrabClass} onClick={swapColorGrab}>Grab Color</button>
-                    <button className={'canvas-button' + fillClass} onClick={swapFill}>Fill</button>
-                    <button className={'canvas-button' + colorSwapClass} onClick={swapColorSwap}>Color Swap</button>
-                    <button className={'canvas-button' + colorSwapBrushClass} onClick={swapColorSwapBrush}>Color Swap Brush</button>
-                    <button className={'canvas-button'} onClick={clearImage}>Clear Image</button>
+                    <button className={'canvas-button' + undoClass} onClick={undo}><i class="fas fa-undo"></i></button>
+                    <button className={'canvas-button' + redoClass} onClick={redo}><i class="fas fa-redo"></i></button>
+                    <button className={'canvas-button' + gridClass} onClick={swapGrid}><i class="fas fa-th"></i></button>
+                    <button className={'canvas-button'} onClick={clearImage}><i class="fas fa-ban"></i></button>
+                </div>
+            </Collapse>
+            <Collapse title={'Brushes'}>
+                <div className='canvas-tools-container'>
+                    <button className={'canvas-button' + brushClass} onClick={swapBrush}><i class="fas fa-paint-brush"></i></button>
+                    <button className={'canvas-button' + eraserClass} onClick={swapEraser}><i class="fas fa-eraser"></i></button>
+                    <button className={'canvas-button' + colorGrabClass} onClick={swapColorGrab}><i class="fas fa-eye-dropper"></i></button>
+                    <button className={'canvas-button' + fillClass} onClick={swapFill}><i class="fas fa-fill"></i></button>
+                    <button className={'canvas-button' + colorSwapClass} onClick={swapColorSwap}><i class="fas fa-exchange-alt"></i></button>
+                    <button className={'canvas-button' + colorSwapBrushClass} onClick={swapColorSwapBrush}><i class="fas fa-paint-brush"></i><span>/</span><i class="fas fa-exchange-alt"></i></button>
                 </div>
             </Collapse>
             <Collapse title={'Configurables'}>
@@ -365,11 +381,16 @@ const CanvasTools = props => {
                         <AddSubtract property={'fps'} title={'FPS'} min={1} max={100} />
                     </div>
                     <div className='canvas-tools-container'>
-                        <button className={'canvas-button' + playingClass} onClick={playAnimation}>Play</button>
-                        <button className={'canvas-button' + pausedClass} onClick={pauseAnimation}>Pause</button>
-                        <button className={'canvas-button' + advanceClass} onClick={subtractOneFrame}>Previous Frame</button>
-                        <button className={'canvas-button' + advanceClass} onClick={addOneFrame}>Next Frame</button>
-                        <span> Frame: {canvasSettings.currentFrame} </span>
+                        {canvasSettings.totalFrames > 1 &&
+                            <>
+                                <button className={'canvas-button' + playingClass} onClick={playAnimation}><i class="fas fa-play"></i></button>
+                                <button className={'canvas-button' + pausedClass} onClick={pauseAnimation}><i class="fas fa-pause"></i></button>
+                                <button className={'canvas-button' + advanceClass} onClick={subtractOneFrame}><i class="fas fa-arrow-left"></i></button>
+                                <span> Frame: {canvasSettings.currentFrame} </span>
+                                <button className={'canvas-button' + advanceClass} onClick={addOneFrame}><i class="fas fa-arrow-right"></i></button>
+                            </>
+                        }
+                        {/* <AddSubtract property={'currentFrame'} title={'Frame'} min={1} max={canvasSettings.totalFrames} loops={true} /> */}
                     </div>
                 </div>
             </Collapse>

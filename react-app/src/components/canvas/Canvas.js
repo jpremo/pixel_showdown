@@ -5,6 +5,7 @@ import { drawPixel, overwritePixel } from '../canvas/color_functions'
 import { changeProperty } from '../../store/canvas'
 import { useDispatch, useSelector } from "react-redux";
 import _ from 'lodash'
+import pencil from "./cursors/pencil.cur"
 // import {updateGrid} from './grid-utilities'
 
 //This component is what actually handles drawing and displays the image constructed by the user
@@ -196,9 +197,12 @@ const Canvas = props => {
         }
     }
 
+    let currentCursor = 'https://pixel-showdown.s3.amazonaws.com/app-content/d807d859-3a20-4e7a-afe3-22446d310b6e.png'
+
     return (
         <>
-            <canvas className='pixel-canvas' ref={canvasRef} {...rest} onMouseMove={toolAction} onMouseDown={toolAction} onMouseUp={toolUp} onMouseLeave={updateGrid} />
+        {/* style={{cursor: `url('${currentCursor}'), auto`}} */}
+            <canvas className='pixel-canvas'  ref={canvasRef} {...rest} onMouseMove={toolAction} onMouseDown={toolAction} onMouseUp={toolUp} onMouseLeave={updateGrid} />
         </>
     )
 }

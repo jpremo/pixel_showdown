@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { changeProperty } from '../../store/canvas'
 import { useDispatch, useSelector } from 'react-redux';
 
 //This component creates a -/input/+ box for the canvas property specified in props
-const AddSubtract = ({ property, min, max, title }) => {
+const AddSubtract = ({ property, min, max, title, loops }) => {
     const canvasSettings = useSelector(state => state.canvas)
     const dispatch = useDispatch()
     const [value, setValue] = useState(canvasSettings[property])
@@ -15,12 +15,22 @@ const AddSubtract = ({ property, min, max, title }) => {
     //3 functions below are used in changing the value and setting it in redux state
     const alterVal = (newVal) => {
         newVal = Number(newVal)
-        if(newVal < min) {
-            setValue(String(min))
-            return min
-        } else if(newVal > max) {
-            setValue(String(max))
-            return max
+        if (newVal < min) {
+            if (!loops) {
+                setValue(String(min))
+                return min
+            } else {
+                setValue(String(max))
+                return max
+            }
+        } else if (newVal > max) {
+            if (!loops) {
+                setValue(String(max))
+                return max
+            } else {
+                setValue(String(min))
+                return min
+            }
         } else {
             setValue(String(newVal))
             return newVal
@@ -51,7 +61,7 @@ const AddSubtract = ({ property, min, max, title }) => {
 
     //blurs element when enter is pressed; used in onKeyPress event
     const blurSelf = (e) => {
-        if(e.key === 'Enter') {
+        if (e.key === 'Enter') {
             e.target.blur()
         }
     }
@@ -60,7 +70,7 @@ const AddSubtract = ({ property, min, max, title }) => {
         <div className='add-subtract'>
             <h3 className='add-subtract-title'>{title}</h3>
             <button className='canvas-button' onClick={subtract}>-</button>
-            <input className='canvas-input' type='number' value={value} onChange={(e) => setValue(e.target.value)} onKeyPress={blurSelf} onBlur = {setProperty}/>
+            <input className='canvas-input' type='number' value={value} onChange={(e) => setValue(e.target.value)} onKeyPress={blurSelf} onBlur={setProperty} />
             <button className='canvas-button' onClick={add}>+</button>
         </div>
     );
