@@ -22,6 +22,9 @@ const CanvasTools = props => {
     const modals = useSelector(state => state.modal)
     const user = useSelector(state => state.session.user)
 
+    const [stateInterval, setStateInterval] = useState(null) //used for playing animations
+    const [addFrame, setAddFrame] = useState(null) //toggles back and forth while animation is playing
+    const [playing, setPlaying] = useState(false)
     const [deleteColor, setDeleteColor] = useState(false) //controls whether user is deleting colors in palette
     const [stateColor, setStateColor] = useState({ //current color selected
         r: canvasSettings.color[0],
@@ -39,6 +42,28 @@ const CanvasTools = props => {
         })
     }, [canvasSettings])
 
+    //advances the animation by one frame based on interval set in playAnimation function
+    useEffect(() => {
+        let newFrame = canvasSettings.currentFrame+1
+        if(newFrame > canvasSettings.totalFrames) {
+            newFrame = 1
+        }
+        dispatch(changeProperty({ currentFrame: newFrame }))
+    }, [addFrame])
+
+    //resets animation playing speed upon change in fps
+    useEffect(() => {
+        if(playing) {
+            clearInterval(stateInterval)
+            let addit = true
+            let interval = setInterval(() => {
+                addit = !addit
+                setAddFrame(addit)
+            }, 1000/canvasSettings.fps)
+            setStateInterval(interval)
+        }
+    }, [canvasSettings.fps])
+
     //These are variables to set the appropriate class for tool icons based on redux state
     const undoClass = canvasSettings.historyPosition > 0 ? '' : ' invalid-selection'
     const redoClass = canvasSettings.historyPosition === canvasSettings.moveHistory.length - 1 ? ' invalid-selection' : ''
@@ -52,6 +77,9 @@ const CanvasTools = props => {
     const removeFromPalette = !canvasSettings.colorPalette.length ? ' invalid-selection' : ''
     const addToPalette = canvasSettings.colorPalette.includes(rgbaToHex(canvasSettings.color)) ? ' invalid-selection' : ''
     const removeFromPalette2 = deleteColor ? ' deleting' : ''
+    const playingClass = (playing || canvasSettings.totalFrames === 1) ? ' invalid-selection' : ''
+    const pausedClass = !playing ? ' invalid-selection' : ''
+    const advanceClass = canvasSettings.totalFrames === 1 ? ' invalid-selection' : ''
 
     //These settings are used to adapt color state for components in the react-color package
     let a = canvasSettings.color[3] ? canvasSettings.color[3] : 1
@@ -115,6 +143,46 @@ const CanvasTools = props => {
         }
         dispatch(changeProperty({ historyPosition: newPosition, grid: newGrid }))
     }
+
+    //increases frame number by one looping if at maximum
+    const addOneFrame = () => {
+        let newFrame = canvasSettings.currentFrame+1
+        if(newFrame > canvasSettings.totalFrames) {
+            newFrame = 1
+        }
+        dispatch(changeProperty({ currentFrame: newFrame }))
+    }
+
+    //lowers frame number by one looping if at minimum
+    const subtractOneFrame = () => {
+        let newFrame = canvasSettings.currentFrame-1
+        if(newFrame <= 0) {
+            newFrame = canvasSettings.totalFrames
+        }
+        dispatch(changeProperty({ currentFrame: newFrame }))
+    }
+
+    //starts the animation
+    const playAnimation = () => {
+        if(!playing && canvasSettings.totalFrames > 1) {
+            setPlaying(true)
+            let addit = true
+            let interval = setInterval(() => {
+                addit = !addit
+                setAddFrame(addit)
+            }, 1000/canvasSettings.fps)
+            setStateInterval(interval)
+        }
+    }
+
+    //pauses the animation
+    const pauseAnimation = () => {
+        if(playing) {
+            setPlaying(false)
+            clearInterval(stateInterval)
+        }
+    }
+
 
     //The functions below change redux state on button presses to set the appropriate tool/property
     const swapGrid = () => {
@@ -192,7 +260,7 @@ const CanvasTools = props => {
                 await updateImage(canvasSettings)
             } else {
                 const info = await saveImage(canvasSettings, user, history)
-                dispatch(changeProperty({editing: info.id, editLink: info.apngImgUrl}))
+                dispatch(changeProperty({ editing: info.id, editLink: info.apngImgUrl }))
             }
         } else {
             dispatch(setLoginModal(true))
@@ -261,6 +329,21 @@ const CanvasTools = props => {
                     <div className='canvas-tools-container'>
                         <AddSubtract property={'width'} title={'Width'} min={1} max={100} />
                         <AddSubtract property={'height'} title={'Height'} min={1} max={100} />
+                    </div>
+                </div>
+            </Collapse>
+            <Collapse title={'Animation'}>
+                <div className='canvas-tools-container'>
+                    <div className='canvas-tools-container'>
+                        <AddSubtract property={'totalFrames'} title={'Total Frames'} min={1} max={8} />
+                        <AddSubtract property={'fps'} title={'FPS'} min={1} max={100} />
+                    </div>
+                    <div className='canvas-tools-container'>
+                        <button className={'canvas-button' + playingClass} onClick={playAnimation}>Play</button>
+                        <button className={'canvas-button'+ pausedClass} onClick={pauseAnimation}>Pause</button>
+                        <button className={'canvas-button' + advanceClass} onClick={addOneFrame}>Next Frame</button>
+                        <button className={'canvas-button'+ advanceClass} onClick={subtractOneFrame}>Previous Frame</button>
+                        <span> Frame: {canvasSettings.currentFrame} </span>
                     </div>
                 </div>
             </Collapse>

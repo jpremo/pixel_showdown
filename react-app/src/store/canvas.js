@@ -24,7 +24,10 @@ const initialState = {
     colorPaletteAllowed: true,
     customColorAllowed: true,
     title: 'Title',
-    editing: null
+    editing: null,
+    fps: 1,
+    totalFrames: 1,
+    currentFrame: 1
 }
 
 function reducer(state = initialState, action) {

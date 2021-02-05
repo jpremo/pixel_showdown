@@ -42,6 +42,7 @@ const NavBar = ({ setAuthenticated }) => {
       title: 'Title',
       moveHistory: [{}],
       historyPosition: 0,
+      fps: 1
   }
 
   dispatch(changeProperty(initialSettings))

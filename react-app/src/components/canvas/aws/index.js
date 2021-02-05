@@ -55,20 +55,21 @@ export function imageToDataUri(width, height, pixelSize, format, canvasSettings)
 //saves current image to database and AWS; should only be used for new images
 export const saveImage = async (canvasSettings, user, history) => {
     let uri = imageToDataUri(canvasSettings.width, canvasSettings.height, 1, 'png', canvasSettings)
-    let [fileName, buffer] = await addPhotoAWS(uri)
-    let imgUrl = `https://pixel-showdown.s3.amazonaws.com/app-content/${fileName}`
     const response = await fetch("/api/images/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            imgUrl,
             title: canvasSettings.title,
-            grid: canvasSettings.grid,
+            grid: {
+                gridColors: canvasSettings.grid,
+                width: canvasSettings.width,
+                height: canvasSettings.height,
+                fps: 2,
+            },
             userId: user.id,
             competitionId: null,
-            fps: 2,
             file: [uri.split(',')[1],'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA/UlEQVRYR+2UXQ7DIAyD2/txXO7XiYdIXpYfBzpVldjjGsD5Yuc8Hv6dD79/vE9A7/1Caq21pSaow/pRa2yzQsoCrIdWqKQC5PKow1Ej35l6JEgLmEkLMxZXAGLF7rwRaAJD8LQAb6aIGono/y3xHkGTgJ5pRMCbOesFSoDgtAh4VMaZ6JsQcQXgDD0/yCVRNDMf0Ca0llEWTcaIf43hLQI892brOUMfemBm6cyeWR4B22lpD0gxk2WmJqITxpAxkeSdrdVifgRgR5XumKVjkfgSYD3IXszWhQRW9votArT5cNVGm1ALr4hJY4gmq2SdjScloPJwtXYL2AQ2gQ9Vktgh9v0V+AAAAABJRU5ErkJggg==']
         }),
     });
@@ -85,10 +86,6 @@ export const saveImage = async (canvasSettings, user, history) => {
 //updates images in AWS and database; should be used for existing images
 export const updateImage = async (canvasSettings) => {
     let uri = imageToDataUri(canvasSettings.width, canvasSettings.height, 1, 'png', canvasSettings)
-    let urlId = canvasSettings.editLink.split('/')
-    urlId = urlId[urlId.length - 1]
-    urlId = urlId.split('.')[0]
-    await addPhotoAWS(uri, urlId)
     const response = await fetch(`/api/images/${canvasSettings.editing}`, {
         method: "PUT",
         headers: {
@@ -96,7 +93,13 @@ export const updateImage = async (canvasSettings) => {
         },
         body: JSON.stringify({
             title: canvasSettings.title,
-            grid: canvasSettings.grid
+            grid: {
+                gridColors: canvasSettings.grid,
+                width: canvasSettings.width,
+                height: canvasSettings.height,
+                fps: 2,
+            },
+            file: [uri.split(',')[1],'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA/UlEQVRYR+2UXQ7DIAyD2/txXO7XiYdIXpYfBzpVldjjGsD5Yuc8Hv6dD79/vE9A7/1Caq21pSaow/pRa2yzQsoCrIdWqKQC5PKow1Ej35l6JEgLmEkLMxZXAGLF7rwRaAJD8LQAb6aIGono/y3xHkGTgJ5pRMCbOesFSoDgtAh4VMaZ6JsQcQXgDD0/yCVRNDMf0Ca0llEWTcaIf43hLQI892brOUMfemBm6cyeWR4B22lpD0gxk2WmJqITxpAxkeSdrdVifgRgR5XumKVjkfgSYD3IXszWhQRW9votArT5cNVGm1ALr4hJY4gmq2SdjScloPJwtXYL2AQ2gQ9Vktgh9v0V+AAAAABJRU5ErkJggg==']
         }),
     });
 

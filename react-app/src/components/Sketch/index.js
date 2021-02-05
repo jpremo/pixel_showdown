@@ -26,11 +26,14 @@ function Sketch() {
                         throw new Error()
                     }
                     dispatch(changeProperty({
-                        grid: parsed.grid,
+                        grid: parsed.grid.gridColors,
+                        width: parsed.grid.width,
+                        height: parsed.grid.height,
+                        fps: parsed.grid.fps,
                         editing: parsed.id,
                         editLink: parsed.apngImgUrl,
                         title: parsed.title,
-                        moveHistory: [parsed.grid],
+                        moveHistory: [parsed.grid.gridColors],
                         historyPosition: 0,
                     }))
                     setLoaded(true)
