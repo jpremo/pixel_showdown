@@ -78,7 +78,6 @@ export const saveImage = async (canvasSettings, user, history) => {
             userId: user.id,
             competitionId: null,
             file: data
-            // [uri.split(',')[1], 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA/UlEQVRYR+2UXQ7DIAyD2/txXO7XiYdIXpYfBzpVldjjGsD5Yuc8Hv6dD79/vE9A7/1Caq21pSaow/pRa2yzQsoCrIdWqKQC5PKow1Ej35l6JEgLmEkLMxZXAGLF7rwRaAJD8LQAb6aIGono/y3xHkGTgJ5pRMCbOesFSoDgtAh4VMaZ6JsQcQXgDD0/yCVRNDMf0Ca0llEWTcaIf43hLQI892brOUMfemBm6cyeWR4B22lpD0gxk2WmJqITxpAxkeSdrdVifgRgR5XumKVjkfgSYD3IXszWhQRW9votArT5cNVGm1ALr4hJY4gmq2SdjScloPJwtXYL2AQ2gQ9Vktgh9v0V+AAAAABJRU5ErkJggg==']
         }),
     });
 
@@ -93,7 +92,7 @@ export const saveImage = async (canvasSettings, user, history) => {
 
 //updates images in AWS and database; should be used for existing images
 export const updateImage = async (canvasSettings) => {
-    let uri = imageToDataUri(canvasSettings.width, canvasSettings.height, 1, 'png', canvasSettings)
+    let data = imageToDataUri(canvasSettings.width, canvasSettings.height, 1, 'png', canvasSettings)
     const response = await fetch(`/api/images/${canvasSettings.editing}`, {
         method: "PUT",
         headers: {
@@ -105,9 +104,10 @@ export const updateImage = async (canvasSettings) => {
                 gridColors: canvasSettings.grid,
                 width: canvasSettings.width,
                 height: canvasSettings.height,
-                fps: 2,
+                fps: canvasSettings.fps,
+                totalFrames: canvasSettings.totalFrames
             },
-            file: [uri.split(',')[1], 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA/UlEQVRYR+2UXQ7DIAyD2/txXO7XiYdIXpYfBzpVldjjGsD5Yuc8Hv6dD79/vE9A7/1Caq21pSaow/pRa2yzQsoCrIdWqKQC5PKow1Ej35l6JEgLmEkLMxZXAGLF7rwRaAJD8LQAb6aIGono/y3xHkGTgJ5pRMCbOesFSoDgtAh4VMaZ6JsQcQXgDD0/yCVRNDMf0Ca0llEWTcaIf43hLQI892brOUMfemBm6cyeWR4B22lpD0gxk2WmJqITxpAxkeSdrdVifgRgR5XumKVjkfgSYD3IXszWhQRW9votArT5cNVGm1ALr4hJY4gmq2SdjScloPJwtXYL2AQ2gQ9Vktgh9v0V+AAAAABJRU5ErkJggg==']
+            file: data
         }),
     });
 

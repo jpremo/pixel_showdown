@@ -28,7 +28,7 @@ function Sketch() {
                     const moveHistoryNew = []
                     const historyPositionNew = []
                     for(let i = 0; i < parsed.grid.gridColors.length; i++) {
-                        moveHistoryNew.push(parsed.grid.gridColors[i])
+                        moveHistoryNew.push([parsed.grid.gridColors[i]])
                         historyPositionNew.push(0)
                     }
 
