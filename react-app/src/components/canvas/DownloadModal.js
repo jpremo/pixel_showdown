@@ -46,6 +46,18 @@ const DownloadModal = () => {
                 height = canvasSettings.height * pixelSize;
                 format = 'jpeg';
                 break;
+            case 'gif':
+                width = canvasSettings.width;
+                height = canvasSettings.height;
+                pixelSize = 1;
+                format = 'gif';
+                break;
+            case 'apng':
+                width = canvasSettings.width;
+                height = canvasSettings.height;
+                pixelSize = 1;
+                format = 'apng';
+                break;
             default:
                 width = canvasSettings.width;
                 height = canvasSettings.height;
@@ -54,11 +66,24 @@ const DownloadModal = () => {
                 break;
         }
 
-        let url = imageToDataUri(width, height, pixelSize, format, canvasSettings)
-        let link = document.createElement('a');
-        link.download = `${canvasSettings.title}.${format}`;
-        link.href = url;
-        link.click();
+        if (format !== 'apng' && format !== 'gif') {
+            let url = imageToDataUri(width, height, pixelSize, format, canvasSettings)
+            let link = document.createElement('a');
+            link.download = `${canvasSettings.title}.${format}`;
+            link.href = url;
+            link.click();
+        } else {
+            let url = canvasSettings.editLink
+            if(format === 'gif') {
+                url = url.split('.')
+                url[url.length-1] = 'gif'
+                url = url.join('.')
+                debugger
+            }
+            let link = document.createElement('a');
+            link.href = url;
+            link.click();
+        }
         dispatch(changeProperty({ downloading: false }))
     }
 
@@ -68,16 +93,22 @@ const DownloadModal = () => {
             <div className='radio-list'>
                 <input type="radio" id="png" name="download" value="png" onChange={swapRadio}
                     checked={currentOption === 'png' ? 'checked' : ''} />
-                <label for="png">PNG</label><br />
+                <label htmlFor="png">PNG</label><br />
                 <input type="radio" id="png-current" name="download" value="png-current" onChange={swapRadio}
                     checked={currentOption === 'png-current' ? 'checked' : ''} />
-                <label for="png-current">PNG At Current Pixel Size</label><br />
+                <label htmlFor="png-current">PNG At Current Pixel Size</label><br />
                 <input type="radio" id="jpeg" name="download" value="jpeg" onChange={swapRadio}
                     checked={currentOption === 'jpeg' ? 'checked' : ''} />
-                <label for="jpeg">JPEG</label><br />
+                <label htmlFor="jpeg">JPEG</label><br />
                 <input type="radio" id="jpeg-current" name="download" value="jpeg-current" onChange={swapRadio}
                     checked={currentOption === 'jpeg-current' ? 'checked' : ''} />
-                <label for="jpeg-current">JPEG At Current Pixel Size</label><br />
+                <label htmlFor="jpeg-current">JPEG At Current Pixel Size</label><br />
+                <input type="radio" id="gif" name="download" value="gif" onChange={swapRadio}
+                    checked={currentOption === 'gif' ? 'checked' : ''} />
+                <label htmlFor="gif">GIF (Entire Animation)</label><br />
+                <input type="radio" id="apng" name="download" value="apng" onChange={swapRadio}
+                    checked={currentOption === 'apng' ? 'checked' : ''} />
+                <label htmlFor="apng">APNG (Entire Animation)</label><br />
             </div>
             <div className='modal-form-div'>
                 <div className='modal-button-box'>

@@ -124,11 +124,6 @@ const CanvasTools = props => {
         }
     }, [y])
 
-    //opens download modal by dispatching to redux
-    const openDownload = () => {
-        dispatch(setDownloadModal(true))
-    }
-
     //Changes color state and updates redux after color selection process is over
     const colorChange = (e) => {
         const colArr = [e.rgb.r, e.rgb.g, e.rgb.b, e.rgb.a,]
@@ -294,7 +289,11 @@ const CanvasTools = props => {
         }
     }
 
-
+    //opens download modal by dispatching to redux
+    const openDownload = async () => {
+        await changeImage()
+        dispatch(setDownloadModal(true))
+    }
 
     return (
         <div className='canvas-tools'>
