@@ -84,7 +84,7 @@ const CanvasTools = props => {
     //These are variables to set the appropriate class for tool icons based on redux state
     const undoClass = canvasSettings.historyPosition[canvasSettings.currentFrame - 1] > 0 ? '' : ' invalid-selection'
     const redoClass = canvasSettings.historyPosition[canvasSettings.currentFrame - 1] === canvasSettings.moveHistory[canvasSettings.currentFrame - 1].length - 1 ? ' invalid-selection' : ''
-    const gridClass = canvasSettings.displayGrid ? ' selected' : ''
+    const gridClass = canvasSettings.displayGrid ? ' grid-selected' : ''
     const brushClass = canvasSettings.currentTool === 'brush' ? ' selected' : ''
     const eraserClass = canvasSettings.currentTool === 'eraser' ? ' selected' : ''
     const fillClass = canvasSettings.currentTool === 'fill' ? ' selected' : ''
@@ -94,8 +94,9 @@ const CanvasTools = props => {
     const removeFromPalette = !canvasSettings.colorPalette.length ? ' invalid-selection' : ''
     const addToPalette = canvasSettings.colorPalette.includes(rgbaToHex(canvasSettings.color)) ? ' invalid-selection' : ''
     const removeFromPalette2 = deleteColor ? ' deleting' : ''
-    const playingClass = (canvasSettings.playing || canvasSettings.totalFrames === 1) ? ' invalid-selection' : ''
-    const pausedClass = !canvasSettings.playing ? ' invalid-selection' : ''
+    const removeFromPalette3 = deleteColor ? ' selected' : ''
+    const playingClass = (canvasSettings.playing || canvasSettings.totalFrames === 1) ? ' selected' : ''
+    const pausedClass = !canvasSettings.playing ? ' selected' : ''
     const advanceClass = canvasSettings.totalFrames === 1 ? ' invalid-selection' : ''
 
     //These settings are used to adapt color state for components in the react-color package
@@ -313,6 +314,25 @@ const CanvasTools = props => {
                 <DownloadModal />
             </ModalContainer>
             <h2>Canvas Tools</h2>
+            <Collapse title={'Animation'}>
+                <div className='canvas-tools-container'>
+                    <div className='canvas-tools-container'>
+                        <AddSubtract property={'totalFrames'} title={'Total Frames'} min={1} max={100} />
+                        <AddSubtract property={'fps'} title={'FPS'} min={1} max={100} />
+                    </div>
+                    <div className='canvas-tools-container'>
+                        {canvasSettings.totalFrames > 1 &&
+                            <>
+                                <button className={'canvas-button' + playingClass} onClick={playAnimation}><i class="fas fa-play"></i></button>
+                                <button className={'canvas-button' + pausedClass} onClick={pauseAnimation}><i class="fas fa-pause"></i></button>
+                                <button className={'canvas-button' + advanceClass} onClick={subtractOneFrame}><i class="fas fa-arrow-left"></i></button>
+                                <span className='frame-counter'> Frame: {canvasSettings.currentFrame} </span>
+                                <button className={'canvas-button' + advanceClass} onClick={addOneFrame}><i class="fas fa-arrow-right"></i></button>
+                            </>
+                        }
+                    </div>
+                </div>
+            </Collapse>
             <Collapse title={'Color Selector'}>
                 <SketchPicker
                     color={stateColor}
@@ -333,8 +353,8 @@ const CanvasTools = props => {
                     />
                 </div>
                 <div className='canvas-tools-container'>
-                    <button className={'canvas-button' + addToPalette} onClick={addColor}>Add Current Color to Palette</button>
-                    <button className={'canvas-button' + removeFromPalette + removeFromPalette2} onClick={removeColor}>Remove from Palette</button>
+                    <button className={'canvas-button' + addToPalette} onClick={addColor}>Add Color</button>
+                    <button className={'canvas-button' + removeFromPalette + removeFromPalette3} onClick={removeColor}>Remove Color</button>
                 </div>
                 <AlphaPicker
                     color={stateColor}
@@ -371,26 +391,6 @@ const CanvasTools = props => {
                     <div className='canvas-tools-container'>
                         <AddSubtract property={'width'} title={'Width'} min={1} max={100} />
                         <AddSubtract property={'height'} title={'Height'} min={1} max={100} />
-                    </div>
-                </div>
-            </Collapse>
-            <Collapse title={'Animation'}>
-                <div className='canvas-tools-container'>
-                    <div className='canvas-tools-container'>
-                        <AddSubtract property={'totalFrames'} title={'Total Frames'} min={1} max={100} />
-                        <AddSubtract property={'fps'} title={'FPS'} min={1} max={100} />
-                    </div>
-                    <div className='canvas-tools-container'>
-                        {canvasSettings.totalFrames > 1 &&
-                            <>
-                                <button className={'canvas-button' + playingClass} onClick={playAnimation}><i class="fas fa-play"></i></button>
-                                <button className={'canvas-button' + pausedClass} onClick={pauseAnimation}><i class="fas fa-pause"></i></button>
-                                <button className={'canvas-button' + advanceClass} onClick={subtractOneFrame}><i class="fas fa-arrow-left"></i></button>
-                                <span> Frame: {canvasSettings.currentFrame} </span>
-                                <button className={'canvas-button' + advanceClass} onClick={addOneFrame}><i class="fas fa-arrow-right"></i></button>
-                            </>
-                        }
-                        {/* <AddSubtract property={'currentFrame'} title={'Frame'} min={1} max={canvasSettings.totalFrames} loops={true} /> */}
                     </div>
                 </div>
             </Collapse>

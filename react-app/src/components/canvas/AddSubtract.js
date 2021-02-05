@@ -67,11 +67,13 @@ const AddSubtract = ({ property, min, max, title, loops }) => {
     }
 
     return (
-        <div className='add-subtract'>
+        <div>
             <h3 className='add-subtract-title'>{title}</h3>
-            <button className='canvas-button' onClick={subtract}>-</button>
-            <input className='canvas-input' type='number' value={value} onChange={(e) => setValue(e.target.value)} onKeyPress={blurSelf} onBlur={setProperty} />
-            <button className='canvas-button' onClick={add}>+</button>
+            <div className='add-subtract'>
+                <button className='canvas-button' onClick={subtract}><i className="fas fa-minus"></i></button>
+                <input className='canvas-input' type='number' value={value} onChange={(e) => setValue(e.target.value)} onKeyPress={blurSelf} onBlur={setProperty} />
+                <button className='canvas-button' onClick={add}><i className="fas fa-plus"></i></button>
+            </div>
         </div>
     );
 }
