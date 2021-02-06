@@ -45,6 +45,7 @@ const NavBar = ({ setAuthenticated }) => {
       title: 'Title',
       fps: 1,
       totalFrames: 1,
+      ruleset: {}
     }
 
     dispatch(changeProperty(initialSettings))

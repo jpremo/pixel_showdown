@@ -13,12 +13,14 @@ import { setDownloadModal } from '../../store/modal'
 import { useHistory } from 'react-router-dom';
 import { saveImage, updateImage } from './aws/index'
 import { setLoginModal } from '../../store/modal'
+import RuleChecker from './RuleChecker';
 
 //This component organizes all of the tools within the tools sidebar of the CompleteCanvas element
 const CanvasTools = props => {
     const history = useHistory()
     const dispatch = useDispatch()
     const canvasSettings = props.canvasSettings
+    const ruleset = canvasSettings.ruleset
     const modals = useSelector(state => state.modal)
     const user = useSelector(state => state.session.user)
 
@@ -157,7 +159,7 @@ const CanvasTools = props => {
     }, [c])
 
     useEffect(() => {
-        if (g && !canvasSettings.editingTitle) {
+        if (g && !canvasSettings.editingTitle && !ruleset.disableGrid) {
             dispatch(changeProperty({ displayGrid: !canvasSettings.displayGrid }))
         }
     }, [g])
@@ -418,7 +420,7 @@ const CanvasTools = props => {
             </Collapse>
             <Collapse title={'Brushes'}>
                 <div className='canvas-tools-container'>
-                    <button style={{title: 'tester'}} className={'canvas-button' + brushClass} onClick={swapBrush}><i class="fas fa-paint-brush"></i></button>
+                    <button style={{ title: 'tester' }} className={'canvas-button' + brushClass} onClick={swapBrush}><i class="fas fa-paint-brush"></i></button>
                     <button className={'canvas-button' + eraserClass} onClick={swapEraser}><i class="fas fa-eraser"></i></button>
                     <button className={'canvas-button' + colorGrabClass} onClick={swapColorGrab}><i class="fas fa-eye-dropper"></i></button>
                     <button className={'canvas-button' + fillClass} onClick={swapFill}><i class="fas fa-fill"></i></button>
@@ -430,7 +432,9 @@ const CanvasTools = props => {
                 <div className='canvas-tools-container'>
                     <button className={'canvas-button' + undoClass} onClick={undo}><i class="fas fa-undo"></i></button>
                     <button className={'canvas-button' + redoClass} onClick={redo}><i class="fas fa-redo"></i></button>
-                    <button className={'canvas-button' + gridClass} onClick={swapGrid}><i class="fas fa-th"></i></button>
+                    <RuleChecker property='disableGrid' canvasSettings={canvasSettings}>
+                        <button className={'canvas-button' + gridClass} onClick={swapGrid}><i class="fas fa-th"></i></button>
+                    </RuleChecker>
                     <button className={'canvas-button'} onClick={clearImage}><i class="fas fa-ban"></i></button>
                 </div>
             </Collapse>

@@ -45,7 +45,8 @@ function Sketch() {
                         title: parsed.title,
                         moveHistory: moveHistoryNew,
                         historyPosition: historyPositionNew,
-                        playing:false
+                        playing:false,
+                        ruleset: {}
                     }))
                     setLoaded(true)
                 } catch (e) {
@@ -66,6 +67,7 @@ function Sketch() {
                 historyPosition: [0, 0, 0, 0, 0, 0, 0, 0],
                 editing: null,
                 fps: 1,
+                ruleset: {}
             }
 
             dispatch(changeProperty(initialSettings))

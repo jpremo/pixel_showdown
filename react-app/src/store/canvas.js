@@ -28,7 +28,8 @@ const initialState = {
     editing: null,
     fps: 1,
     totalFrames: 1,
-    currentFrame: 1
+    currentFrame: 1,
+    ruleset: {}
 }
 
 function reducer(state = initialState, action) {
