@@ -1,70 +1,112 @@
 import React, { useEffect, useState } from 'react';
 import { changeProperty } from '../../store/canvas'
 import { useDispatch, useSelector } from 'react-redux';
-import RuleAddSubtract from './RuleAddSubtract'
 //This component creates a -/input/+ box for the canvas property specified in props
-const RulesetRange = ({ property, min, max, defaultValue, title}) => {
+const RulesetRange2 = ({ property, title }) => {
     const canvasSettings = useSelector(state => state.canvas)
     const dispatch = useDispatch()
-    const [loaded, setLoaded] = useState(false)
-    const [validate, setValidated] = useState(false)
-    const [defaultValueState, setDefaultValueState] = useState(defaultValue)
-    const [maxState, setMaxState] = useState(max)
-    const [minState, setMinState] = useState(min)
-    useEffect(() => {
-        if(!canvasSettings.ruleset[property]) {
-            const obj = {ruleset:{...canvasSettings.ruleset}}
-            obj.ruleset[property] = {
-                min,
-                max,
-                defaultValue
-            }
-            dispatch(changeProperty(obj))
-        }
-        setLoaded(true)
-    }, [])
+    const overallMin = 1;
+    const overallMax = 100;
+    const [minValue, setMinValue] = useState(1)
+    const [maxValue, setMaxValue] = useState(100)
+    const [defaultValue, setDefaultValue] = useState(5)
+
+    const [minValueTemp, setMinValueTemp] = useState(1)
+    const [maxValueTemp, setMaxValueTemp] = useState(100)
+    const [defaultValueTemp, setDefaultValueTemp] = useState(5)
 
     useEffect(() => {
-        debugger
-        if(loaded && validate) {
-            const obj = {}
-            const initRules = canvasSettings.ruleset[property]
-            obj[property] = {...initRules}
-            if(obj[property]['max'] < obj[property]['min']) {
-                obj[property]['max'] = obj[property]['min']
-            }
-            if(obj[property]['defaultValue'] < obj[property]['min']) {
-                obj[property]['defaultValue'] = obj[property]['min']
-            }
-            if(obj[property]['defaultValue'] > obj[property]['max']) {
-                obj[property]['defaultValue'] = obj[property]['max']
-            }
-            setDefaultValueState(obj[property]['defaultValue'])
-            setMinState(obj[property]['min'])
-            setMaxState(obj[property]['max'])
-            // debugger
-            const rulesetCopy = {...canvasSettings.ruleset}
-            rulesetCopy[property] = obj
-            dispatch(changeProperty({ruleset: rulesetCopy}))
-            setValidated(false)
+        const rulesetCopy = { ...canvasSettings.ruleset }
+        const obj = {
+            minValue,
+            defaultValue,
+            maxValue
         }
-    }, [validate])
+        rulesetCopy[property] = obj;
+        dispatch(changeProperty({ ruleset: rulesetCopy }))
+    }, [minValue, maxValue, defaultValue])
 
-    if(!loaded){
-        return null
+    const changeMin = (e) => {
+        let val = Math.floor(Number(e.target.value))
+        val = Math.min(val, overallMax)
+        val = Math.max(val, overallMin)
+        setMinValue(val)
+        setMinValueTemp(val)
+        if (val > maxValue) {
+            setMaxValue(val)
+            setMaxValueTemp(val)
+        }
+
+        if (val > defaultValue) {
+            setDefaultValue(val)
+            setDefaultValueTemp(val)
+        }
     }
 
-    const defMax = canvasSettings.ruleset[property] && canvasSettings.ruleset[property]['max'] ? canvasSettings.ruleset[property]['max'] : max
-    const defDefault = canvasSettings.ruleset[property] && canvasSettings.ruleset[property]['defaultValue'] ? canvasSettings.ruleset[property]['defaultValue'] : defaultValue
-    const defMin = canvasSettings.ruleset[property] && canvasSettings.ruleset[property]['min'] ? canvasSettings.ruleset[property]['min'] : min
+    const changeMax = (e) => {
+        let val = Math.floor(Number(e.target.value))
+        val = Math.min(val, overallMax)
+        val = Math.max(val, overallMin)
+        setMaxValue(val)
+        setMaxValueTemp(val)
+
+        if (val < minValue) {
+            setMinValue(val)
+            setMinValueTemp(val)
+        }
+
+        if (val < defaultValue) {
+            setDefaultValue(val)
+            setDefaultValueTemp(val)
+        }
+    }
+
+    const changeDefault = (e) => {
+        let val = Math.floor(Number(e.target.value))
+        val = Math.min(val, overallMax)
+        val = Math.max(val, overallMin)
+        setDefaultValue(val)
+        setDefaultValueTemp(val)
+
+        if (val > maxValue) {
+            setDefaultValue(maxValue)
+            setDefaultValueTemp(maxValue)
+        }
+
+        if (val < minValue) {
+            setDefaultValue(minValue)
+            setDefaultValueTemp(minValue)
+        }
+    }
+
+    const blurSelf = (e) => {
+        if (e.key === 'Enter') {
+            e.target.blur()
+        }
+    }
+
     return (
-        <>
-            <div>{title}</div>
-            <RuleAddSubtract setValidated={setValidated} property={property} innerProperty='min' defaultValue={minState} max={maxState} min={minState} title='Min'/>
-            <RuleAddSubtract setValidated={setValidated} property={property} innerProperty='defaultValue' defaultValue={defaultValueState} max={maxState} min={minState} title='Default Value'/>
-            <RuleAddSubtract setValidated={setValidated} property={property} innerProperty='max' defaultValue={maxState} max={maxState} min={minState} title='Max'/>
-        </>
+        <div className='ruleset-range-wrapper'>
+            <h2>{title}</h2>
+            <div className='ruleset-range'>
+                <div className='ruleset-range-option'>
+                    <div>Min</div>
+                    <input type='number' value={minValueTemp} min='1' max='100'
+                        onChange={(e) => setMinValueTemp(e.target.value)} onBlur={changeMin} onKeyPress={blurSelf} />
+                </div>
+                <div className='ruleset-range-option'>
+                    <div>Default</div>
+                    <input type='number' value={defaultValueTemp} min='1' max='100'
+                        onChange={(e) => setDefaultValueTemp(e.target.value)} onBlur={changeDefault} onKeyPress={blurSelf}/>
+                </div>
+                <div className='ruleset-range-option'>
+                    <div>Max</div>
+                    <input type='number' value={maxValueTemp} min='1' max='100'
+                        onChange={(e) => setMaxValueTemp(e.target.value)} onBlur={changeMax} onKeyPress={blurSelf}/>
+                </div>
+            </div>
+        </div>
     );
 }
 
-export default RulesetRange;
+export default RulesetRange2;

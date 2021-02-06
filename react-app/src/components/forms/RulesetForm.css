@@ -1,0 +1,27 @@
+.ruleset-range{
+    display: flex;
+}
+
+.ruleset-range-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.ruleset-range-wrapper h2{
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.ruleset-range-option{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 4px;
+}
+
+.ruleset-range-option input {
+    text-align: center;
+}

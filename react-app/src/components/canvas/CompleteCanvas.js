@@ -1,16 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Canvas from '../canvas/Canvas'
 import CanvasTools from '../canvas/CanvasTools'
 import { pixelParser } from '../canvas/color_functions'
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {changeProperty} from '../../store/canvas'
 import Backdrop from './Backdrop'
 import Grid from './Grid'
 import TitleCard from './TitleCard'
 
 //This component contains the entire canvas along with its backdrop and all tools
-function CompleteCanvas() {
+function CompleteCanvas({reload=false}) {
     const canvasSettings = useSelector(state => state.canvas)
+    const dispatch = useDispatch()
 
+    const loadRuleset = () => {
+        // debugger
+        const ruleset = canvasSettings.ruleset
+        const newProperties = {}
+        for(let key in ruleset) {
+            if(ruleset[key]['defaultValue']){
+                newProperties[key] = ruleset[key]['defaultValue']
+            }
+        }
+        dispatch(changeProperty(newProperties))
+    }
+
+    useEffect(() => {
+        loadRuleset()
+    }, [canvasSettings.ruleset])
     //Function passes in props to Cavas component to specify what it should do on initialization
     const draw = ctx => {
         pixelParser(ctx, canvasSettings.pixelSize, canvasSettings.currentGrid)

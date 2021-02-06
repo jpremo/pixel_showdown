@@ -3,11 +3,13 @@ import { changeProperty } from '../../store/canvas'
 import { useDispatch, useSelector } from 'react-redux';
 
 //This component creates a -/input/+ box for the canvas property specified in props
-const AddSubtract = ({ property, min, max, title, loops }) => {
+const AddSubtract = ({ property, min, max, title, loops, defaultValue }) => {
     const canvasSettings = useSelector(state => state.canvas)
     const dispatch = useDispatch()
     const [value, setValue] = useState(canvasSettings[property])
-
+    // debugger
+    min = canvasSettings.ruleset[property] ? canvasSettings.ruleset[property]['minValue']:min
+    max = canvasSettings.ruleset[property] ? canvasSettings.ruleset[property]['maxValue']:max
     useEffect(() => {
         setValue(canvasSettings[property])
     }, [canvasSettings[property]])

@@ -371,7 +371,7 @@ const CanvasTools = props => {
             <Collapse title={'Animation'}>
                 <div className='canvas-tools-container'>
                     <div className='canvas-tools-container'>
-                        <AddSubtract property={'totalFrames'} title={'Total Frames'} min={1} max={100} />
+                        <AddSubtract property={'totalFrames'} title={'Total Frames'} min={1} max={100}/>
                         <AddSubtract property={'fps'} title={'FPS'} min={1} max={100} />
                     </div>
                     <div className='canvas-tools-container'>
