@@ -8,9 +8,11 @@ import './RulesetForm.css'
 import RulesetSelector from './RulesetSelector';
 import RulesetColor from './RulesetColor'
 import Collapse from '../canvas/Collapse'
+import { setLoginModal } from '../../store/modal'
 //This component creates a -/input/+ box for the canvas property specified in props
 const RulesetForm = () => {
     const canvasSettings = useSelector(state => state.canvas)
+    const user = useSelector(state => state.session.user)
     const dispatch = useDispatch()
     const [title, setTitle] = useState('')
     const [body, setBody] = useState('')
@@ -47,8 +49,26 @@ const RulesetForm = () => {
         { value: 48, label: '48 Hours' },
     ]
 
-    const submitRuleset = () => {
-        console.log('submitted')
+    const submitRuleset = async () => {
+        if(user.id) {
+
+
+        const response = await fetch("/api/rulesets/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              rules:{...canvasSettings.ruleset},
+              title,
+              description: body,
+              userId: user.id
+            }),
+          });
+          return await response.json();
+        } else {
+            dispatch(setLoginModal(true))
+        }
     }
 
     const changeTitle = (e) => {
@@ -57,7 +77,6 @@ const RulesetForm = () => {
 
     const changeBody = (e) => {
         setBody(e.target.value)
-        console.log('set')
     }
 
     return (
@@ -72,6 +91,10 @@ const RulesetForm = () => {
                 <label htmlFor='description'>Description</label>
                 <textarea name='description' maxLength='1000' placeholder='Description' onChange={changeBody} value={body}/>
                 <div name='description' maxLength='1000' placeholder='Description' onChange={changeBody} value={body}>{body.length}/1000</div>
+            </div>
+            <div className='ruleset-content-container'>
+                <RulesetSelector title='Time Limit' options={timeLimitOptions} property={'timeLimit'} />
+                <RulesetSelector title='Competition Length' options={contestLengthOptions} property={'contestLength'} />
             </div>
             <div className='ruleset-content-container'>
                 <RulecheckBox property='disableColorSelector' title='Disable Custom Colors' />
@@ -93,10 +116,7 @@ const RulesetForm = () => {
             <RulesetRange property='width' title='Canvas Width' initialDefault={32}/>
             <RulesetRange property='height' title='Canvas Height' initialDefault={32}/>
             </div>
-            <div className='ruleset-content-container'>
-                <RulesetSelector title='Time Limit' options={timeLimitOptions} property={'timeLimit'} />
-                <RulesetSelector title='Competition Length' options={contestLengthOptions} property={'contestLength'} />
-            </div>
+
             <RulesetColor/>
             {/* <h1 className='form-title' style={{margin: '20px'}}>Canvas Preview</h1> */}
             <button className='canvas-button' onClick={submitRuleset}>Submit Ruleset</button>
