@@ -2,18 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { changeRuleset } from '../../store/canvas'
 import { useDispatch, useSelector } from 'react-redux';
 //This component creates a -/input/+ box for the canvas property specified in props
-const RulesetRange2 = ({ property, title }) => {
+const RulesetRange2 = ({ property, title, initialMin=1, initialMax=100, initialDefault=1 }) => {
     const canvasSettings = useSelector(state => state.canvas)
     const dispatch = useDispatch()
     const overallMin = 1;
     const overallMax = 100;
-    const [minValue, setMinValue] = useState(1)
-    const [maxValue, setMaxValue] = useState(100)
-    const [defaultValue, setDefaultValue] = useState(5)
+    const [minValue, setMinValue] = useState(initialMin)
+    const [maxValue, setMaxValue] = useState(initialMax)
+    const [defaultValue, setDefaultValue] = useState(initialDefault)
 
-    const [minValueTemp, setMinValueTemp] = useState(1)
-    const [maxValueTemp, setMaxValueTemp] = useState(100)
-    const [defaultValueTemp, setDefaultValueTemp] = useState(5)
+    const [minValueTemp, setMinValueTemp] = useState(initialMin)
+    const [maxValueTemp, setMaxValueTemp] = useState(initialMax)
+    const [defaultValueTemp, setDefaultValueTemp] = useState(initialDefault)
 
     useEffect(() => {
         // const rulesetCopy = { ...canvasSettings.ruleset }

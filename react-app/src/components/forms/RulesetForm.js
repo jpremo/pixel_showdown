@@ -7,10 +7,13 @@ import RulesetRange from './RulesetRange';
 import './RulesetForm.css'
 import RulesetSelector from './RulesetSelector';
 import RulesetColor from './RulesetColor'
+import Collapse from '../canvas/Collapse'
 //This component creates a -/input/+ box for the canvas property specified in props
 const RulesetForm = () => {
     const canvasSettings = useSelector(state => state.canvas)
     const dispatch = useDispatch()
+    const [title, setTitle] = useState('')
+    const [body, setBody] = useState('')
     const timeLimitOptions = [
         { value: .5, label: '30 Seconds' },
         { value: 1, label: '1 Minute' },
@@ -43,10 +46,33 @@ const RulesetForm = () => {
         { value: 42, label: '42 Hours' },
         { value: 48, label: '48 Hours' },
     ]
+
+    const submitRuleset = () => {
+        console.log('submitted')
+    }
+
+    const changeTitle = (e) => {
+        setTitle(e.target.value)
+    }
+
+    const changeBody = (e) => {
+        setBody(e.target.value)
+        console.log('set')
+    }
+
     return (
         <div id='ruleset-form-outer-wrapper'>
         <div id='ruleset-form-wrapper'>
             <h1 className='form-title'>Create a Ruleset</h1>
+            <div className='ruleset-content-div'>
+                <label htmlFor='title'>Title</label>
+                <input name='title' maxLength='50' placeholder='Title' value={title} onChange={changeTitle} />
+            </div>
+            <div className='ruleset-content-div'>
+                <label htmlFor='description'>Description</label>
+                <textarea name='description' maxLength='1000' placeholder='Description' onChange={changeBody} value={body}/>
+                <div name='description' maxLength='1000' placeholder='Description' onChange={changeBody} value={body}>{body.length}/1000</div>
+            </div>
             <div className='ruleset-content-container'>
                 <RulecheckBox property='disableColorSelector' title='Disable Custom Colors' />
                 <RulecheckBox property='disableAlphaPicker' title='Disable Alpha Slider' />
@@ -62,18 +88,21 @@ const RulesetForm = () => {
             <div className='ruleset-content-container'>
             <RulesetRange property='totalFrames' title='Total Frames' />
             <RulesetRange property='fps' title='FPS' />
-            <RulesetRange property='pixelSize' title='Pixel Size' />
+            <RulesetRange property='pixelSize' title='Pixel Size' initialDefault={20} />
             <RulesetRange property='brushSize' title='Brush Size' />
-            <RulesetRange property='width' title='Canvas Width' />
-            <RulesetRange property='height' title='Canvas Height' />
+            <RulesetRange property='width' title='Canvas Width' initialDefault={32}/>
+            <RulesetRange property='height' title='Canvas Height' initialDefault={32}/>
             </div>
             <div className='ruleset-content-container'>
                 <RulesetSelector title='Time Limit' options={timeLimitOptions} property={'timeLimit'} />
                 <RulesetSelector title='Competition Length' options={contestLengthOptions} property={'contestLength'} />
             </div>
             <RulesetColor/>
-            <h1 className='form-title' style={{margin: '20px'}}>Canvas Preview</h1>
-            <CompleteCanvas reload={true} />
+            {/* <h1 className='form-title' style={{margin: '20px'}}>Canvas Preview</h1> */}
+            <button className='canvas-button' onClick={submitRuleset}>Submit Ruleset</button>
+            <Collapse title='Canvas Preview' collapsedInit={true}>
+            <CompleteCanvas reload={true} disableHotKeys={true}/>
+            </Collapse>
         </div>
         </div>
     );

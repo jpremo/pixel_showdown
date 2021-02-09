@@ -105,3 +105,22 @@
     font-size: 24px;
     font-weight: 600;
 }
+
+.ruleset-content-div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+
+.ruleset-content-div label {
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 7px;
+}
+
+.ruleset-content-div input,textarea {
+    width: 200px;
+    font-size: 18px;
+}

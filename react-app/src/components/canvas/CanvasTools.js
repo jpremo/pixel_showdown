@@ -123,55 +123,55 @@ const CanvasTools = props => {
     const c = useKeyPress('r')
 
     useEffect(() => {
-        if (z && ctrl && !canvasSettings.editingTitle) {
+        if (z && ctrl && !canvasSettings.editingTitle && !props.disableHotKeys) {
             undo()
         }
     }, [z])
 
     useEffect(() => {
-        if (y && ctrl && !canvasSettings.editingTitle) {
+        if (y && ctrl && !canvasSettings.editingTitle && !props.disableHotKeys) {
             redo()
         }
     }, [y])
 
     useEffect(() => {
-        if (f && !canvasSettings.editingTitle) {
+        if (f && !canvasSettings.editingTitle && !props.disableHotKeys) {
             dispatch(changeProperty({ currentTool: 'fill' }))
         }
     }, [f])
 
     useEffect(() => {
-        if (d && !canvasSettings.editingTitle) {
+        if (d && !canvasSettings.editingTitle && !props.disableHotKeys) {
             dispatch(changeProperty({ currentTool: 'brush' }))
         }
     }, [d])
 
     useEffect(() => {
-        if (e && !canvasSettings.editingTitle) {
+        if (e && !canvasSettings.editingTitle && !props.disableHotKeys) {
             dispatch(changeProperty({ currentTool: 'eraser' }))
         }
     }, [e])
 
     useEffect(() => {
-        if (c && !canvasSettings.editingTitle) {
+        if (c && !canvasSettings.editingTitle && !props.disableHotKeys) {
             dispatch(changeProperty({ currentTool: 'colorGrab' }))
         }
     }, [c])
 
     useEffect(() => {
-        if (g && !canvasSettings.editingTitle && !ruleset.disableGrid) {
+        if (g && !canvasSettings.editingTitle && !ruleset.disableGrid && !props.disableHotKeys) {
             dispatch(changeProperty({ displayGrid: !canvasSettings.displayGrid }))
         }
     }, [g])
 
     useEffect(() => {
-        if (s && !canvasSettings.editingTitle) {
+        if (s && !canvasSettings.editingTitle && !props.disableHotKeys) {
             dispatch(changeProperty({ currentTool: 'colorSwapBrush' }))
         }
     }, [s])
 
     useEffect(() => {
-        if (r && !canvasSettings.editingTitle) {
+        if (r && !canvasSettings.editingTitle && !props.disableHotKeys) {
             dispatch(changeProperty({ currentTool: 'colorSwap' }))
         }
     }, [r])

@@ -9,7 +9,7 @@ import Grid from './Grid'
 import TitleCard from './TitleCard'
 
 //This component contains the entire canvas along with its backdrop and all tools
-function CompleteCanvas({reload=false}) {
+function CompleteCanvas({reload=false, disableHotKeys=false}) {
     const canvasSettings = useSelector(state => state.canvas)
     const dispatch = useDispatch()
 
@@ -40,12 +40,12 @@ function CompleteCanvas({reload=false}) {
                 <div className='canvas-div'>
                     <div className='canvas-div-background' />
                     <Backdrop />
-                    <Canvas draw={draw} />
+                    <Canvas draw={draw} disableHotKeys={disableHotKeys} />
                     {canvasSettings.displayGrid && <Grid />}
                 </div>
             </div>
             <div >
-                <CanvasTools canvasSettings={canvasSettings} />
+                <CanvasTools canvasSettings={canvasSettings} disableHotKeys={disableHotKeys}/>
             </div>
         </div>
     );
