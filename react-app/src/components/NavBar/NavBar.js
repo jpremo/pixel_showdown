@@ -51,6 +51,7 @@ const NavBar = ({ setAuthenticated }) => {
     dispatch(changeProperty(initialSettings))
   }
   return (
+    <>
     <nav id='nav-bar'>
       <ModalContainer hidden={!modals.login} cancel={setLoginModal}>
         <LoginForm setAuthenticated={setAuthenticated}></LoginForm>
@@ -90,6 +91,8 @@ const NavBar = ({ setAuthenticated }) => {
 
       </div>
     </nav>
+    <div className='nav-spacer'></div>
+    </>
   );
 }
 

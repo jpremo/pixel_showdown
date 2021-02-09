@@ -2,7 +2,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: sticky;
+  position: fixed;
+  height: 72px;
   top: 0;
   background-color: #746d75cc;
   /* 8ACDEA
@@ -14,6 +15,11 @@
   z-index: 100;
   border-bottom: 2px solid black;
   margin: 0;
+}
+
+.nav-spacer{
+  height: 72px;
+  width: 100%;
 }
 
 #nav-bar-logo-picture {
