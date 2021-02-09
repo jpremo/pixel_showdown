@@ -93,11 +93,16 @@ const Canvas = props => {
 
             const pixelXY = `${pixelX}-${pixelY}`
             const target = canvasSettings.currentGrid[pixelXY]
-            if (target && target !== canvasSettings.color) {
-                const canvas = canvasRef.current
-                const ctx = canvas.getContext('2d')
-                const newCol = overwritePixel(ctx, canvasSettings.color, pixelX, pixelY, canvasSettings.pixelSize)
-                drawGrid[pixelXY] = newCol
+            for (let xx = pixelX; xx < canvasSettings.brushSize + pixelX; xx++) {
+                for (let yy = pixelY; yy < canvasSettings.brushSize + pixelY; yy++) {
+                    const pixelXY = `${xx}-${yy}`
+                    if ( target && _.isEqual(target, canvasSettings.currentGrid[pixelXY])  && !_.isEqual(target, drawGrid[pixelXY]) &&  target !== canvasSettings.color && target !== 'deleted') {
+                        const canvas = canvasRef.current
+                        const ctx = canvas.getContext('2d')
+                        const newCol = overwritePixel(ctx, canvasSettings.color, xx, yy, canvasSettings.pixelSize)
+                        drawGrid[pixelXY] = newCol
+                    }
+                }
             }
         }
     }
@@ -200,8 +205,8 @@ const Canvas = props => {
 
     return (
         <>
-        {/* style={{cursor: `url('${currentCursor}'), auto`}} */}
-            <canvas className='pixel-canvas'  ref={canvasRef} {...rest} onMouseMove={toolAction} onMouseDown={toolAction} onMouseUp={toolUp} onMouseLeave={updateGrid} />
+            {/* style={{cursor: `url('${currentCursor}'), auto`}} */}
+            <canvas className='pixel-canvas' ref={canvasRef} {...rest} onMouseMove={toolAction} onMouseDown={toolAction} onMouseUp={toolUp} onMouseLeave={updateGrid} />
         </>
     )
 }
