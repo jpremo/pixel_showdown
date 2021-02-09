@@ -48,20 +48,31 @@ const RulesetForm = () => {
         <div id='ruleset-form-wrapper'>
             <h1 className='form-title'>Create a Ruleset</h1>
             <div className='ruleset-content-container'>
+                <RulecheckBox property='disableColorSelector' title='Disable Custom Colors' />
+                <RulecheckBox property='disableAlphaPicker' title='Disable Alpha Slider' />
+                <RulecheckBox property='disableEraser' title='Disable Eraser' />
+                <RulecheckBox property='disableFill' title='Disable Fill Tool' />
+                <RulecheckBox property='disableEyedropper' title='Disable Eyedropper' />
+                <RulecheckBox property='disableColorSwapper' title='Disable Color Swapper' />
+                <RulecheckBox property='disableColorSwapBrush' title='Disable Color Swap Brush' />
+                <RulecheckBox property='disableUndoRedo' title='Disable Undo and Redo' />
                 <RulecheckBox property='disableGrid' title='Disable Grid' />
-                <RulecheckBox property='disableGrid' title='Disable Grid' />
-                <RulecheckBox property='disableGrid' title='Disable Grid' />
-                <RulecheckBox property='disableGrid' title='Disable Grid' />
+                <RulecheckBox property='disableClear' title='Disable Clear' />
             </div>
             <div className='ruleset-content-container'>
             <RulesetRange property='totalFrames' title='Total Frames' />
             <RulesetRange property='fps' title='FPS' />
+            <RulesetRange property='pixelSize' title='Pixel Size' />
+            <RulesetRange property='brushSize' title='Brush Size' />
+            <RulesetRange property='width' title='Canvas Width' />
+            <RulesetRange property='height' title='Canvas Height' />
             </div>
             <div className='ruleset-content-container'>
                 <RulesetSelector title='Time Limit' options={timeLimitOptions} property={'timeLimit'} />
                 <RulesetSelector title='Competition Length' options={contestLengthOptions} property={'contestLength'} />
             </div>
             <RulesetColor/>
+            <h1 className='form-title' style={{margin: '20px'}}>Canvas Preview</h1>
             <CompleteCanvas reload={true} />
         </div>
         </div>
