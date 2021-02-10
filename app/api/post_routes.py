@@ -39,6 +39,6 @@ def get_recent_competitions():
     current_time = datetime.utcnow()
     competitions = Post.query.filter(
         and_(Post.rulesetId != None, Post.competitionEnd >= current_time)).order_by(desc(Post.competitionEnd)).limit(5).all()
-    neat_competitions = [comp.to_dict() for comp in competitions]
+    neat_competitions = [comp.to_dict_detailed() for comp in competitions]
     print('\n', neat_competitions, '\n')
     return {'competitions':neat_competitions}

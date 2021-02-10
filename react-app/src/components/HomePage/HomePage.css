@@ -46,3 +46,11 @@
   width: 100%;
   box-sizing: border-box;
 }
+
+.user-icon{
+  border: 1px solid black;
+  height: 32px;
+  width: 32px;
+  border-radius: 32px;
+  grid-row: 1 / 3;
+}

@@ -35,3 +35,21 @@ class Post(db.Model):
             "created_at": self.created_at,
             "updated_at": self.updated_at
         }
+
+    def to_dict_detailed(self):
+        """A function that returns key object information in a readable format"""
+        nums = []
+        for i in self.competition_images:
+            nums.append(i.to_dict())
+        return {
+            "id": self.id,
+            "body": self.body,
+            "attachments": self.attachments,
+            "competitionEnd": self.competitionEnd,
+            "competitionWinners": self.competitionWinners,
+            "ruleset": self.ruleset.to_dict(),
+            "user": self.user.to_dict(),
+            "images": nums,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
+        }
