@@ -3,12 +3,14 @@ import thunk from 'redux-thunk';
 import session from './session'
 import canvas from './canvas'
 import modal from './modal'
+import posts from './posts'
 
 //Here we setup redux for the site
 const rootReducer = combineReducers({
   session,
   canvas,
-  modal
+  modal,
+  posts
 });
 
 let enhancer;

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Canvas from '../canvas/Canvas'
 import CanvasTools from '../canvas/CanvasTools'
 import { pixelParser, rgbToHex } from '../canvas/color_functions'
@@ -10,19 +10,22 @@ import CreatePostForm from "./CreatePostForm";
 import CreateCompetitionForm from "./CreateCompetitionForm";
 import ModalContainer from '../NavBar/ModalContainer'
 import './HomePage.css'
+import { recentCompetitions } from '../../store/posts'
+import PostList from './PostList'
 //This component organizes the home page
 function HomePage() {
     const modals = useSelector(state => state.modal)
     const user = useSelector(state => state.session.user)
+    const posts = useSelector(state => state.posts)
     const dispatch = useDispatch()
-
+    const [loaded, setLoaded] = useState(false)
     useEffect(() => {
-        const loadData = async () => {
+        (async function () {
             let data = await fetch('/api/posts/competitions/recent')
             data = await data.json()
-            console.log('return data', data)
-        }
-        loadData()
+            dispatch(recentCompetitions(data))
+            setLoaded(true)
+        })();
     }, [])
 
     const openPostModal = (e) => {
@@ -44,14 +47,20 @@ function HomePage() {
     return (
         <>
             <ModalContainer hidden={!modals.post} cancel={setCreatePostModal}>
-                <CreatePostForm/>
+                <CreatePostForm />
             </ModalContainer>
             <ModalContainer hidden={!modals.competition} cancel={setCreateCompetitionModal}>
-                <CreateCompetitionForm/>
+                <CreateCompetitionForm />
             </ModalContainer>
-            <h1>Home</h1>
-            <div className='modal-link modal-button' onClick={openPostModal}>New Post</div>
-            <div className='modal-link modal-button' onClick={openCompetitionModal}>New Competition</div>
+            {loaded &&
+                <>
+                    <h1>Home</h1>
+                    <div className='modal-link modal-button' onClick={openPostModal}>New Post</div>
+                    <div className='modal-link modal-button' onClick={openCompetitionModal}>New Competition</div>
+                    <PostList name='New Competitions' postList={posts.recentCompetitions} competition={true}/>
+                </>
+            }
+
         </>
     );
 }

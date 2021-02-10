@@ -32,7 +32,7 @@ export const setCreateCompetitionModal = (bool) => ({
 
 
 
-const initialState = { login: false, signup: false, incomplete: false, text: false };
+const initialState = { login: false, signup: false, incomplete: false, text: false, competition: false };
 
 function reducer(state = initialState, action) {
     let newState;
