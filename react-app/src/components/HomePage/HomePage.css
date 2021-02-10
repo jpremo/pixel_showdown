@@ -4,7 +4,8 @@
   background-color: white;
   border: 1px solid black;
   font-size: 20px;
-  width: 251px;
+  box-sizing: border-box;
+  width: 250px;
 }
 
 #competition-modal-body:focus {
@@ -35,4 +36,13 @@
   color: white;
   margin-bottom: 1px;
   margin-top: 5px;
+}
+
+.word-counter{
+  text-align: right;
+  padding: 8px;
+  font-size: 16px;
+  color: white;
+  width: 100%;
+  box-sizing: border-box;
 }

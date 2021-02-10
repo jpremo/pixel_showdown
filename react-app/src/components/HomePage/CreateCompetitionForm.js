@@ -45,13 +45,15 @@ const CreateCompetitionForm = ({ authenticated, setAuthenticated }) => {
                     <h1 className='modal-title'>New Competition</h1>
                     <CompetitionSelector />
                     <div className='modal-form-div'>
-                        <label htmlFor="body">Email</label>
+                        <label htmlFor="body">Post Body</label>
                         <textarea
                             id='competition-modal-body'
                             name="body"
-                            placeholder="Body"
+                            placeholder="Post Body"
                             value={body}
-                            onChange={updateBody} />
+                            onChange={updateBody}
+                            maxLength={1000} />
+                        <div className='word-counter'>{body.length}/1000</div>
                     </div>
 
                     <div className='modal-button-box'>
