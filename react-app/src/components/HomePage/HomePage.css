@@ -1,0 +1,38 @@
+#competition-modal-body {
+  border-radius: 8px;
+  padding: 3px;
+  background-color: white;
+  border: 1px solid black;
+  font-size: 20px;
+  width: 251px;
+}
+
+#competition-modal-body:focus {
+  background-color: #ede6f2;
+  outline: none;
+}
+
+#competition-modal-body::placeholder {
+  border-radius: 10px;
+  outline: none;
+}
+
+.competition-select {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border: 1px solid black;
+  margin: 0;
+  border-radius: 5px;
+  display: inline-block;
+  width: 250px;
+}
+
+#competition-body-label {
+  display: block;
+  text-decoration: underline;
+  font-size: 26px;
+  color: white;
+  margin-bottom: 1px;
+  margin-top: 5px;
+}

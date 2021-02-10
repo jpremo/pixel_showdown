@@ -45,6 +45,9 @@ class User(db.Model, UserMixin):
 
     def to_dict(self):
         """A function that returns key object information in a readable format"""
+        nums = []
+        for r in self.rulesets:
+            nums.append(r.to_dict_simple())
         return {
             "id": self.id,
             "username": self.username,
@@ -54,5 +57,6 @@ class User(db.Model, UserMixin):
             "biography": self.biography,
             "profileImg": self.profileImg,
             "created_at": self.created_at,
-            "updated_at": self.updated_at
+            "updated_at": self.updated_at,
+            "rulesets": nums
         }
