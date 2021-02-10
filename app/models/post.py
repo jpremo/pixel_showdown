@@ -10,6 +10,8 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(1000), nullable=False)
     attachments = db.Column(JSONB, nullable=False)
+    competitionEnd = db.Column(db.DateTime, nullable=True)
+    competitionWinners = db.Column(JSONB, nullable=True)
     rulesetId = db.Column(db.Integer, db.ForeignKey("rulesets.id"), nullable=True)
     userId = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
