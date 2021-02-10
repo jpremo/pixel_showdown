@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Canvas from '../canvas/Canvas'
 import CanvasTools from '../canvas/CanvasTools'
 import { pixelParser, rgbToHex } from '../canvas/color_functions'
@@ -15,6 +15,15 @@ function HomePage() {
     const modals = useSelector(state => state.modal)
     const user = useSelector(state => state.session.user)
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        const loadData = async () => {
+            let data = await fetch('/api/posts/competitions/recent')
+            data = await data.json()
+            console.log('return data', data)
+        }
+        loadData()
+    }, [])
 
     const openPostModal = (e) => {
         if (user.id) {

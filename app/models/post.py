@@ -28,6 +28,8 @@ class Post(db.Model):
             "id": self.id,
             "body": self.body,
             "attachments": self.attachments,
+            "competitionEnd": self.competitionEnd,
+            "competitionWinners": self.competitionWinners,
             "rulesetId": self.rulesetId,
             "userId": self.userId,
             "created_at": self.created_at,
