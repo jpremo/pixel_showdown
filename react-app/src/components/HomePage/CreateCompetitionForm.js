@@ -14,7 +14,7 @@ const CreateCompetitionForm = ({ authenticated, setAuthenticated }) => {
     const [loaded, setLoaded] = useState(false)
     const dispatch = useDispatch()
     const user = useSelector(state => state.session.user)
-
+    const [ruleset, setRuleset] = useState(undefined)
 
     useEffect(() => {
         setLoaded(true)
@@ -25,25 +25,33 @@ const CreateCompetitionForm = ({ authenticated, setAuthenticated }) => {
     }
 
     const onPost = async (e) => {
-        console.log('posted')
+        const obj = {
+            rulesetId: ruleset,
+            body,
+            attachments: {},
+            userId: user.id
+        }
+        const response = await fetch("/api/posts/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(obj),
+          });
+          return await response.json();
     };
-
-
 
     const updateBody = (e) => {
         setBody(e.target.value);
     };
 
-    const updatePassword = (e) => {
-        setPassword(e.target.value);
-    };
 
     return (
         <form>
             {loaded &&
                 <>
                     <h1 className='modal-title'>New Competition</h1>
-                    <CompetitionSelector />
+                    <CompetitionSelector setRuleset={setRuleset}/>
                     <div className='modal-form-div'>
                         <label htmlFor="body">Post Body</label>
                         <textarea

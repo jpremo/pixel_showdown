@@ -5,12 +5,12 @@ import { changeRuleset } from '../../store/canvas'
 
 
 
-const ComptitionSelector = () => {
+const ComptitionSelector = ({setRuleset}) => {
     const dispatch = useDispatch()
     const [options, setOptions] = useState([
         { value: undefined, label: 'Please create a ruleset before making a competition' },
     ])
-    const [ruleset, setRuleset] = useState(options[0])
+    // setRuleset(options[0])
     const [loaded, setLoaded] = useState(false)
     const user = useSelector(state => state.session.user)
     useEffect(() => {
@@ -21,6 +21,7 @@ const ComptitionSelector = () => {
             }
             setOptions(options)
             setLoaded(true)
+            setRuleset(options[0].value)
         }
     }, [])
 

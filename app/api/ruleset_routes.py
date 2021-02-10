@@ -6,7 +6,7 @@ ruleset_routes = Blueprint('rulesets', __name__)
 @ruleset_routes.route('/', methods=['POST'])
 def create_ruleset():
     """
-    Retrieves and returns information on specified user
+    Creates a new ruleset based on post body
     """
     data = request.get_json(force=True)
     if data['description'] == '':
@@ -21,5 +21,4 @@ def create_ruleset():
             )
     db.session.add(ruleset)
     db.session.commit()
-    print(data)
-    return 'returned'
+    return ruleset.to_dict()
