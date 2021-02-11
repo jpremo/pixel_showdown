@@ -6,8 +6,6 @@ import { changeProperty } from '../../store/canvas'
 import { useDispatch, useSelector } from "react-redux";
 import CompleteCanvas from '../canvas/CompleteCanvas'
 import { setCreatePostModal, setLoginModal, setCreateCompetitionModal } from '../../store/modal'
-import CreatePostForm from "./CreatePostForm";
-import CreateCompetitionForm from "./CreateCompetitionForm";
 import ModalContainer from '../NavBar/ModalContainer'
 import './HomePage.css'
 import { recentCompetitions, recentlyClosedCompetitions } from '../../store/posts'
@@ -33,35 +31,11 @@ function HomePage() {
         })();
     }, [])
 
-    const openPostModal = (e) => {
-        if (user.id) {
-            dispatch(setCreatePostModal(true))
-        } else {
-            dispatch(setLoginModal(true))
-        }
-    }
-
-    const openCompetitionModal = (e) => {
-        if (user.id) {
-            dispatch(setCreateCompetitionModal(true))
-        } else {
-            dispatch(setLoginModal(true))
-        }
-    }
-
     return (
         <>
-            <ModalContainer hidden={!modals.post} cancel={setCreatePostModal}>
-                <CreatePostForm />
-            </ModalContainer>
-            <ModalContainer hidden={!modals.competition} cancel={setCreateCompetitionModal}>
-                <CreateCompetitionForm />
-            </ModalContainer>
+
             {loaded &&
                 <>
-                    <h1>Home</h1>
-                    <div className='modal-link modal-button' onClick={openPostModal}>New Post</div>
-                    <div className='modal-link modal-button' onClick={openCompetitionModal}>New Competition</div>
                     <div className='highlight-div'>
                         <PostList name='New Competitions' postList={posts.recentCompetitions} competition={true} />
                         <PostList name='Recently Closed Competitions' postList={posts.recentlyClosedCompetitions} competition={true} competitionClosed={true} />
