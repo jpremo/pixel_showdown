@@ -4,7 +4,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { parse } from 'query-string'
 import { setLoginModal } from '../../store/modal'
 import { useDispatch } from 'react-redux'
-function PostList({ postList, name, competition }) {
+function PostList({ postList, name, competition, competitionClosed=false }) {
     const [confirmScreen, setConfirmScreen] = useState(false)
     const history = useHistory()
 
@@ -23,7 +23,7 @@ function PostList({ postList, name, competition }) {
             <h1>{name}</h1>
             {postList.map((el, ind) => {
                 return (
-                    <PostBox post={el} key={ind} competition={competition}/>
+                    <PostBox post={el} key={ind} competition={competition} competitionClosed={competitionClosed}/>
                 )
             })}
         </div>

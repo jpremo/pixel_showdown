@@ -10,7 +10,7 @@ import CreatePostForm from "./CreatePostForm";
 import CreateCompetitionForm from "./CreateCompetitionForm";
 import ModalContainer from '../NavBar/ModalContainer'
 import './HomePage.css'
-import { recentCompetitions } from '../../store/posts'
+import { recentCompetitions, recentlyClosedCompetitions } from '../../store/posts'
 import PostList from './PostList'
 //This component organizes the home page
 function HomePage() {
@@ -24,6 +24,11 @@ function HomePage() {
             let data = await fetch('/api/posts/competitions/recent')
             data = await data.json()
             dispatch(recentCompetitions(data))
+
+            data = await fetch('/api/posts/competitions/recently-closed')
+            data = await data.json()
+            dispatch(recentlyClosedCompetitions(data))
+
             setLoaded(true)
         })();
     }, [])
@@ -58,6 +63,7 @@ function HomePage() {
                     <div className='modal-link modal-button' onClick={openPostModal}>New Post</div>
                     <div className='modal-link modal-button' onClick={openCompetitionModal}>New Competition</div>
                     <PostList name='New Competitions' postList={posts.recentCompetitions} competition={true}/>
+                    <PostList name='Recently Closed Competitions' postList={posts.recentlyClosedCompetitions} competition={true} competitionClosed={true}/>
                 </>
             }
 

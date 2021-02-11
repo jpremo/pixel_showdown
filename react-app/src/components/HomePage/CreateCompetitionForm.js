@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import { login } from "../../services/auth";
 import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from '../../store/session'
@@ -15,6 +15,8 @@ const CreateCompetitionForm = ({ authenticated, setAuthenticated }) => {
     const dispatch = useDispatch()
     const user = useSelector(state => state.session.user)
     const [ruleset, setRuleset] = useState(undefined)
+
+    const history = useHistory()
 
     useEffect(() => {
         setLoaded(true)
@@ -38,7 +40,9 @@ const CreateCompetitionForm = ({ authenticated, setAuthenticated }) => {
             },
             body: JSON.stringify(obj),
           });
-          return await response.json();
+          const data = await response.json()
+          dispatch(setCreateCompetitionModal(false))
+          history.push(`/competitions/${data.id}`)
     };
 
     const updateBody = (e) => {
