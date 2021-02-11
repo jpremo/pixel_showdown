@@ -62,8 +62,10 @@ function HomePage() {
                     <h1>Home</h1>
                     <div className='modal-link modal-button' onClick={openPostModal}>New Post</div>
                     <div className='modal-link modal-button' onClick={openCompetitionModal}>New Competition</div>
-                    <PostList name='New Competitions' postList={posts.recentCompetitions} competition={true}/>
-                    <PostList name='Recently Closed Competitions' postList={posts.recentlyClosedCompetitions} competition={true} competitionClosed={true}/>
+                    <div className='highlight-div'>
+                        <PostList name='New Competitions' postList={posts.recentCompetitions} competition={true} />
+                        <PostList name='Recently Closed Competitions' postList={posts.recentlyClosedCompetitions} competition={true} competitionClosed={true} />
+                    </div>
                 </>
             }
 
