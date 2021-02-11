@@ -9,6 +9,7 @@ import Sketch from './components/Sketch'
 import { restoreUser } from "./store/session";
 import { useDispatch } from "react-redux";
 import RulesetForm from "./components/forms/RulesetForm";
+import CompetitionPage from './components/CompetitionPage'
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -53,6 +54,9 @@ function App() {
         </Route>
         <Route path="/users/:userId" exact={true} authenticated={authenticated}>
           <User />
+        </Route>
+        <Route path="/competitions/:postId" exact={true} authenticated={authenticated}>
+          <CompetitionPage/>
         </Route>
         <Route path="/rulesets/create" exact={true} authenticated={authenticated}>
           <RulesetForm />

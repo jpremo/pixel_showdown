@@ -45,11 +45,23 @@ def get_recent_competitions():
 @post_routes.route('/competitions/recently-closed', methods=['GET'])
 def get_recent_closed_competitions():
     """
-    Grabs the five most recently created competitions
+    Grabs the five most recently closed competitions
     """
     current_time = datetime.utcnow()
     competitions = Post.query.filter(
         and_(Post.rulesetId != None, Post.competitionEnd < current_time)).order_by(desc(Post.competitionEnd)).limit(5).all()
     neat_competitions = [comp.to_dict_detailed() for comp in competitions]
-    print('\n Results \n', neat_competitions, '\n')
     return {'competitions':neat_competitions}
+
+@post_routes.route('/competitions/<int:id>', methods=['GET'])
+def get_competition(id):
+    """
+    Grabs the competition specified
+    """
+    competition = Post.query.get(id)
+    if(competition):
+        competition = competition.to_dict_detailed()
+        return {'competition':competition}
+
+
+    return {'notFound':True}

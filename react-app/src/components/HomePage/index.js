@@ -8,7 +8,7 @@ import CompleteCanvas from '../canvas/CompleteCanvas'
 import { setCreatePostModal, setLoginModal, setCreateCompetitionModal } from '../../store/modal'
 import ModalContainer from '../NavBar/ModalContainer'
 import './HomePage.css'
-import { recentCompetitions, recentlyClosedCompetitions } from '../../store/posts'
+import { recentCompetitions, recentlyClosedCompetitions, clearCompetitions} from '../../store/posts'
 import PostList from './PostList'
 //This component organizes the home page
 function HomePage() {
@@ -19,6 +19,7 @@ function HomePage() {
     const [loaded, setLoaded] = useState(false)
     useEffect(() => {
         (async function () {
+            dispatch(clearCompetitions())
             let data = await fetch('/api/posts/competitions/recent')
             data = await data.json()
             dispatch(recentCompetitions(data))
