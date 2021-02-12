@@ -67,6 +67,7 @@
     justify-content: center;
     align-items: center;
     width: 250px;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .ruleset-checkbox-wrapper{
@@ -123,4 +124,5 @@
 .ruleset-content-div input,textarea {
     width: 200px;
     font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;
 }

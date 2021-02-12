@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { changeProperty } from '../../store/canvas'
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import RulecheckBox from './RuleCheckbox';
 import CompleteCanvas from '../canvas/CompleteCanvas';
@@ -14,6 +15,7 @@ const RulesetForm = () => {
     const canvasSettings = useSelector(state => state.canvas)
     const user = useSelector(state => state.session.user)
     const dispatch = useDispatch()
+    const history = useHistory()
     const [title, setTitle] = useState('')
     const [body, setBody] = useState('')
     const timeLimitOptions = [
@@ -65,6 +67,7 @@ const RulesetForm = () => {
               userId: user.id
             }),
           });
+          history.push('/')
           return await response.json();
         } else {
             dispatch(setLoginModal(true))
