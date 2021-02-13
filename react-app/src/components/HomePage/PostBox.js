@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import React from 'react'
-import { formatDistance, subDays } from 'date-fns'
+import { formatDistance } from 'date-fns'
 
 
 function PostBox({ post, competition, competitionClosed }) {
