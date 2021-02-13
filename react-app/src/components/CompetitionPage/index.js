@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from 'react-router-dom';
 import { competitionPage, clearCompetitionPage } from '../../store/posts'
-import { formatDistance } from 'date-fns'
+import { format, formatDistance, addSeconds } from 'date-fns'
 import { Link } from 'react-router-dom'
-import { de } from "date-fns/locale";
 import { isArray } from "lodash";
+import {CirclePicker} from 'react-color'
 import './CompetitionPage.css'
+import Carousel from "./Carousel";
 //Component used to wrap elements that should be displayed in a modal; hidden prop is used to specify the property that
 //checks whether the modal should be visible
 const CompetitionPage = () => {
@@ -48,13 +49,7 @@ const CompetitionPage = () => {
         }
 
         const textOutput = (key, value) => {
-            // debugger
-            let finalValue = ''
             if (typeof value === 'object' && !isArray(value)) {
-                for (let key in value) {
-                    // debugger
-                    finalValue += titleCase(key) + ': ' + String(value[key] + ' ')
-                }
                 return (
                     <>
                         <div className='range-text-title'>{titleCase(key)}:</div>
@@ -67,12 +62,33 @@ const CompetitionPage = () => {
             return null
         }
 
+        const disabledList = (key, value) => {
+            if (key.includes('disable') && value === true) {
+                return (
+                    <>
+                        <div className='tool-change-item'>{titleCase(key).split(' ').slice(1).join(' ') + " Disabled"}</div>
+                    </>
+                )
+            }
+            return null
+        }
+
         // const parseRules = (rules) => {
         //     for (let key in rules) {
 
         //         finalValue += titleCase(key) + ': ' + value
         //     }
         // }
+
+        function formattedTime(m) {
+            if (m === .5) {
+                return '30 Seconds'
+            } else if (m === 60) {
+                return '1 Hour'
+            } else {
+                return `${m} Minutes`
+            }
+        }
 
         const imageError = (event) => {
             event.target.src = "http://simpleicon.com/wp-content/uploads/user1.png";
@@ -95,7 +111,17 @@ const CompetitionPage = () => {
                             <div className='post-description-title'>Competition Description</div>
                             <div className='post-description-ruleset'>{post.ruleset.description}</div>
                         </div>
+                        <div>{new Date() > new Date(post.competitionEnd) ? 'Closed on' : 'Closes on'} {format(new Date(post.competitionEnd), 'eeee, MMMM do')} at {format(new Date(post.competitionEnd), 'h:m a')}</div>
                         <div>Rules</div>
+                        <div>Submission Time Limit: {formattedTime(post.ruleset.rules.timeLimit)}</div>
+                        <div>Base Color Palette:</div>
+                        <div className='canvas-tools-circle'>
+                            <CirclePicker
+                                color={"#FFFFFF"}
+                                colors={post.ruleset.rules.defaultPalette}
+                                className={'no-select'}
+                            />
+                        </div>
                         {Object.entries(post.ruleset.rules).map((el, ind) => {
                             return (
                                 <div className='range-text-box' key={ind}>
@@ -103,6 +129,20 @@ const CompetitionPage = () => {
                                 </div>
                             )
                         })}
+                        <div>Tool Changes:</div>
+                        <ul className='tool-alterations-list'>
+                        {Object.entries(post.ruleset.rules).map((el, ind) => {
+                            const val = disabledList(el[0], el[1])
+                            if(!val) return null
+                            return (
+                                <li key={ind}>
+                                    {val}
+                                </li>
+                            )
+                        })}
+                        </ul>
+                        <div>Submissions</div>
+                        <Carousel images={post.images}/>
                     </div>
                 }
             </>
