@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { competitionPage, clearCompetitionPage } from '../../store/posts'
-import { format, formatDistance, addSeconds } from 'date-fns'
+import { format, formatDistance, isPast, addSeconds } from 'date-fns'
 import { Link } from 'react-router-dom'
 import { isArray } from "lodash";
-import {CirclePicker} from 'react-color'
+import { CirclePicker } from 'react-color'
 import './CompetitionPage.css'
 import Carousel from "./Carousel";
+import { setLoginModal } from '../../store/modal'
 //Component used to wrap elements that should be displayed in a modal; hidden prop is used to specify the property that
 //checks whether the modal should be visible
 const CompetitionPage = () => {
@@ -15,6 +16,7 @@ const CompetitionPage = () => {
     const user = useSelector(state => state.session.user)
     const post = useSelector(state => state.posts.competitionPage)
     const dispatch = useDispatch()
+    const history = useHistory()
     const [loaded, setLoaded] = useState(false)
     const [notFound, setNotFound] = useState(false)
     const params = useParams()
@@ -94,8 +96,61 @@ const CompetitionPage = () => {
             event.target.src = "http://simpleicon.com/wp-content/uploads/user1.png";
         }
 
+        const filteredImages = post.images.filter((img) => {
+            const expirationDate = addSeconds(new Date(img.created_at), post.ruleset.rules.timeLimit * 60)
+            if (isPast(expirationDate)) {
+                return true
+            }
+        })
+
         let timeDif = formatDistance(new Date(post.created_at), new Date())
         if (post.user.profileImg === null || post.user.profileImg === undefined) post.user.profileImage = 'create-error'
+
+        const entryLink = () => {
+            if (user.id) {
+                history.push(`/competitions/${post.id}/entry`)
+            } else {
+                dispatch(setLoginModal(true))
+            }
+        }
+
+        const entryCheck = () => {
+            if (!isPast(new Date(post.competitionEnd))) {
+                if (user.id) {
+                    if (user.id === post.user.id) {
+                        return (
+                            <div className='competition-text'>Your competition is going great! Check back in later to judge the entries.</div>
+                        )
+                    }
+                    let userSubmission = post.images.filter((el) => {
+                        return el.userId === user.id
+                    })
+                    userSubmission = userSubmission[0]
+                    if (userSubmission) {
+                        const expirationDate = addSeconds(new Date(userSubmission.created_at), post.ruleset.rules.timeLimit * 60)
+                        if (isPast(expirationDate)) {
+                            return (
+                                <div className='competition-text'>Your entry has been received!</div>
+                            )
+                        } else {
+                            return (
+                                <div className='nav-link' onClick={entryLink}>Edit Entry</div>
+                            )
+                        }
+                    }
+                }
+                return (
+                    <div className='nav-link' onClick={entryLink}>Create Entry</div>
+                )
+            } else {
+                if (user.id === post.user.id) {
+                    return (
+                        <div className='nav-link' onClick={() => history.push(`/competitions/${post.id}/judge`)}>Judge Entries</div>
+                    )
+                }
+            }
+
+        }
 
         return (
             <>
@@ -111,6 +166,7 @@ const CompetitionPage = () => {
                             <div className='post-description-title'>Competition Description</div>
                             <div className='post-description-ruleset'>{post.ruleset.description}</div>
                         </div>
+                        {entryCheck()}
                         <div>{new Date() > new Date(post.competitionEnd) ? 'Closed on' : 'Closes on'} {format(new Date(post.competitionEnd), 'eeee, MMMM do')} at {format(new Date(post.competitionEnd), 'h:m a')}</div>
                         <div>Rules</div>
                         <div>Submission Time Limit: {formattedTime(post.ruleset.rules.timeLimit)}</div>
@@ -131,18 +187,18 @@ const CompetitionPage = () => {
                         })}
                         <div>Tool Changes:</div>
                         <ul className='tool-alterations-list'>
-                        {Object.entries(post.ruleset.rules).map((el, ind) => {
-                            const val = disabledList(el[0], el[1])
-                            if(!val) return null
-                            return (
-                                <li key={ind}>
-                                    {val}
-                                </li>
-                            )
-                        })}
+                            {Object.entries(post.ruleset.rules).map((el, ind) => {
+                                const val = disabledList(el[0], el[1])
+                                if (!val) return null
+                                return (
+                                    <li key={ind}>
+                                        {val}
+                                    </li>
+                                )
+                            })}
                         </ul>
                         <div>Submissions</div>
-                        <Carousel images={post.images}/>
+                        <Carousel images={filteredImages} />
                     </div>
                 }
             </>
