@@ -119,7 +119,7 @@ const CompetitionPage = () => {
                 if (user.id) {
                     if (user.id === post.user.id) {
                         return (
-                            <div className='competition-text'>Your competition is going great! Check back in later to judge the entries.</div>
+                            <div className='bolded-text'>Your competition is going great! Check back in later to judge the entries.</div>
                         )
                     }
                     let userSubmission = post.images.filter((el) => {
@@ -130,7 +130,7 @@ const CompetitionPage = () => {
                         const expirationDate = addSeconds(new Date(userSubmission.created_at), post.ruleset.rules.timeLimit * 60)
                         if (isPast(expirationDate)) {
                             return (
-                                <div className='competition-text'>Your entry has been received!</div>
+                                <div className='bolded-text'>Your entry has been received!</div>
                             )
                         } else {
                             return (
@@ -152,53 +152,76 @@ const CompetitionPage = () => {
 
         }
 
+        let disabledTools = Object.entries(post.ruleset.rules).map((el, ind) => {
+            const val = disabledList(el[0], el[1])
+            if (!val) return null
+            return (
+                <li key={ind}>
+                    {val}
+                </li>
+            )
+        })
+        let showTools = false
+        for(let i = 0; i < disabledTools.length; i++) {
+            if(disabledTools[i] !== null) {
+                showTools = true
+            }
+        }
+
         return (
             <>
                 { loaded &&
-
-                    <div className='post-box'>
-                        <div className='user-bar'>
-                            <img className='user-icon' src={post.user.profileImg} onError={imageError} alt="User Icon" />
-                            <div className='username'>Created by <Link to={`/users/${post.user.id}`} className='user-link'>{post.user.username}</Link> {timeDif} ago</div>
-                        </div>
-                        <div className='post-description'>{post.body}</div>
-                        <div className='post-ruleset-wrapper'>
-                            <div className='post-description-title'>Competition Description</div>
-                            <div className='post-description-ruleset'>{post.ruleset.description}</div>
-                        </div>
-                        {entryCheck()}
-                        <div>{new Date() > new Date(post.competitionEnd) ? 'Closed on' : 'Closes on'} {format(new Date(post.competitionEnd), 'eeee, MMMM do')} at {format(new Date(post.competitionEnd), 'h:m a')}</div>
-                        <div>Rules</div>
-                        <div>Submission Time Limit: {formattedTime(post.ruleset.rules.timeLimit)}</div>
-                        <div>Base Color Palette:</div>
-                        <div className='canvas-tools-circle'>
-                            <CirclePicker
-                                color={"#FFFFFF"}
-                                colors={post.ruleset.rules.defaultPalette}
-                                className={'no-select'}
-                            />
-                        </div>
-                        {Object.entries(post.ruleset.rules).map((el, ind) => {
-                            return (
-                                <div className='range-text-box' key={ind}>
-                                    {textOutput(el[0], el[1])}
+                    <div className='competition-content-wrapper'>
+                        <div className='competition-content'>
+                            <div>
+                            <div className='user-bar'>
+                                <img className='user-icon' src={post.user.profileImg} onError={imageError} alt="User Icon" />
+                                <div className='username'>Created by <Link to={`/users/${post.user.id}`} className='user-link'>{post.user.username}</Link> {timeDif} ago</div>
+                            </div>
+                            <div className='post-description'>{post.body}</div>
+                            <div className='post-ruleset-wrapper'>
+                                <div className='post-description-title'>Competition Description</div>
+                                <div className='post-description-ruleset'>{post.ruleset.description}</div>
+                            </div>
+                            </div>
+                            <div className='bolded-text'>{new Date() > new Date(post.competitionEnd) ? 'Closed on' : 'Closes on'} {format(new Date(post.competitionEnd), 'eeee, MMMM do yyyy')} at {format(new Date(post.competitionEnd), 'h:m a')}</div>
+                            <div className='competition-title-large'>Submissions</div>
+                            <Carousel images={filteredImages} />
+                            <div className='competition-title-large'>Rules</div>
+                            <div className='bolded-text'>Submission Time Limit: {formattedTime(post.ruleset.rules.timeLimit)}</div>
+                            <div className='competition-palette-box'>
+                                <div>
+                                    <div className='range-text-title'>Base Color Palette:</div>
+                                    <div className='canvas-tools-circle'>
+                                        <CirclePicker
+                                            color={"#FFFFFF"}
+                                            colors={post.ruleset.rules.defaultPalette}
+                                            className={'no-select'}
+                                        />
+                                    </div>
                                 </div>
-                            )
-                        })}
-                        <div>Tool Changes:</div>
-                        <ul className='tool-alterations-list'>
-                            {Object.entries(post.ruleset.rules).map((el, ind) => {
-                                const val = disabledList(el[0], el[1])
-                                if (!val) return null
-                                return (
-                                    <li key={ind}>
-                                        {val}
-                                    </li>
-                                )
-                            })}
-                        </ul>
-                        <div>Submissions</div>
-                        <Carousel images={filteredImages} />
+                                {showTools &&
+                                    <div>
+                                        <div className='range-text-title'>Tool Changes:</div>
+                                        <ul className='tool-alterations-list'>
+                                            {disabledTools}
+                                        </ul>
+                                    </div>
+                                }
+                            </div>
+                            <div className='competition-rule-box'>
+                                {Object.entries(post.ruleset.rules).map((el, ind) => {
+                                    const val = textOutput(el[0], el[1])
+                                    if (!val) return null
+                                    return (
+                                        <div className='range-text-box' key={ind}>
+                                            {val}
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                            {entryCheck()}
+                        </div>
                     </div>
                 }
             </>

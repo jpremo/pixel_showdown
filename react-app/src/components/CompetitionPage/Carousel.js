@@ -12,6 +12,11 @@ function Carousel({ images }) {
         slidesToScroll: 1,
         arrows: true,
     };
+    if(images.length === 0) {
+        return(
+            <div className='competition-text'>No entries have been received yet!</div>
+        )
+    }
     return (
         <div className='carousel-div'>
             <Slider {...settings}>
