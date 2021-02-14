@@ -10,6 +10,7 @@ import { restoreUser } from "./store/session";
 import { useDispatch } from "react-redux";
 import RulesetForm from "./components/forms/RulesetForm";
 import CompetitionPage from './components/CompetitionPage'
+import Entry from './components/Entry'
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -57,6 +58,9 @@ function App() {
         </Route>
         <Route path="/competitions/:postId" exact={true} authenticated={authenticated}>
           <CompetitionPage/>
+        </Route>
+        <Route path="/competitions/:postId/entry/:id" exact={true}>
+          <Entry/>
         </Route>
         <Route path="/rulesets/create" exact={true} authenticated={authenticated}>
           <RulesetForm />

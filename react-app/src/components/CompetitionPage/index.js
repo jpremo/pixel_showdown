@@ -108,7 +108,7 @@ const CompetitionPage = () => {
 
         const entryLink = () => {
             if (user.id) {
-                history.push(`/competitions/${post.id}/entry`)
+                history.push(`/competitions/${post.id}/entry/new`)
             } else {
                 dispatch(setLoginModal(true))
             }
