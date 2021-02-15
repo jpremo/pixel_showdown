@@ -57,14 +57,22 @@
     width: 402px;
     padding: 0px;
     margin: 30px;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.carousel-div:focus{
+    outline: none;
 }
 
 .carousel-image{
     image-rendering: pixelated;
     max-width: 400px;
     max-height: 400px;
+    /* padding: 10px' */
     /* border: 1px solid black; */
 }
+
 
 .competition-text{
     font-size: 16px;

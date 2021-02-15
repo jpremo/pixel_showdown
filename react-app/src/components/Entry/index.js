@@ -5,9 +5,9 @@ import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { changeProperty } from '../../store/canvas'
 import { saveImage } from '../canvas/aws/index'
-import { de } from "date-fns/locale";
+import { addMinutes } from "date-fns";
 import { competitionPage, clearCompetitionPage } from '../../store/posts'
-
+import Timer from './Timer'
 //This component organizes the sketch page; it distinguishes whether the page is a new sketch or being edited by the
 //correct user
 function Entry() {
@@ -36,11 +36,10 @@ function Entry() {
 
     //Fetches data from backend server if an image id is specified in the url
     useEffect(() => {
-        debugger
         const fetchData = async () => {
             let data = await fetch(`/api/posts/competitions/${postId}`)
             data = await data.json()
-            debugger
+
             if (!data.notFound) {
                 dispatch(competitionPage(data))
             } else {
@@ -78,20 +77,21 @@ function Entry() {
                         moveHistory: moveHistoryNew,
                         historyPosition: historyPositionNew,
                         playing: false,
-                        ruleset: data.competition.ruleset.rules
+                        ruleset: data.competition.ruleset.rules,
+                        created_at: parsed.created_at,
                     }))
-                    debugger
+
                     setLoaded(true)
                 } catch (e) {
                     history.push(`/competitions/${postId}`)
                 }
             } else if (id === 'new') {
-                debugger
+
                 let query = await fetch(`/api/images/query?userId=${user.id}&competitionId=${data.competition.id}`)
                 let par = await query.json()
-                debugger
+
                 if(par.check === 'newEntry') {
-                    debugger
+
                     const info = await saveImage(getCanvasSaveData(data.competition.ruleset.rules), user, history, data.competition.id)
                     dispatch(changeProperty({ editing: info.id, editLink: info.apngImgUrl }))
                     history.push(`/competitions/${postId}/entry/${info.id}`)
@@ -115,6 +115,7 @@ function Entry() {
     if (loaded) {
         return (
             <div id='sketch-content-wrapper'>
+                <Timer endTime={addMinutes(new Date(canvasSettings.created_at), post.ruleset.rules.timeLimit) }/>
                 <CompleteCanvas />
             </div>
         );
