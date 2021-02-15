@@ -59,7 +59,7 @@ export function imageToDataUri(width, height, pixelSize, format, canvasSettings)
 }
 
 //saves current image to database and AWS; should only be used for new images
-export const saveImage = async (canvasSettings, user, history) => {
+export const saveImage = async (canvasSettings, user, history, competitionId=null) => {
     let data = imageToDataUri(canvasSettings.width, canvasSettings.height, 1, 'png', canvasSettings)
     const response = await fetch("/api/images/", {
         method: "POST",
@@ -73,10 +73,10 @@ export const saveImage = async (canvasSettings, user, history) => {
                 width: canvasSettings.width,
                 height: canvasSettings.height,
                 fps: canvasSettings.fps,
-                totalFrames: canvasSettings.totalFrames
+                totalFrames: canvasSettings.totalFrames,
             },
             userId: user.id,
-            competitionId: null,
+            competitionId,
             file: data
         }),
     });

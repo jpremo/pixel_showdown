@@ -22,17 +22,35 @@ function Entry() {
     let params = useParams()
     let { id, postId } = params;
 
+    const getCanvasSaveData = (rules) => {
+        const canvasInfo = {
+            grid: [{}],
+            width: rules.width.defaultValue,
+            height: rules.height.defaultValue,
+            fps: rules.fps.defaultValue,
+            totalFrames: rules.totalFrames.defaultValue,
+            title: 'Title'
+        }
+        return canvasInfo
+    }
+
     //Fetches data from backend server if an image id is specified in the url
     useEffect(() => {
+        debugger
         const fetchData = async () => {
             let data = await fetch(`/api/posts/competitions/${postId}`)
             data = await data.json()
+            debugger
             if (!data.notFound) {
                 dispatch(competitionPage(data))
             } else {
                 setNotFound(true)
+                return
             }
-            if (typeof id === 'number' && Number.isInteger(id)) {
+            if(!user.id || user.id === data.competition.user.id) {
+                history.push(`/competitions/${postId}`)
+            }
+            if (!isNaN(id) && Number.isInteger(Number(id))) {
                 try {
                     const res = await fetch('/api/images/' + id + '')
                     const parsed = await res.json()
@@ -62,15 +80,24 @@ function Entry() {
                         playing: false,
                         ruleset: data.competition.ruleset.rules
                     }))
+                    debugger
                     setLoaded(true)
                 } catch (e) {
-                    history.push(`/cometitions/${postId}`)
+                    history.push(`/competitions/${postId}`)
                 }
             } else if (id === 'new') {
                 debugger
-                const info = await saveImage(canvasSettings, user, history)
-                dispatch(changeProperty({ editing: info.id, editLink: info.apngImgUrl }))
-                history.push(`/cometitions/${postId}/entry/${info.id}`)
+                let query = await fetch(`/api/images/query?userId=${user.id}&competitionId=${data.competition.id}`)
+                let par = await query.json()
+                debugger
+                if(par.check === 'newEntry') {
+                    debugger
+                    const info = await saveImage(getCanvasSaveData(data.competition.ruleset.rules), user, history, data.competition.id)
+                    dispatch(changeProperty({ editing: info.id, editLink: info.apngImgUrl }))
+                    history.push(`/competitions/${postId}/entry/${info.id}`)
+                } else {
+                    history.push(`/competitions/${postId}/entry/${par.id}`)
+                }
                 setLoaded(true)
             } else {
                 setNotFound(true)

@@ -24,6 +24,11 @@ const CanvasTools = props => {
     const modals = useSelector(state => state.modal)
     const user = useSelector(state => state.session.user)
 
+    //setting up some basic rules
+    useEffect(() => {
+        dispatch(changeProperty({colorPalette: ruleset.defaultPalette}))
+    }, [])
+
     const [stateInterval, setStateInterval] = useState(null) //used for playing animations
     const [addFrame, setAddFrame] = useState(null) //toggles back and forth while animation is playing
     const [deleteColor, setDeleteColor] = useState(false) //controls whether user is deleting colors in palette

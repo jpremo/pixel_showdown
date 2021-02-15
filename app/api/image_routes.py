@@ -8,6 +8,7 @@ import tempfile
 import uuid
 from apng import APNG
 import shutil
+from sqlalchemy import and_
 
 # let bucketRegion = "us-east-1";
 # let IdentityPoolId = "us-east-1:013e5b90-632f-4e59-aa4f-ed9acdd8a8c3";
@@ -102,6 +103,21 @@ def image_get(id):
     """
     image = Image.query.get(int(id))
     return image.to_dict()
+
+@image_routes.route('/query', methods=['GET'])
+def image_query():
+    """
+    Retrieves and returns information on the specified image id
+    """
+    userId = int(request.args.get('userId'))
+    competitionId = int(request.args.get('competitionId'))
+    image = Image.query.filter(and_(Image.userId==userId, Image.competitionId==competitionId)).all()
+    print('\n\n', userId, competitionId, image, '\n\n')
+    if len(image) > 0:
+        return image[0].to_dict()
+
+    return {'check': 'newEntry'}
+
 
 
 @image_routes.route('/<int:id>', methods=['PUT'])
