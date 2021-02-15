@@ -78,7 +78,6 @@ const DownloadModal = () => {
                 url = url.split('.')
                 url[url.length-1] = 'gif'
                 url = url.join('.')
-                debugger
             }
             let link = document.createElement('a');
             link.href = url;

@@ -40,6 +40,7 @@ function Sketch() {
                         totalFrames: parsed.grid.totalFrames,
                         currentFrame: 1,
                         currentGrid: parsed.grid.gridColors[0],
+                        colorPalette: ["#f44336ff", "#e91e63ff", "#9c27b0ff", "#673ab7ff", "#3f51b5ff", "#2196f3ff", "#03a9f4ff", "#00bcd4ff", "#009688ff", "#4caf50ff", "#8bc34aff", "#cddc39ff", "#ffeb3bff", "#ffc107ff", "#ff9800ff", "#ff5722ff", "#795548ff", "#607d8bff"],
                         editing: parsed.id,
                         editLink: parsed.apngImgUrl,
                         title: parsed.title,
@@ -61,6 +62,7 @@ function Sketch() {
                 width: 32,
                 color: [180, 180, 180, 1],
                 grid: [{}, {}, {}, {}, {}, {}, {}, {}],
+                colorPalette: ["#f44336ff", "#e91e63ff", "#9c27b0ff", "#673ab7ff", "#3f51b5ff", "#2196f3ff", "#03a9f4ff", "#00bcd4ff", "#009688ff", "#4caf50ff", "#8bc34aff", "#cddc39ff", "#ffeb3bff", "#ffc107ff", "#ff9800ff", "#ff5722ff", "#795548ff", "#607d8bff"],
                 currentGrid: {},
                 finalGrid: {},
                 moveHistory: [[{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}]],
@@ -78,7 +80,7 @@ function Sketch() {
     if (loaded) {
         return (
             <div id='sketch-content-wrapper'>
-                <CompleteCanvas />
+                <CompleteCanvas skipDefault={true}/>
             </div>
         );
     } else {

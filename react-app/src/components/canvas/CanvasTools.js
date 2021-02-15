@@ -26,7 +26,9 @@ const CanvasTools = props => {
 
     //setting up some basic rules
     useEffect(() => {
+        if(!props.skipDefault){
         dispatch(changeProperty({colorPalette: ruleset.defaultPalette}))
+    }
     }, [])
 
     const [stateInterval, setStateInterval] = useState(null) //used for playing animations
