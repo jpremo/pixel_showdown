@@ -5,9 +5,10 @@ import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { changeProperty } from '../../store/canvas'
 import { saveImage } from '../canvas/aws/index'
-import { addMinutes } from "date-fns";
+import { addMinutes, addSeconds, isPast } from "date-fns";
 import { competitionPage, clearCompetitionPage } from '../../store/posts'
 import Timer from './Timer'
+import './Entry.css'
 //This component organizes the sketch page; it distinguishes whether the page is a new sketch or being edited by the
 //correct user
 function Entry() {
@@ -34,6 +35,13 @@ function Entry() {
         return canvasInfo
     }
 
+    const getEndTime = (timeLimit, created_at) => {
+        if(timeLimit === .5) {
+            return addSeconds(new Date(created_at), 30)
+        }
+       return addMinutes(new Date(created_at), timeLimit)
+    }
+
     //Fetches data from backend server if an image id is specified in the url
     useEffect(() => {
         const fetchData = async () => {
@@ -46,7 +54,7 @@ function Entry() {
                 setNotFound(true)
                 return
             }
-            if(!user.id || user.id === data.competition.user.id) {
+            if (!user.id || user.id === data.competition.user.id) {
                 history.push(`/competitions/${postId}`)
             }
             if (!isNaN(id) && Number.isInteger(Number(id))) {
@@ -56,6 +64,13 @@ function Entry() {
                     if (!res.ok || user.id !== parsed.userId) {
                         throw new Error()
                     }
+
+                    const endTime = getEndTime(data.competition.ruleset.rules.timeLimit, parsed.created_at)
+                    debugger
+                    if(isPast(endTime)) {
+                        history.push(`/competitions/${postId}`)
+                    }
+
                     const moveHistoryNew = []
                     const historyPositionNew = []
                     for (let i = 0; i < parsed.grid.gridColors.length; i++) {
@@ -90,7 +105,7 @@ function Entry() {
                 let query = await fetch(`/api/images/query?userId=${user.id}&competitionId=${data.competition.id}`)
                 let par = await query.json()
 
-                if(par.check === 'newEntry') {
+                if (par.check === 'newEntry') {
 
                     const info = await saveImage(getCanvasSaveData(data.competition.ruleset.rules), user, history, data.competition.id)
                     dispatch(changeProperty({ editing: info.id, editLink: info.apngImgUrl }))
@@ -106,6 +121,8 @@ function Entry() {
         fetchData()
     }, [dispatch])
 
+
+
     if (notFound) {
         return (
             <h1 className='competition-404'>This Entry Does Not Exist</h1>
@@ -114,9 +131,12 @@ function Entry() {
 
     if (loaded) {
         return (
-            <div id='sketch-content-wrapper'>
-                <Timer endTime={addMinutes(new Date(canvasSettings.created_at), post.ruleset.rules.timeLimit) }/>
-                <CompleteCanvas />
+            <div className='entry-wrapper'>
+                <Timer endTime={getEndTime(post.ruleset.rules.timeLimit, canvasSettings.created_at)}
+                    canvasSettings={canvasSettings} user={user} history={history} />
+                <div id='sketch-content-wrapper'>
+                    <CompleteCanvas />
+                </div>
             </div>
         );
     } else {

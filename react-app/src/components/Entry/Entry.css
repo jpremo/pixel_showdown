@@ -1,0 +1,16 @@
+.timer-box{
+    font-size: 32px;
+    font-weight: bold;
+    border: 2px solid black;
+    background-color: antiquewhite;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.entry-wrapper{
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+}
