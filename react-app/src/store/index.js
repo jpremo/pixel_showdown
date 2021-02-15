@@ -4,13 +4,15 @@ import session from './session'
 import canvas from './canvas'
 import modal from './modal'
 import posts from './posts'
+import profile from './profile'
 
 //Here we setup redux for the site
 const rootReducer = combineReducers({
   session,
   canvas,
   modal,
-  posts
+  posts,
+  profile
 });
 
 let enhancer;

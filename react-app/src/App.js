@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import RulesetForm from "./components/forms/RulesetForm";
 import CompetitionPage from './components/CompetitionPage'
 import Entry from './components/Entry'
+import Profile from './components/Profile'
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -54,7 +55,7 @@ function App() {
           <SignUpForm authenticated={authenticated} setAuthenticated={setAuthenticated} />
         </Route>
         <Route path="/users/:userId" exact={true} authenticated={authenticated}>
-          <User />
+          <Profile/>
         </Route>
         <Route path="/competitions/:postId" exact={true} authenticated={authenticated}>
           <CompetitionPage/>

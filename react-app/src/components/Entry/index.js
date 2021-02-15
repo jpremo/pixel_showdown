@@ -66,7 +66,6 @@ function Entry() {
                     }
 
                     const endTime = getEndTime(data.competition.ruleset.rules.timeLimit, parsed.created_at)
-                    debugger
                     if(isPast(endTime)) {
                         history.push(`/competitions/${postId}`)
                     }

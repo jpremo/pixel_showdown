@@ -95,7 +95,7 @@ const NavBar = ({ setAuthenticated }) => {
           <NavLink to={'/rulesets/create'} onClick={resetSketch} exact={true} className="nav-link" activeClassName="active">
             Create Ruleset
         </NavLink>
-          <div className='modal-link modal-button' onClick={openPostModal}>New Post</div>
+          {/* <div className='modal-link modal-button' onClick={openPostModal}>New Post</div> */}
           <div className='modal-link modal-button' onClick={openCompetitionModal}>New Competition</div>
           {!user.id &&
             <>

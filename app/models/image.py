@@ -34,3 +34,16 @@ class Image(db.Model):
             "created_at": self.created_at,
             "updated_at": self.updated_at
         }
+
+    def to_dict_simple(self):
+        """A function that returns key object information in a readable format"""
+        return {
+            "id": self.id,
+            "title": self.title,
+            "gifImgUrl": self.gifImgUrl,
+            "apngImgUrl": self.apngImgUrl,
+            "competitionId": self.competitionId,
+            "userId": self.userId,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
+        }

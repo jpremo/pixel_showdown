@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.models import Image, db
+from app.models import Image, User, db
 import os
 import base64
 import imageio
@@ -141,3 +141,13 @@ def image_put(id):
     image.grid = data['grid']
     db.session.commit()
     return image.to_dict()
+
+@image_routes.route('/user/<int:id>', methods=['GET'])
+def image_get_user(id):
+    """
+    Retrieves and returns images made by a specified user
+    """
+    images = Image.query.filter(Image.userId == id).all()
+    final_images = [image.to_dict_simple() for image in images]
+    user = User.query.get(id)
+    return {'images':final_images, 'user': user.to_dict()}
