@@ -3,9 +3,11 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { updateImage } from "../canvas/aws";
+import { useHistory } from "react-router-dom";
 
 function ProfileCarousel({ images, owner, userId }) {
     const [currentSlide, setCurrentSlide] = useState(0)
+    const history = useHistory()
     var settings = {
         dots: true,
         infinite: true,
@@ -42,12 +44,18 @@ function ProfileCarousel({ images, owner, userId }) {
         });
     }
 
+    const linkImage = (img) => {
+        if(owner) {
+            history.push(`/sketch/${img.id}`)
+        }
+    }
+
     return (
         <div className='carousel-div'>
             <Slider {...settings}>
                 {images.map((img, ind) => {
                     return (
-                        <img className='carousel-image' src={img.apngImgUrl} key={ind} alt={`Image ${ind}`}></img>
+                        <img className='carousel-image' onClick={() => linkImage(img)} src={img.apngImgUrl} key={ind} alt={`Image ${ind}`}></img>
                     )
                 })}
             </Slider>
