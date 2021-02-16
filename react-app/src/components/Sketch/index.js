@@ -69,6 +69,8 @@ function Sketch() {
                 historyPosition: [0, 0, 0, 0, 0, 0, 0, 0],
                 editing: null,
                 fps: 1,
+                currentFrame: 1,
+                totalFrames: 1,
                 ruleset: {}
             }
 

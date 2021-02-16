@@ -65,6 +65,7 @@ const NavBar = ({ setAuthenticated }) => {
       title: 'Title',
       fps: 1,
       totalFrames: 1,
+      currentFrame: 1,
       ruleset: {}
     }
 

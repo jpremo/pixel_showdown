@@ -132,19 +132,19 @@ const CanvasTools = props => {
     const v = useKeyPress('v')
 
     useEffect(() => {
-        if (z && ctrl && !canvasSettings.editingTitle && !props.disableHotKeys) {
+        if (z && ctrl && !canvasSettings.editingTitle && !ruleset.disableUndoRedo && !props.disableHotKeys) {
             undo()
         }
     }, [z])
 
     useEffect(() => {
-        if (y && ctrl && !canvasSettings.editingTitle && !props.disableHotKeys) {
+        if (y && ctrl && !canvasSettings.editingTitle && !ruleset.disableUndoRedo && !props.disableHotKeys) {
             redo()
         }
     }, [y])
 
     useEffect(() => {
-        if (f && !canvasSettings.editingTitle && !props.disableHotKeys) {
+        if (f && !canvasSettings.editingTitle && !ruleset.disableFill && !props.disableHotKeys) {
             dispatch(changeProperty({ currentTool: 'fill' }))
         }
     }, [f])
@@ -156,13 +156,13 @@ const CanvasTools = props => {
     }, [d])
 
     useEffect(() => {
-        if (e && !canvasSettings.editingTitle && !props.disableHotKeys) {
+        if (e && !canvasSettings.editingTitle && !ruleset.disableEraser && !props.disableHotKeys) {
             dispatch(changeProperty({ currentTool: 'eraser' }))
         }
     }, [e])
 
     useEffect(() => {
-        if (c && !canvasSettings.editingTitle && !props.disableHotKeys) {
+        if (c && !canvasSettings.editingTitle && !ruleset.disableEyedropper && !props.disableHotKeys) {
             dispatch(changeProperty({ currentTool: 'colorGrab' }))
         }
     }, [c])
@@ -174,25 +174,25 @@ const CanvasTools = props => {
     }, [g])
 
     useEffect(() => {
-        if (s && !canvasSettings.editingTitle && !props.disableHotKeys) {
+        if (s && !canvasSettings.editingTitle && !ruleset.disableColorSwapBrush && !props.disableHotKeys) {
             dispatch(changeProperty({ currentTool: 'colorSwapBrush' }))
         }
     }, [s])
 
     useEffect(() => {
-        if (r && !canvasSettings.editingTitle && !props.disableHotKeys) {
+        if (r && !canvasSettings.editingTitle && !ruleset.disableColorSwapper && !props.disableHotKeys) {
             dispatch(changeProperty({ currentTool: 'colorSwap' }))
         }
     }, [r])
 
     useEffect(() => {
-        if (c && ctrl && !canvasSettings.editingTitle && !props.disableHotKeys) {
+        if (c && ctrl && !canvasSettings.editingTitle && !ruleset.disableCopyPaste && !props.disableHotKeys) {
             copy()
         }
     }, [c, ctrl])
 
     useEffect(() => {
-        if (v && ctrl && !canvasSettings.editingTitle && !props.disableHotKeys) {
+        if (v && ctrl && !canvasSettings.editingTitle && !ruleset.disableCopyPaste && !props.disableHotKeys) {
             paste()
         }
     }, [v, ctrl])
