@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import { setDownloadModal } from '../../store/modal'
 import { changeProperty } from '../../store/canvas'
-import { imageToDataUri } from './aws'
+import { imageToSingleDataUri } from './aws'
 
 //This component handles the download modal display and will download the current image to the user's local device at their request
 const DownloadModal = () => {
@@ -67,7 +67,7 @@ const DownloadModal = () => {
         }
 
         if (format !== 'apng' && format !== 'gif') {
-            let url = imageToDataUri(width, height, pixelSize, format, canvasSettings)
+            let url = imageToSingleDataUri(width, height, pixelSize, format, canvasSettings)
             let link = document.createElement('a');
             link.download = `${canvasSettings.title}.${format}`;
             link.href = url;

@@ -41,7 +41,19 @@ async function addPhotoAWS(str, id) {
     return [fileName, buf]
 }
 
-//Converts the current grid to a data uri using an invisible canvas element
+//Converts the current grid/image to a data uri using an invisible canvas element
+export function imageToSingleDataUri(width, height, pixelSize, format, canvasSettings) {
+    let canvas = document.createElement('canvas')
+    let ctx = canvas.getContext('2d');
+    canvas.width = width;
+    canvas.height = height;
+    pixelParser(ctx, pixelSize, canvasSettings.currentGrid)
+    const data = canvas.toDataURL(`image/${format}`);
+
+    return data
+}
+
+//Converts the grids to a data uri using an invisible canvas element
 export function imageToDataUri(width, height, pixelSize, format, canvasSettings) {
     const dataArr = []
 
@@ -59,7 +71,7 @@ export function imageToDataUri(width, height, pixelSize, format, canvasSettings)
 }
 
 //saves current image to database and AWS; should only be used for new images
-export const saveImage = async (canvasSettings, user, history, competitionId=null) => {
+export const saveImage = async (canvasSettings, user, history, competitionId = null) => {
     let data = imageToDataUri(canvasSettings.width, canvasSettings.height, 1, 'png', canvasSettings)
     const response = await fetch("/api/images/", {
         method: "POST",

@@ -91,7 +91,7 @@ const NavBar = ({ setAuthenticated }) => {
           </NavLink>
         </div>
         <div id="nav-bar-menu">
-          <NavLink to={'/sketch'} onClick={resetSketch} exact={true} className="nav-link" activeClassName="active">
+          <NavLink to={'/sketch'} onClick={resetSketch} exact={false} className="nav-link" activeClassName="active">
             Sketch
         </NavLink>
           <NavLink to={'/rulesets/create'} onClick={resetSketch} exact={true} className="nav-link" activeClassName="active">
