@@ -26,9 +26,9 @@ const CanvasTools = props => {
 
     //setting up some basic rules
     useEffect(() => {
-        if(!props.skipDefault){
-        dispatch(changeProperty({colorPalette: ruleset.defaultPalette}))
-    }
+        if (!props.skipDefault) {
+            dispatch(changeProperty({ colorPalette: ruleset.defaultPalette }))
+        }
     }, [])
 
     const [stateInterval, setStateInterval] = useState(null) //used for playing animations
@@ -107,6 +107,7 @@ const CanvasTools = props => {
     const playingClass = (canvasSettings.playing || canvasSettings.totalFrames === 1) ? ' selected' : ''
     const pausedClass = !canvasSettings.playing ? ' selected' : ''
     const advanceClass = canvasSettings.totalFrames === 1 ? ' invalid-selection' : ''
+    const pasteClass = (canvasSettings.copyFrame ===undefined || canvasSettings.copyFrame === canvasSettings.currentFrame) ? ' invalid-selection' : ''
 
     //These settings are used to adapt color state for components in the react-color package
     let a = canvasSettings.color[3] ? canvasSettings.color[3] : 1
@@ -127,7 +128,8 @@ const CanvasTools = props => {
     const g = useKeyPress('g')
     const s = useKeyPress('s')
     const r = useKeyPress('r')
-    const c = useKeyPress('r')
+    const c = useKeyPress('c')
+    const v = useKeyPress('v')
 
     useEffect(() => {
         if (z && ctrl && !canvasSettings.editingTitle && !props.disableHotKeys) {
@@ -182,6 +184,18 @@ const CanvasTools = props => {
             dispatch(changeProperty({ currentTool: 'colorSwap' }))
         }
     }, [r])
+
+    useEffect(() => {
+        if (c && ctrl && !canvasSettings.editingTitle && !props.disableHotKeys) {
+            copy()
+        }
+    }, [c, ctrl])
+
+    useEffect(() => {
+        if (v && ctrl && !canvasSettings.editingTitle && !props.disableHotKeys) {
+            paste()
+        }
+    }, [v, ctrl])
 
 
     //Changes color state and updates redux after color selection process is over
@@ -272,6 +286,28 @@ const CanvasTools = props => {
 
 
     //The functions below change redux state on button presses to set the appropriate tool/property
+    const copy = () => {
+        dispatch(changeProperty({ copyFrame: canvasSettings.currentFrame }))
+    }
+
+    const paste = () => {
+        if (!pasteClass) {
+            const frame = canvasSettings.currentFrame - 1
+            const copyFrame = {...canvasSettings.grid[canvasSettings.copyFrame-1]}
+            const newPosition = canvasSettings.historyPosition[frame] + 1
+            const newMoveHistory = [...canvasSettings.moveHistory[frame].slice(0, newPosition), copyFrame]
+            const moveHistoryCopy = [...canvasSettings.moveHistory]
+            moveHistoryCopy[frame] = newMoveHistory
+            const positionCopy = [...canvasSettings.historyPosition]
+            positionCopy[frame] = newPosition
+            const gridCopy = [...canvasSettings.grid]
+            gridCopy[frame] = copyFrame
+            dispatch(changeProperty({ currentGrid: copyFrame, grid: gridCopy, moveHistory: moveHistoryCopy, historyPosition: positionCopy }))
+
+            // dispatch(changeProperty({ currentGrid: canvasSettings.grid[canvasSettings.currentFrame] }))
+        }
+    }
+
     const swapGrid = () => {
         dispatch(changeProperty({ displayGrid: !canvasSettings.displayGrid }))
     }
@@ -395,15 +431,6 @@ const CanvasTools = props => {
                 </div>
             </Collapse>
             <Collapse title={'Color Selector'}>
-                {/* <RulecheckBox property='disableAlphaPicker' title='Disable Alpha Slider' />
-                <RulecheckBox property='disableEraser' title='Disable Eraser' />
-                <RulecheckBox property='disableFill' title='Disable Fill Tool' />
-                <RulecheckBox property='disableEyedropper' title='Disable Eyedropper' />
-                <RulecheckBox property='disableColorSwapper' title='Disable Color Swapper' />
-                <RulecheckBox property='disableColorSwapBrush' title='Disable Color Swap Brush' />
-                <RulecheckBox property='disableUndoRedo' title='Disable Undo and Redo' />
-                <RulecheckBox property='disableGrid' title='Disable Grid' />
-                <RulecheckBox property='disableClear' title='Disable Clear' /> */}
                 <RuleChecker property='disableColorSelector' canvasSettings={canvasSettings}>
                     <SketchPicker
                         color={stateColor}
@@ -469,6 +496,10 @@ const CanvasTools = props => {
                     </RuleChecker>
                     <RuleChecker property='disableClear' canvasSettings={canvasSettings}>
                         <button className={'canvas-button'} onClick={clearImage}><i class="fas fa-ban"></i></button>
+                    </RuleChecker>
+                    <RuleChecker property='disableClear' canvasSettings={canvasSettings}>
+                        <button className={'canvas-button'} onClick={copy}><i class="fas fa-copy"></i></button>
+                        <button className={'canvas-button' + pasteClass} onClick={paste}><i class="fas fa-paste"></i></button>
                     </RuleChecker>
                 </div>
             </Collapse>
