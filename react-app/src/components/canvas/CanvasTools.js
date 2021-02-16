@@ -107,7 +107,7 @@ const CanvasTools = props => {
     const playingClass = (canvasSettings.playing || canvasSettings.totalFrames === 1) ? ' selected' : ''
     const pausedClass = !canvasSettings.playing ? ' selected' : ''
     const advanceClass = canvasSettings.totalFrames === 1 ? ' invalid-selection' : ''
-    const pasteClass = (canvasSettings.copyFrame ===undefined || canvasSettings.copyFrame === canvasSettings.currentFrame) ? ' invalid-selection' : ''
+    const pasteClass = (canvasSettings.copyFrame === undefined || canvasSettings.copyFrame === canvasSettings.currentFrame) ? ' invalid-selection' : ''
 
     //These settings are used to adapt color state for components in the react-color package
     let a = canvasSettings.color[3] ? canvasSettings.color[3] : 1
@@ -293,7 +293,7 @@ const CanvasTools = props => {
     const paste = () => {
         if (!pasteClass) {
             const frame = canvasSettings.currentFrame - 1
-            const copyFrame = {...canvasSettings.grid[canvasSettings.copyFrame-1]}
+            const copyFrame = { ...canvasSettings.grid[canvasSettings.copyFrame - 1] }
             const newPosition = canvasSettings.historyPosition[frame] + 1
             const newMoveHistory = [...canvasSettings.moveHistory[frame].slice(0, newPosition), copyFrame]
             const moveHistoryCopy = [...canvasSettings.moveHistory]
@@ -497,7 +497,7 @@ const CanvasTools = props => {
                     <RuleChecker property='disableClear' canvasSettings={canvasSettings}>
                         <button className={'canvas-button'} onClick={clearImage}><i class="fas fa-ban"></i></button>
                     </RuleChecker>
-                    <RuleChecker property='disableClear' canvasSettings={canvasSettings}>
+                    <RuleChecker property='disableCopyPaste' canvasSettings={canvasSettings}>
                         <button className={'canvas-button'} onClick={copy}><i class="fas fa-copy"></i></button>
                         <button className={'canvas-button' + pasteClass} onClick={paste}><i class="fas fa-paste"></i></button>
                     </RuleChecker>
@@ -515,10 +515,12 @@ const CanvasTools = props => {
                     </div>
                 </div>
             </Collapse>
-            <div className='canvas-tools-container-centered'>
-                <div className='canvas-button' onClick={changeImage}>Save</div>
-                <div className='canvas-button' onClick={openDownload}>Download</div>
-            </div>
+            {!props.disableSave &&
+                <div className='canvas-tools-container-centered'>
+                    <div className='canvas-button' onClick={changeImage}>Save</div>
+                    <div className='canvas-button' onClick={openDownload}>Download</div>
+                </div>
+            }
         </div >
     )
 }

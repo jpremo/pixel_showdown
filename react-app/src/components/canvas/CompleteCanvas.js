@@ -9,7 +9,7 @@ import Grid from './Grid'
 import TitleCard from './TitleCard'
 
 //This component contains the entire canvas along with its backdrop and all tools
-function CompleteCanvas({reload=false, disableHotKeys=false, skipDefault=false}) {
+function CompleteCanvas({reload=false, disableHotKeys=false, skipDefault=false, disableSave=false}) {
     const canvasSettings = useSelector(state => state.canvas)
     const dispatch = useDispatch()
 
@@ -45,7 +45,7 @@ function CompleteCanvas({reload=false, disableHotKeys=false, skipDefault=false})
                 </div>
             </div>
             <div >
-                <CanvasTools canvasSettings={canvasSettings} disableHotKeys={disableHotKeys} skipDefault={skipDefault}/>
+                <CanvasTools canvasSettings={canvasSettings} disableHotKeys={disableHotKeys} skipDefault={skipDefault} disableSave={disableSave}/>
             </div>
         </div>
     );

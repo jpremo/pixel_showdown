@@ -5,6 +5,7 @@
     justify-content: center;
     width: 70%;
     margin: 10px;
+    /* overflow: visible; */
 }
 
 #ruleset-form-outer-wrapper{
@@ -13,12 +14,18 @@
     align-items: center;
     justify-content: center;
     width: 100%;
+    min-width: fit-content;
 }
 
 .form-title{
     font-size: 30px;
     font-weight: 700;
     text-decoration: underline;
+}
+
+.form-title-upper-margin{
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 .ruleset-range{

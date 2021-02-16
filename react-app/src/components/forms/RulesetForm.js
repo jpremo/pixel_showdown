@@ -110,6 +110,7 @@ const RulesetForm = () => {
                 <RulecheckBox property='disableUndoRedo' title='Disable Undo and Redo' />
                 <RulecheckBox property='disableGrid' title='Disable Grid' />
                 <RulecheckBox property='disableClear' title='Disable Clear' />
+                <RulecheckBox property='disableCopyPaste' title='Disable Copy/Paste' />
             </div>
             <div className='ruleset-content-container'>
             <RulesetRange property='totalFrames' title='Total Frames' />
@@ -123,9 +124,10 @@ const RulesetForm = () => {
             <RulesetColor/>
             {/* <h1 className='form-title' style={{margin: '20px'}}>Canvas Preview</h1> */}
             <button className='canvas-button' onClick={submitRuleset}>Submit Ruleset</button>
-            <Collapse title='Canvas Preview' collapsedInit={true}>
-            <CompleteCanvas reload={true} disableHotKeys={true}/>
-            </Collapse>
+            {/* <Collapse title='Canvas Preview' collapsedInit={true}> */}
+            <h1 className='form-title form-title-upper-margin'>Canvas Preview</h1>
+            <CompleteCanvas reload={true} disableHotKeys={true} disableSave={true} skipDefault={true}/>
+            {/* </Collapse> */}
         </div>
         </div>
     );
