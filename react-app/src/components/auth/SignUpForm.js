@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Redirect } from 'react-router-dom';
 import { signUp } from '../../services/auth';
 import { setLoginModal, setSignupModal } from '../../store/modal'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from '../../store/session'
 
 //sign up form component; used inside of ModalContainer
@@ -14,7 +14,9 @@ const SignUpForm = ({ authenticated, setAuthenticated }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+  const [confirmed, setConfirmed] = useState(false)
   const dispatch = useDispatch()
+  const user = useSelector(state => state.session.user)
 
   const openLogin = (e) => {
     dispatch(setSignupModal(false))
@@ -29,9 +31,9 @@ const SignUpForm = ({ authenticated, setAuthenticated }) => {
 
     const user = await signUp(username, email, password, repeatPassword, firstName, lastName);
     if (!user.errors) {
-      dispatch(setSignupModal(false))
       setAuthenticated(true);
       dispatch(setUser(user))
+      setConfirmed(true)
     } else {
       setErrors(user.errors);
     }
@@ -64,6 +66,20 @@ const SignUpForm = ({ authenticated, setAuthenticated }) => {
 
   if (authenticated) {
     return <Redirect to="/" />;
+  }
+
+  if (confirmed) {
+    return (
+      <>
+        <h1 className='modal-title'>Success!</h1>
+        <div className='modal-text'>Thanks for signing up {user.firstName}! Get out there and start on your first masterpiece!</div>
+        <div className='modal-button-box'>
+          <div className='modal-link-div'>
+            <div className='modal-link modal-button' onClick={cancel}> Close</div>
+          </div>
+        </div>
+      </>
+    )
   }
 
   return (

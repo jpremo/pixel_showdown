@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import { login } from "../../services/auth";
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from '../../store/session'
 import { setLoginModal, setSignupModal } from '../../store/modal'
 
@@ -10,6 +10,8 @@ const LoginForm = ({ authenticated, setAuthenticated }) => {
   const [errors, setErrors] = useState([]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmed, setConfirmed] = useState(false)
+  const user = useSelector(state => state.session.user)
   const dispatch = useDispatch()
   const openSignup = (e) => {
     dispatch(setSignupModal(true))
@@ -24,8 +26,8 @@ const LoginForm = ({ authenticated, setAuthenticated }) => {
     const user = await login(email, password);
     if (!user.errors) {
       setAuthenticated(true);
-      dispatch(setLoginModal(false))
       dispatch(setUser(user))
+      setConfirmed(true)
     } else {
       setErrors(user.errors);
     }
@@ -36,8 +38,8 @@ const LoginForm = ({ authenticated, setAuthenticated }) => {
     const user = await login('demo@aa.io', 'password');
     if (!user.errors) {
       setAuthenticated(true);
-      dispatch(setLoginModal(false))
       dispatch(setUser(user))
+      setConfirmed(true)
     } else {
       setErrors(user.errors);
     }
@@ -53,6 +55,20 @@ const LoginForm = ({ authenticated, setAuthenticated }) => {
 
   if (authenticated) {
     return <Redirect to="/" />;
+  }
+
+  if (confirmed) {
+    return (
+      <>
+        <h1 className='modal-title'>Success!</h1>
+        <div className='modal-text'>Thanks for logging in {user.firstName}! Go out there and create some awesome art!</div>
+        <div className='modal-button-box'>
+          <div className='modal-link-div'>
+            <div className='modal-link modal-button' onClick={cancel}> Close</div>
+          </div>
+        </div>
+      </>
+    )
   }
 
   return (
