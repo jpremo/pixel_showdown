@@ -3,6 +3,7 @@ const SIGNUP = '/modal/login'
 const DOWNLOAD = 'modal/download'
 const POST = 'modal/post'
 const COMPETITION = 'modal/competition'
+const LOGOUT = 'modal/logout'
 
 //These functions/reducer handle modal display
 export const setLoginModal = (bool) => ({
@@ -30,9 +31,14 @@ export const setCreateCompetitionModal = (bool) => ({
     payload: { competition: bool }
 })
 
+export const setLogoutModal = (bool) => ({
+    type: LOGOUT,
+    payload: { logout: bool }
+})
 
 
-const initialState = { login: false, signup: false, incomplete: false, text: false, competition: false };
+
+const initialState = { login: false, signup: false, incomplete: false, text: false, competition: false, logout: false };
 
 function reducer(state = initialState, action) {
     let newState;
@@ -50,6 +56,9 @@ function reducer(state = initialState, action) {
             newState = Object.assign({}, state, { ...action.payload });
             return newState;
         case COMPETITION:
+            newState = Object.assign({}, state, { ...action.payload });
+            return newState;
+        case LOGOUT:
             newState = Object.assign({}, state, { ...action.payload });
             return newState;
         default:

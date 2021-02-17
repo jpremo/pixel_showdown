@@ -3,6 +3,7 @@ import { logout } from "../../services/auth";
 import { removeUser } from '../../store/session'
 import { useDispatch } from 'react-redux'
 import { useHistory } from "react-router-dom";
+import { setLogoutModal } from '../../store/modal'
 
 //Component that logs out user on click
 const LogoutButton = ({setAuthenticated}) => {
@@ -13,6 +14,7 @@ const LogoutButton = ({setAuthenticated}) => {
     dispatch(removeUser())
     setAuthenticated(false);
     history.push('/')
+    dispatch(setLogoutModal(true))
   };
 
   return <button id="logout" className="nav-link" onClick={onLogout}>Log-Out</button>;

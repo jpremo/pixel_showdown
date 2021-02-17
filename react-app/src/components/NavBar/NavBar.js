@@ -11,6 +11,7 @@ import SignUpForm from '../auth/SignUpForm'
 import { changeProperty } from '../../store/canvas'
 import CreatePostForm from "../HomePage/CreatePostForm";
 import CreateCompetitionForm from "../HomePage/CreateCompetitionForm";
+import LogOutModal from '../auth/LogOutModal';
 
 //Handles the display of the navbar
 const NavBar = ({ setAuthenticated }) => {
@@ -86,6 +87,9 @@ const NavBar = ({ setAuthenticated }) => {
         <ModalContainer hidden={!modals.signup} cancel={setSignupModal}>
           <SignUpForm setAuthenticated={setAuthenticated}></SignUpForm>
         </ModalContainer>
+        <ModalContainer hidden={!modals.logout} cancel={null}>
+          <LogOutModal/>
+        </ModalContainer>
         <div id='nav-bar-logo-picture-div'>
           <NavLink exact to="/" activeClassName="home-active">
             <img id="nav-bar-logo-picture" src={picture} alt='' />
@@ -99,7 +103,7 @@ const NavBar = ({ setAuthenticated }) => {
             Create Ruleset
         </NavLink>
           {/* <div className='modal-link modal-button' onClick={openPostModal}>New Post</div> */}
-          <div className='modal-link modal-button' onClick={openCompetitionModal}>New Competition</div>
+          <div className='nav-link' onClick={openCompetitionModal}>New Competition</div>
           {!user.id &&
             <>
               <div onClick={openLogin} className="nav-link">
