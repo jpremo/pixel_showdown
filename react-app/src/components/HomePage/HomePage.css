@@ -51,18 +51,27 @@
   border: 1px solid black;
   height: 32px;
   width: 32px;
-  border-radius: 32px;
+  border-radius: 8px;
   grid-row: 1 / 3;
   image-rendering: pixelated;
-  background: white;
+  background-color: #746d7523;
 }
 
 .list-box{
-  font-size: 28px;
+  border: 2px solid black;
+  border-radius: 50px;
+  padding: 20px;
+  margin: 10px;
+  background-color: #746d7523;
+}
+
+.list-box h1 {
+  font-size:28px;
+  border-bottom: 1px solid black;
 }
 
 .post-box {
-  border-top: 1px solid black;
+  border-bottom: 1px solid black;
   padding: 10px 5px;
 }
 
@@ -136,12 +145,4 @@
 
 .highlight-div > *{
   width: 48%;
-}
-
-.list-box{
-  border: 2px solid black;
-  border-radius: 50px;
-  padding: 20px;
-  margin: 10px;
-  background-color: #746d7523;
 }

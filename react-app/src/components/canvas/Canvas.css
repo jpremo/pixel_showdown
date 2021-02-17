@@ -138,16 +138,35 @@
     9E643C
     8C4843
     746D75 */
-.collapse-header {
+.collapse-header, .collapse-header-large {
   display: flex;
   align-items: center;
   align-self: start;
+  justify-content: center;
+}
+
+.collapse-header-large {
+  width: 100%;
 }
 
 .collapse-header h3 {
   font-size: 20px;
   margin-left: 5px;
 }
+
+.collapse-header-large h3 {
+  font-size: 40px;
+  margin: 20px 5px;
+}
+
+
+.collapse-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .canvas-tools {
   width: 300px;
   background-color: #746d75;
@@ -200,12 +219,6 @@
   padding: 10px;
   border-radius: 5px;
   background: white;
-}
-
-.collapse-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .invalid-selection {

@@ -126,7 +126,7 @@ const RulesetForm = () => {
             <RulesetColor/>
             {/* <h1 className='form-title' style={{margin: '20px'}}>Canvas Preview</h1> */}
             <button className='canvas-button' onClick={submitRuleset}>Submit Ruleset</button>
-            <Collapse title='Canvas Preview' collapsedInit={true}>
+            <Collapse title='Canvas Preview' collapsedInit={true} largerText={true}>
             {/* <h1 className='form-title form-title-upper-margin'>Canvas Preview</h1> */}
             <CompleteCanvas reload={true} disableHotKeys={true} disableSave={true} skipDefault={true}/>
             </Collapse>
