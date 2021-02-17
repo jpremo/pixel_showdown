@@ -4,10 +4,14 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { updateImage } from "../canvas/aws";
 import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser } from '../../store/session'
+import { setProfileUser } from '../../store/profile'
 
 function ProfileCarousel({ images, owner, userId }) {
     const [currentSlide, setCurrentSlide] = useState(0)
     const history = useHistory()
+    const dispatch = useDispatch()
     var settings = {
         dots: true,
         infinite: true,
@@ -42,10 +46,13 @@ function ProfileCarousel({ images, owner, userId }) {
                 profileImg: img
             }),
         });
+        const data = await res.json()
+        dispatch(setUser(data.user))
+        dispatch(setProfileUser(data.user))
     }
 
     const linkImage = (img) => {
-        if(owner) {
+        if (owner) {
             history.push(`/sketch/${img.id}`)
         }
     }

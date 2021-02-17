@@ -10,6 +10,8 @@ import RulesetSelector from './RulesetSelector';
 import RulesetColor from './RulesetColor'
 import Collapse from '../canvas/Collapse'
 import { setLoginModal } from '../../store/modal'
+import { addRuleset } from '../../store/session'
+
 //This component creates a -/input/+ box for the canvas property specified in props
 const RulesetForm = () => {
     const canvasSettings = useSelector(state => state.canvas)
@@ -53,8 +55,6 @@ const RulesetForm = () => {
 
     const submitRuleset = async () => {
         if(user.id) {
-
-
         const response = await fetch("/api/rulesets/", {
             method: "POST",
             headers: {
@@ -68,7 +68,9 @@ const RulesetForm = () => {
             }),
           });
           history.push('/')
-          return await response.json();
+          const data = await response.json();
+          dispatch(addRuleset(data))
+          return
         } else {
             dispatch(setLoginModal(true))
         }
@@ -124,10 +126,10 @@ const RulesetForm = () => {
             <RulesetColor/>
             {/* <h1 className='form-title' style={{margin: '20px'}}>Canvas Preview</h1> */}
             <button className='canvas-button' onClick={submitRuleset}>Submit Ruleset</button>
-            {/* <Collapse title='Canvas Preview' collapsedInit={true}> */}
-            <h1 className='form-title form-title-upper-margin'>Canvas Preview</h1>
+            <Collapse title='Canvas Preview' collapsedInit={true}>
+            {/* <h1 className='form-title form-title-upper-margin'>Canvas Preview</h1> */}
             <CompleteCanvas reload={true} disableHotKeys={true} disableSave={true} skipDefault={true}/>
-            {/* </Collapse> */}
+            </Collapse>
         </div>
         </div>
     );

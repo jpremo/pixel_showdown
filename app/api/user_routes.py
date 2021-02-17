@@ -22,4 +22,4 @@ def user_profileImg(id):
     user = User.query.get(id)
     user.profileImg = data['profileImg']
     db.session.commit()
-    return {'set': 'set'}
+    return {'user': user.to_dict()}
