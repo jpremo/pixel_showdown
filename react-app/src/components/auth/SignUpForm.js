@@ -86,8 +86,8 @@ const SignUpForm = ({ authenticated, setAuthenticated }) => {
     <form onSubmit={onSignUp}>
       <h1 className='modal-title'>Sign Up</h1>
       <div>
-        {errors.map((error) => (
-          <div>{error}</div>
+        {errors.map((error, ind) => (
+          <div className='modal-errors' key={ind}>{error}</div>
         ))}
       </div>
       <div className='side-align'>
