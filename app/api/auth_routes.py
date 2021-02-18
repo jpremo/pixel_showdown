@@ -67,7 +67,7 @@ def sign_up():
     err = ''
     data = request.get_json()
     if data['password'] != data['confirm_password']:
-        err='Password and confirm password must match'
+        err='Password and confirm password must match.'
     if form.validate_on_submit():
         if err == '':
             user = User(
@@ -76,6 +76,7 @@ def sign_up():
                 password=form.data['password'],
                 lastName=form.data['lastName'],
                 firstName=form.data['firstName'],
+                biography=form.data['biography'],
             )
             db.session.add(user)
             db.session.commit()

@@ -219,3 +219,24 @@ h3.modal-title{
   height: 128px;
   image-rendering: pixelated;
 }
+
+#sign-up-biography {
+  border-radius: 8px;
+  padding: 3px;
+  background-color: white;
+  border: 1px solid black;
+  font-size: 20px;
+  box-sizing: border-box;
+  width: 520px;
+  height: 80px;
+}
+
+#sign-up-biography:focus {
+  background-color: #ede6f2;
+  outline: none;
+}
+
+#sign-up-biography::placeholder {
+  border-radius: 10px;
+  outline: none;
+}

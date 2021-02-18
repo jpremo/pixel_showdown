@@ -15,6 +15,7 @@ const SignUpForm = ({ authenticated, setAuthenticated }) => {
   const [lastName, setLastName] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [confirmed, setConfirmed] = useState(false)
+  const [biography, setBiography] = useState('')
   const dispatch = useDispatch()
   const user = useSelector(state => state.session.user)
 
@@ -29,7 +30,7 @@ const SignUpForm = ({ authenticated, setAuthenticated }) => {
   const onSignUp = async (e) => {
     e.preventDefault();
 
-    const user = await signUp(username, email, password, repeatPassword, firstName, lastName);
+    const user = await signUp(username, email, password, repeatPassword, firstName, lastName, biography);
     if (!user.errors) {
       setAuthenticated(true);
       dispatch(setUser(user))
@@ -62,6 +63,10 @@ const SignUpForm = ({ authenticated, setAuthenticated }) => {
 
   const updateRepeatPassword = (e) => {
     setRepeatPassword(e.target.value);
+  };
+
+  const updateBiography = (e) => {
+    setBiography(e.target.value);
   };
 
   if (authenticated) {
@@ -150,15 +155,26 @@ const SignUpForm = ({ authenticated, setAuthenticated }) => {
           ></input>
         </div>
       </div>
+      <div className='modal-form-div'>
+        <label htmlFor="body">Biography</label>
+        <textarea
+          id='sign-up-biography'
+          name="body"
+          placeholder="(optional)"
+          value={biography}
+          onChange={updateBiography}
+          maxLength={1000} />
+        <div className='word-counter'>{biography.length}/1000</div>
+      </div>
       <div className='modal-button-box'>
         <div className='modal-link-div'>
           <div className='modal-link modal-button' onClick={onSignUp}>Sign Up</div>
         </div>
         <div className='modal-link-div'>
-          <div className='modal-link modal-button' onClick={openLogin}> Log In</div>
+          <div className='modal-link modal-button' onClick={openLogin}>Log In</div>
         </div>
         <div className='modal-link-div'>
-          <div className='modal-link modal-button' onClick={cancel}> Close</div>
+          <div className='modal-link modal-button' onClick={cancel}>Close</div>
         </div>
       </div>
     </form>
