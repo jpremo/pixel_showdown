@@ -306,3 +306,31 @@ button.deleting{
 .frame-counter{
   font-size: 24px;
 }
+
+.banner-wrapper{
+  position: fixed;
+  top: 74px;
+  left: 50vw;
+  z-index: 1000000;
+  background:#8C4843;
+  /* rgb(86, 194, 86); */
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border: 1px solid black;
+  border-top: 0px;
+  padding: 10px 40px;
+}
+
+.banner{
+  font-size: 32px;
+  color: white;
+  text-shadow: 2px 2px black;
+  width: 100px;
+  text-align: center;
+}
+
+/* 8ACDEA
+    EDE6F2
+    9E643C
+    8C4843
+    746D75 */

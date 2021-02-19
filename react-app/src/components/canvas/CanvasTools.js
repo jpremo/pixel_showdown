@@ -14,7 +14,7 @@ import { useHistory } from 'react-router-dom';
 import { saveImage, updateImage } from './aws/index'
 import { setLoginModal } from '../../store/modal'
 import RuleChecker from './RuleChecker';
-
+import Banner from './Banner'
 //This component organizes all of the tools within the tools sidebar of the CompleteCanvas element
 const CanvasTools = props => {
     const history = useHistory()
@@ -33,6 +33,7 @@ const CanvasTools = props => {
 
     const [stateInterval, setStateInterval] = useState(null) //used for playing animations
     const [addFrame, setAddFrame] = useState(null) //toggles back and forth while animation is playing
+    const [saving, setSaving] = useState(null) //sets saving icon/banner when not null
     const [deleteColor, setDeleteColor] = useState(false) //controls whether user is deleting colors in palette
     const [stateColor, setStateColor] = useState({ //current color selected
         r: canvasSettings.color[0],
@@ -386,12 +387,14 @@ const CanvasTools = props => {
     //If the user is editing an existing image it updates the database entry and the AWS PNG image
     const changeImage = async () => {
         if (user.id) {
+            setSaving('Saving...')
             if (canvasSettings.editing) {
                 await updateImage(canvasSettings)
             } else {
                 const info = await saveImage(canvasSettings, user, history)
                 dispatch(changeProperty({ editing: info.id, editLink: info.apngImgUrl }))
             }
+            setSaving('Saved!')
         } else {
             dispatch(setLoginModal(true))
         }
@@ -406,122 +409,125 @@ const CanvasTools = props => {
     }
 
     return (
-        <div className='canvas-tools'>
-            <ModalContainer hidden={!modals.download} cancel={setDownloadModal}>
-                <DownloadModal />
-            </ModalContainer>
-            <h2>Canvas Tools</h2>
-            <Collapse title={'Animation'}>
-                <div className='canvas-tools-container'>
+        <>
+            <Banner text={saving} setter={setSaving} timeLimit={saving === 'Saved!' ? 3 : null} />
+            <div className='canvas-tools'>
+                <ModalContainer hidden={!modals.download} cancel={setDownloadModal}>
+                    <DownloadModal />
+                </ModalContainer>
+                <h2>Canvas Tools</h2>
+                <Collapse title={'Animation'}>
                     <div className='canvas-tools-container'>
-                        <AddSubtract property={'totalFrames'} title={'Total Frames'} min={1} max={100} />
-                        <AddSubtract property={'fps'} title={'FPS'} min={1} max={100} />
+                        <div className='canvas-tools-container'>
+                            <AddSubtract property={'totalFrames'} title={'Total Frames'} min={1} max={100} />
+                            <AddSubtract property={'fps'} title={'FPS'} min={1} max={100} />
+                        </div>
+                        <div className='canvas-tools-container'>
+                            {canvasSettings.totalFrames > 1 &&
+                                <>
+                                    <button className={'canvas-button' + playingClass} onClick={playAnimation}><i class="fas fa-play"></i></button>
+                                    <button className={'canvas-button' + pausedClass} onClick={pauseAnimation}><i class="fas fa-pause"></i></button>
+                                    <button className={'canvas-button' + advanceClass} onClick={subtractOneFrame}><i class="fas fa-arrow-left"></i></button>
+                                    <span className='frame-counter'> Frame: {canvasSettings.currentFrame} </span>
+                                    <button className={'canvas-button' + advanceClass} onClick={addOneFrame}><i class="fas fa-arrow-right"></i></button>
+                                </>
+                            }
+                        </div>
+                    </div>
+                </Collapse>
+                <Collapse title={'Color Selector'}>
+                    <RuleChecker property='disableColorSelector' canvasSettings={canvasSettings}>
+                        <SketchPicker
+                            color={stateColor}
+                            onChange={colorState}
+                            onChangeComplete={colorChange}
+                            presetColors={[]}
+                            width='238px'
+                            className='canvas-tools-custom'
+                        />
+                    </RuleChecker>
+                </Collapse>
+                <Collapse title={'Color Palette'}>
+                    <div className='canvas-tools-circle' onMouseUp={deleteSelectedColor}>
+                        <CirclePicker
+                            color={colObj}
+                            onChangeComplete={colorChange}
+                            colors={canvasSettings.colorPalette}
+                            className={removeFromPalette2}
+                        />
                     </div>
                     <div className='canvas-tools-container'>
-                        {canvasSettings.totalFrames > 1 &&
-                            <>
-                                <button className={'canvas-button' + playingClass} onClick={playAnimation}><i class="fas fa-play"></i></button>
-                                <button className={'canvas-button' + pausedClass} onClick={pauseAnimation}><i class="fas fa-pause"></i></button>
-                                <button className={'canvas-button' + advanceClass} onClick={subtractOneFrame}><i class="fas fa-arrow-left"></i></button>
-                                <span className='frame-counter'> Frame: {canvasSettings.currentFrame} </span>
-                                <button className={'canvas-button' + advanceClass} onClick={addOneFrame}><i class="fas fa-arrow-right"></i></button>
-                            </>
-                        }
+                        <button className={'canvas-button' + addToPalette} onClick={addColor}>Add Color</button>
+                        <button className={'canvas-button' + removeFromPalette + removeFromPalette3} onClick={removeColor}>Remove Color</button>
                     </div>
-                </div>
-            </Collapse>
-            <Collapse title={'Color Selector'}>
-                <RuleChecker property='disableColorSelector' canvasSettings={canvasSettings}>
-                    <SketchPicker
-                        color={stateColor}
-                        onChange={colorState}
-                        onChangeComplete={colorChange}
-                        presetColors={[]}
-                        width='238px'
-                        className='canvas-tools-custom'
-                    />
-                </RuleChecker>
-            </Collapse>
-            <Collapse title={'Color Palette'}>
-                <div className='canvas-tools-circle' onMouseUp={deleteSelectedColor}>
-                    <CirclePicker
-                        color={colObj}
-                        onChangeComplete={colorChange}
-                        colors={canvasSettings.colorPalette}
-                        className={removeFromPalette2}
-                    />
-                </div>
-                <div className='canvas-tools-container'>
-                    <button className={'canvas-button' + addToPalette} onClick={addColor}>Add Color</button>
-                    <button className={'canvas-button' + removeFromPalette + removeFromPalette3} onClick={removeColor}>Remove Color</button>
-                </div>
-                <RuleChecker property='disableAlphaPicker' canvasSettings={canvasSettings}>
-                    <AlphaPicker
-                        color={stateColor}
-                        onChange={colorState}
-                        onChangeComplete={colorChange}
-                        width='258px'
-                        className='canvas-tools-alpha'
-                    />
-                </RuleChecker>
-            </Collapse>
-            <Collapse title={'Brushes'}>
-                <div className='canvas-tools-container'>
-                    <button className={'canvas-button' + brushClass} onClick={swapBrush}><i class="fas fa-paint-brush"></i></button>
-                    <RuleChecker property='disableEraser' canvasSettings={canvasSettings}>
-                        <button className={'canvas-button' + eraserClass} onClick={swapEraser}><i class="fas fa-eraser"></i></button>
+                    <RuleChecker property='disableAlphaPicker' canvasSettings={canvasSettings}>
+                        <AlphaPicker
+                            color={stateColor}
+                            onChange={colorState}
+                            onChangeComplete={colorChange}
+                            width='258px'
+                            className='canvas-tools-alpha'
+                        />
                     </RuleChecker>
-                    <RuleChecker property='disableEyedropper' canvasSettings={canvasSettings}>
-                        <button className={'canvas-button' + colorGrabClass} onClick={swapColorGrab}><i class="fas fa-eye-dropper"></i></button>
-                    </RuleChecker>
-                    <RuleChecker property='disableFill' canvasSettings={canvasSettings}>
-                        <button className={'canvas-button' + fillClass} onClick={swapFill}><i class="fas fa-fill"></i></button>
-                    </RuleChecker>
-                    <RuleChecker property='disableColorSwapper' canvasSettings={canvasSettings}>
-                        <button className={'canvas-button' + colorSwapClass} onClick={swapColorSwap}><i class="fas fa-exchange-alt"></i></button>
-                    </RuleChecker>
-                    <RuleChecker property='disableColorSwapBrush' canvasSettings={canvasSettings}>
-                        <button className={'canvas-button' + colorSwapBrushClass} onClick={swapColorSwapBrush}><i class="fas fa-paint-brush"></i><span>/</span><i class="fas fa-exchange-alt"></i></button>
-                    </RuleChecker>
-                </div>
-            </Collapse>
-            <Collapse title={'Tools'}>
-                <div className='canvas-tools-container'>
-                    <RuleChecker property='disableUndoRedo' canvasSettings={canvasSettings}>
-                        <button className={'canvas-button' + undoClass} onClick={undo}><i class="fas fa-undo"></i></button>
-                        <button className={'canvas-button' + redoClass} onClick={redo}><i class="fas fa-redo"></i></button>
-                    </RuleChecker>
-                    <RuleChecker property='disableGrid' canvasSettings={canvasSettings}>
-                        <button className={'canvas-button' + gridClass} onClick={swapGrid}><i class="fas fa-th"></i></button>
-                    </RuleChecker>
-                    <RuleChecker property='disableClear' canvasSettings={canvasSettings}>
-                        <button className={'canvas-button'} onClick={clearImage}><i class="fas fa-ban"></i></button>
-                    </RuleChecker>
-                    <RuleChecker property='disableCopyPaste' canvasSettings={canvasSettings}>
-                        <button className={'canvas-button'} onClick={copy}><i class="fas fa-copy"></i></button>
-                        <button className={'canvas-button' + pasteClass} onClick={paste}><i class="fas fa-paste"></i></button>
-                    </RuleChecker>
-                </div>
-            </Collapse>
-            <Collapse title={'Configurables'}>
-                <div className='canvas-tools-container'>
+                </Collapse>
+                <Collapse title={'Brushes'}>
                     <div className='canvas-tools-container'>
-                        <AddSubtract property={'pixelSize'} title={'Pixel Size'} min={1} max={100} />
-                        <AddSubtract property={'brushSize'} title={'Brush Size'} min={1} max={100} />
+                        <button className={'canvas-button' + brushClass} onClick={swapBrush}><i class="fas fa-paint-brush"></i></button>
+                        <RuleChecker property='disableEraser' canvasSettings={canvasSettings}>
+                            <button className={'canvas-button' + eraserClass} onClick={swapEraser}><i class="fas fa-eraser"></i></button>
+                        </RuleChecker>
+                        <RuleChecker property='disableEyedropper' canvasSettings={canvasSettings}>
+                            <button className={'canvas-button' + colorGrabClass} onClick={swapColorGrab}><i class="fas fa-eye-dropper"></i></button>
+                        </RuleChecker>
+                        <RuleChecker property='disableFill' canvasSettings={canvasSettings}>
+                            <button className={'canvas-button' + fillClass} onClick={swapFill}><i class="fas fa-fill"></i></button>
+                        </RuleChecker>
+                        <RuleChecker property='disableColorSwapper' canvasSettings={canvasSettings}>
+                            <button className={'canvas-button' + colorSwapClass} onClick={swapColorSwap}><i class="fas fa-exchange-alt"></i></button>
+                        </RuleChecker>
+                        <RuleChecker property='disableColorSwapBrush' canvasSettings={canvasSettings}>
+                            <button className={'canvas-button' + colorSwapBrushClass} onClick={swapColorSwapBrush}><i class="fas fa-paint-brush"></i><span>/</span><i class="fas fa-exchange-alt"></i></button>
+                        </RuleChecker>
                     </div>
+                </Collapse>
+                <Collapse title={'Tools'}>
                     <div className='canvas-tools-container'>
-                        <AddSubtract property={'width'} title={'Width'} min={1} max={100} />
-                        <AddSubtract property={'height'} title={'Height'} min={1} max={100} />
+                        <RuleChecker property='disableUndoRedo' canvasSettings={canvasSettings}>
+                            <button className={'canvas-button' + undoClass} onClick={undo}><i class="fas fa-undo"></i></button>
+                            <button className={'canvas-button' + redoClass} onClick={redo}><i class="fas fa-redo"></i></button>
+                        </RuleChecker>
+                        <RuleChecker property='disableGrid' canvasSettings={canvasSettings}>
+                            <button className={'canvas-button' + gridClass} onClick={swapGrid}><i class="fas fa-th"></i></button>
+                        </RuleChecker>
+                        <RuleChecker property='disableClear' canvasSettings={canvasSettings}>
+                            <button className={'canvas-button'} onClick={clearImage}><i class="fas fa-ban"></i></button>
+                        </RuleChecker>
+                        <RuleChecker property='disableCopyPaste' canvasSettings={canvasSettings}>
+                            <button className={'canvas-button'} onClick={copy}><i class="fas fa-copy"></i></button>
+                            <button className={'canvas-button' + pasteClass} onClick={paste}><i class="fas fa-paste"></i></button>
+                        </RuleChecker>
                     </div>
-                </div>
-            </Collapse>
-            {!props.disableSave &&
-                <div className='canvas-tools-container-centered'>
-                    <div className='canvas-button' onClick={changeImage}>Save</div>
-                    <div className='canvas-button' onClick={openDownload}>Download</div>
-                </div>
-            }
-        </div >
+                </Collapse>
+                <Collapse title={'Configurables'}>
+                    <div className='canvas-tools-container'>
+                        <div className='canvas-tools-container'>
+                            <AddSubtract property={'pixelSize'} title={'Pixel Size'} min={1} max={100} />
+                            <AddSubtract property={'brushSize'} title={'Brush Size'} min={1} max={100} />
+                        </div>
+                        <div className='canvas-tools-container'>
+                            <AddSubtract property={'width'} title={'Width'} min={1} max={100} />
+                            <AddSubtract property={'height'} title={'Height'} min={1} max={100} />
+                        </div>
+                    </div>
+                </Collapse>
+                {!props.disableSave &&
+                    <div className='canvas-tools-container-centered'>
+                        <div className='canvas-button' onClick={changeImage}>Save</div>
+                        <div className='canvas-button' onClick={openDownload}>Download</div>
+                    </div>
+                }
+            </div >
+        </>
     )
 }
 

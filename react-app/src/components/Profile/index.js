@@ -32,19 +32,21 @@ const Profile = () => {
     }
     if (profile.user.profileImg === null || profile.user.profileImg === undefined) profile.user.profileImage = 'create-error'
     return (
-        <>
+        <div className='profile-wrapper'>
             <div className='profile-header'>
                 <img className='user-icon-large' onError={imageError} alt='profile-pic' src={profile.user.profileImg} />
                 <div className='profile-header-title'>
                     {owner ? 'Your Profile' : `${profile.user.username}'s Profile`}
                 </div>
             </div>
-            <div className='profile-header-title'>
-                {owner ? 'Your Images' : `${profile.user.username}'s Images`}
+            <div className='profile-image-wrapper'>
+                <div className='profile-header-title'>
+                    {owner ? 'Your Images' : `${profile.user.username}'s Images`}
+                </div>
+                <ProfileCarousel images={profile.images} owner={owner} userId={user.id} />
             </div>
-            <ProfileCarousel images={profile.images} owner={owner} userId={user.id} />
 
-        </>
+        </div>
     );
 }
 

@@ -28,3 +28,16 @@
       display:flex;
       justify-content: center;
   }
+
+  .profile-image-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-wrapper{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+  }

@@ -30,7 +30,7 @@ function ProfileCarousel({ images, owner, userId }) {
     }, [currentSlide])
     if (images.length === 0) {
         return (
-            <div className='competition-text'>No entries have been received yet!</div>
+            <div className='competition-text'>You haven't drawn anything yet! Hop to it pixel art maestro!</div>
         )
     }
 
