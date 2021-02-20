@@ -4,13 +4,14 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { updateImage } from "../canvas/aws";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from '../../store/session'
 import { setProfileUser } from '../../store/profile'
 
 function ProfileCarousel({ images, owner, userId }) {
     const [currentSlide, setCurrentSlide] = useState(0)
     const history = useHistory()
+    const user = useSelector(state => state.session.user)
     const dispatch = useDispatch()
     var settings = {
         dots: true,
@@ -35,7 +36,6 @@ function ProfileCarousel({ images, owner, userId }) {
     }
 
     const updateImage = async () => {
-        // debugger
         const img = images[currentSlide].apngImgUrl
         const res = await fetch(`/api/users/${userId}/profileImg`, {
             method: "POST",
@@ -51,10 +51,8 @@ function ProfileCarousel({ images, owner, userId }) {
         dispatch(setProfileUser(data.user))
     }
 
-    const linkImage = (img) => {
-        if (owner) {
-            history.push(`/sketch/${img.id}`)
-        }
+    const editImage = () => {
+        history.push(`/sketch/${images[currentSlide].id}`)
     }
 
     return (
@@ -62,13 +60,19 @@ function ProfileCarousel({ images, owner, userId }) {
             <Slider {...settings}>
                 {images.map((img, ind) => {
                     return (
-                        <img className='carousel-image' onClick={() => linkImage(img)} src={img.apngImgUrl} key={ind} alt={`Image ${ind}`}></img>
+                        <div className='carousel-image-container' key={ind}>
+                        <div className='carousel-image-title'><b>{img.title}</b> <span className='carousel-small-text'> </span></div>
+                        <img className='carousel-image' src={img.apngImgUrl} key={ind} alt={`Image ${ind}`}></img>
+                        </div>
                     )
                 })}
             </Slider>
             {owner &&
                 <div className='profile-button-wrapper'>
                     <div className='nav-link profile-spacer' onClick={updateImage}>Set Profile Image</div>
+                    {images[currentSlide].competitionId &&
+                    <div className='nav-link profile-spacer' onClick={editImage}>Edit Image</div>
+                    }
                 </div>
             }
         </div>
