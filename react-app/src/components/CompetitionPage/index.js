@@ -145,7 +145,7 @@ const CompetitionPage = () => {
             } else {
                 if (user.id === post.user.id) {
                     return (
-                        <div className='nav-link' onClick={() => history.push(`/competitions/${post.id}/judge`)}>Judge Entries</div>
+                        <div className='modal-link' onClick={() => history.push(`/competitions/${post.id}/judge`)}>Judge Entries</div>
                     )
                 }
             }
@@ -174,14 +174,14 @@ const CompetitionPage = () => {
                     <div className='competition-content-wrapper'>
                         <div className='competition-content'>
                             <div>
-                            <div className='user-bar'>
+                            <div className='user-bar bottom-spacing'>
                                 <img className='user-icon' src={post.user.profileImg} onError={imageError} alt="User Icon" />
                                 <div className='username'>Created by <Link to={`/users/${post.user.id}`} className='user-link'>{post.user.username}</Link> {timeDif} ago</div>
                             </div>
-                            <div className='post-description'>{post.body}</div>
-                            <div className='post-ruleset-wrapper'>
-                                <div className='post-description-title'>Competition Description</div>
-                                <div className='post-description-ruleset'>{post.ruleset.description}</div>
+                            <div className='post-description format-erase'>{post.body}</div>
+                            <div className='post-ruleset-wrapper format-erase'>
+                                <div className='post-description-title format-erase'>Competition Description</div>
+                                <div className='post-description-ruleset format-erase'>{post.ruleset.description}</div>
                             </div>
                             </div>
                             <div className='bolded-text'>{new Date() > new Date(post.competitionEnd) ? 'Closed on' : 'Closes on'} {format(new Date(post.competitionEnd), 'eeee, MMMM do yyyy')} at {format(new Date(post.competitionEnd), 'h:m a')}</div>

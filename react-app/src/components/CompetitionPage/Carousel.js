@@ -2,8 +2,11 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import UserHover from "../UserHover";
+import { useSelector } from "react-redux";
 
 function Carousel({ images }) {
+    const user = useSelector(state => state.session.user)
     var settings = {
         dots: true,
         infinite: true,
@@ -23,8 +26,8 @@ function Carousel({ images }) {
                 {images.map((img, ind) => {
                     return (
                         <div className='carousel-image-container' key={ind}>
+                            <div className='carousel-image-title'><b>{img.title}</b> <span className='carousel-small-text'> by <UserHover user={img.user} currentUser={user}/> </span></div>
                             <img className='carousel-image' src={img.apngImgUrl}  alt={`Image ${ind}`}></img>
-                            <div className='carousel-image-title'>{img.title} by {img.user.username}</div>
                         </div>
                     )
                 })}
