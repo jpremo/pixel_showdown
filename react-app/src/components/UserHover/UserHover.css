@@ -1,13 +1,27 @@
 .user-hover-info {
   background: white;
   position: absolute;
+  padding:5px;
+  border: 1px solid black;
+  border-radius: 5px;
+  /* min-width: 175px; */
+  width: max-content;
+  display: flex;
+  max-width: 300px;
+  min-width: 200px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   left: 0px;
   top: 16px;
+  cursor: auto;
+  z-index: 100;
 }
 
 .user-hover-wrapper {
   position: relative;
   cursor: pointer;
+  min-width: fit-content;
   color: black;
   text-decoration: none;
   text-decoration: underline;
@@ -16,4 +30,23 @@
 
 .user-hover-wrapper:hover {
   color: #0077cc;
+}
+
+.user-hover-buttons{
+  display: flex;
+  margin: 5px;
+  width: 100%;
+  justify-content: center;
+}
+
+.user-hover-header{
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+}
+
+.user-hover-text{
+  font-size: 16px;
+  color: black;
+  margin: 2px 7px;
 }
