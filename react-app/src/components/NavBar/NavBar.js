@@ -12,7 +12,7 @@ import { changeProperty } from '../../store/canvas'
 import CreatePostForm from "../HomePage/CreatePostForm";
 import CreateCompetitionForm from "../HomePage/CreateCompetitionForm";
 import LogOutModal from '../auth/LogOutModal';
-
+import { resetSketch } from '../utils'
 //Handles the display of the navbar
 const NavBar = ({ setAuthenticated }) => {
   const modals = useSelector(state => state.modal)
@@ -47,31 +47,11 @@ const NavBar = ({ setAuthenticated }) => {
     }
   }
 
-  //Resets redux store is sketch nav-button is pressed
-  const resetSketch = () => {
-    const initialSettings = {
-      pixelSize: 20,
-      height: 32,
-      width: 32,
-      color: [180, 180, 180, 1],
-      grid: [{}, {}, {}, {}, {}, {}, {}, {}],
-      colorPalette: ["#f44336ff", "#e91e63ff", "#9c27b0ff", "#673ab7ff", "#3f51b5ff", "#2196f3ff", "#03a9f4ff", "#00bcd4ff", "#009688ff", "#4caf50ff", "#8bc34aff", "#cddc39ff", "#ffeb3bff", "#ffc107ff", "#ff9800ff", "#ff5722ff", "#795548ff", "#607d8bff"],
-      defaultPalette: ["#f44336ff", "#e91e63ff", "#9c27b0ff", "#673ab7ff", "#3f51b5ff", "#2196f3ff", "#03a9f4ff", "#00bcd4ff", "#009688ff", "#4caf50ff", "#8bc34aff", "#cddc39ff", "#ffeb3bff", "#ffc107ff", "#ff9800ff", "#ff5722ff", "#795548ff", "#607d8bff"],
-      currentGrid: {},
-      finalGrid: {},
-      moveHistory: [[{}], [{}], [{}], [{}], [{}], [{}], [{}], [{}]],
-      historyPosition: [0, 0, 0, 0, 0, 0, 0, 0],
-      editing: null,
-      editLink: null,
-      title: 'Title',
-      fps: 1,
-      totalFrames: 1,
-      currentFrame: 1,
-      ruleset: {}
-    }
-
-    dispatch(changeProperty(initialSettings))
+  const setSketch = () => {
+    resetSketch(dispatch)
   }
+
+
   return (
     <>
       <nav id='nav-bar'>
@@ -88,7 +68,7 @@ const NavBar = ({ setAuthenticated }) => {
           <SignUpForm setAuthenticated={setAuthenticated}></SignUpForm>
         </ModalContainer>
         <ModalContainer hidden={!modals.logout} cancel={null}>
-          <LogOutModal/>
+          <LogOutModal />
         </ModalContainer>
         <div id='nav-bar-logo-picture-div'>
           <NavLink exact to="/" activeClassName="home-active">
@@ -96,10 +76,10 @@ const NavBar = ({ setAuthenticated }) => {
           </NavLink>
         </div>
         <div id="nav-bar-menu">
-          <NavLink to={'/sketch'} onClick={resetSketch} exact={false} className="nav-link" activeClassName="active">
+          <NavLink to={'/sketch'} onClick={setSketch} exact={false} className="nav-link" activeClassName="active">
             Sketch
         </NavLink>
-          <NavLink to={'/rulesets/create'} onClick={resetSketch} exact={true} className="nav-link" activeClassName="active">
+          <NavLink to={'/rulesets/create'} onClick={setSketch} exact={true} className="nav-link" activeClassName="active">
             Create Ruleset
         </NavLink>
           {/* <div className='modal-link modal-button' onClick={openPostModal}>New Post</div> */}

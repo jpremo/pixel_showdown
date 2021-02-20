@@ -2,16 +2,15 @@ import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { updateImage } from "../canvas/aws";
 import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setUser } from '../../store/session'
 import { setProfileUser } from '../../store/profile'
+import { resetSketch } from "../utils";
 
 function ProfileCarousel({ images, owner, userId }) {
     const [currentSlide, setCurrentSlide] = useState(0)
     const history = useHistory()
-    const user = useSelector(state => state.session.user)
     const dispatch = useDispatch()
     var settings = {
         dots: true,
@@ -27,7 +26,6 @@ function ProfileCarousel({ images, owner, userId }) {
         }
     };
     useEffect(() => {
-        console.log(currentSlide)
     }, [currentSlide])
     if (images.length === 0) {
         return (
@@ -52,6 +50,7 @@ function ProfileCarousel({ images, owner, userId }) {
     }
 
     const editImage = () => {
+        resetSketch(dispatch)
         history.push(`/sketch/${images[currentSlide].id}`)
     }
 
