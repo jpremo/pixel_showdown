@@ -1,4 +1,5 @@
 import { changeProperty } from '../../store/canvas'
+import { format } from 'date-fns'
 //Resets redux store is sketch nav-button is pressed
 export const resetSketch = (dispatch) => {
     const initialSettings = {
@@ -28,4 +29,9 @@ export const resetSketch = (dispatch) => {
         dispatch(changeProperty(initialSettings));
     }
     return initialSettings
+}
+
+
+export const longFormattedTime = (time) => {
+    return `${format(new Date(time), 'eeee, MMMM do yyyy')} at ${format(new Date(time), 'hh:mm a')}`
 }

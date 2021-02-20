@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { setUser } from '../../store/session'
 import { setProfileUser } from '../../store/profile'
 import { resetSketch } from "../utils";
+import {longFormattedTime} from '../utils'
 
 function ProfileCarousel({ images, owner, userId }) {
     const [currentSlide, setCurrentSlide] = useState(0)
@@ -64,7 +65,7 @@ function ProfileCarousel({ images, owner, userId }) {
                             <b>{img.title}</b>
                         </div>
                         <img className='carousel-image' src={img.apngImgUrl} key={ind} alt={`Image ${ind}`}></img>
-                        <div className='carousel-image-title'>Edited on {img.updated_at}</div>
+                        <div className='carousel-image-title'>Edited on {longFormattedTime(img.updated_at)}</div>
                         </div>
                     )
                 })}

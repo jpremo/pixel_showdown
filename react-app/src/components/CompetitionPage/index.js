@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from 'react-router-dom';
 import { competitionPage, clearCompetitionPage } from '../../store/posts'
-import { format, formatDistance, isPast, addSeconds } from 'date-fns'
+import { formatDistance, isPast, addSeconds } from 'date-fns'
 import { Link } from 'react-router-dom'
 import { isArray } from "lodash";
 import { CirclePicker } from 'react-color'
 import './CompetitionPage.css'
 import Carousel from "./Carousel";
 import { setLoginModal } from '../../store/modal'
+import {longFormattedTime} from '../utils'
 //Component used to wrap elements that should be displayed in a modal; hidden prop is used to specify the property that
 //checks whether the modal should be visible
 const CompetitionPage = () => {
@@ -184,7 +185,7 @@ const CompetitionPage = () => {
                                 <div className='post-description-ruleset format-erase'>{post.ruleset.description}</div>
                             </div>
                             </div>
-                            <div className='bolded-text'>{new Date() > new Date(post.competitionEnd) ? 'Closed on' : 'Closes on'} {format(new Date(post.competitionEnd), 'eeee, MMMM do yyyy')} at {format(new Date(post.competitionEnd), 'h:m a')}</div>
+                            <div className='bolded-text'>{new Date() > new Date(post.competitionEnd) ? 'Closed on' : 'Closes on'} {longFormattedTime(post.competitionEnd)}</div>
                             <div className='competition-title-large'>Submissions</div>
                             <Carousel images={filteredImages} />
                             <div className='competition-title-large'>Rules</div>
