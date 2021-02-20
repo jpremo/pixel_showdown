@@ -60,8 +60,11 @@ function ProfileCarousel({ images, owner, userId }) {
                 {images.map((img, ind) => {
                     return (
                         <div className='carousel-image-container' key={ind}>
-                        <div className='carousel-image-title'><b>{img.title}</b> <span className='carousel-small-text'> </span></div>
+                        <div className='carousel-image-title'>
+                            <b>{img.title}</b>
+                        </div>
                         <img className='carousel-image' src={img.apngImgUrl} key={ind} alt={`Image ${ind}`}></img>
+                        <div className='carousel-image-title'>Edited on {img.updated_at}</div>
                         </div>
                     )
                 })}

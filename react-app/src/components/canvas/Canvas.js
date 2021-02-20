@@ -206,7 +206,7 @@ const Canvas = props => {
     return (
         <>
             {/* style={{cursor: `url('${currentCursor}'), auto`}} */}
-            <canvas className='pixel-canvas' ref={canvasRef} {...rest} onMouseMove={toolAction} onMouseDown={toolAction} onMouseUp={toolUp} onMouseLeave={updateGrid} />
+            <canvas className='pixel-canvas' ref={canvasRef} onMouseMove={toolAction} onMouseDown={toolAction} onMouseUp={toolUp} onMouseLeave={updateGrid} />
         </>
     )
 }

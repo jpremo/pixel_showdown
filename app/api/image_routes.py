@@ -9,6 +9,7 @@ import uuid
 from apng import APNG
 import shutil
 from sqlalchemy import and_
+from datetime import datetime
 
 # let bucketRegion = "us-east-1";
 # let IdentityPoolId = "us-east-1:013e5b90-632f-4e59-aa4f-ed9acdd8a8c3";
@@ -139,6 +140,7 @@ def image_put(id):
 
     image.title = data['title']
     image.grid = data['grid']
+    image.updated_at = datetime.now()
     db.session.commit()
     return image.to_dict()
 
