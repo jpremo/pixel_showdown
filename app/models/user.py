@@ -59,7 +59,8 @@ class User(db.Model, UserMixin):
         foll2 = []
         for f in self.followcheck:
             foll2.append(f.id)
-        print('\n\n', self.id, self.followers, '\n')
+
+        compCount = len([p for p in self.posts if p.rulesetId])
         return {
             "id": self.id,
             "username": self.username,
@@ -68,6 +69,9 @@ class User(db.Model, UserMixin):
             "lastName": self.lastName,
             "biography": self.biography,
             "profileImg": self.profileImg,
+            "imageCount": len(self.images),
+            "competitionCount": compCount,
+            "postCount": len(self.posts) - compCount,
             "followers": foll,
             "followings": foll2,
             "created_at": self.created_at,

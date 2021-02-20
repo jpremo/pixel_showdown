@@ -51,9 +51,7 @@ export const followUser = (follower, following) => async (dispatch) => {
     })
   });
   if (response.ok) {
-    let data = await response.json();
-    dispatch(addFollow());
-    return data;
+    dispatch(addFollow(following));
   }
 };
 

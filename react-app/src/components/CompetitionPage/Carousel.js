@@ -24,7 +24,7 @@ function Carousel({ images }) {
                     return (
                         <div className='carousel-image-container' key={ind}>
                             <img className='carousel-image' src={img.apngImgUrl}  alt={`Image ${ind}`}></img>
-                            <div className='carousel-image-title'>{img.title} by {img.user}</div>
+                            <div className='carousel-image-title'>{img.title} by {img.user.username}</div>
                         </div>
                     )
                 })}

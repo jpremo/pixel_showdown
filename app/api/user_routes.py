@@ -27,7 +27,7 @@ def user_profileImg(id):
 @user_routes.route('/follow', methods=["POST"])
 def user_follow():
     """
-    Retrieves and returns information on specified user
+    Adds a follower to the specified user
     """
     data = request.get_json(force=True)
     follower = User.query.get(data['follower'])
@@ -35,3 +35,15 @@ def user_follow():
     follower.followcheck.append(following)
     db.session.commit()
     return {'followed': True}
+
+@user_routes.route('/follow', methods=["DELETE"])
+def user_unfollow():
+    """
+    Removes a follower from a specified user
+    """
+    data = request.get_json(force=True)
+    follower = User.query.get(data['follower'])
+    following = User.query.get(data['following'])
+    follower.followcheck.remove(following)
+    db.session.commit()
+    return {'unfollowed': True}
