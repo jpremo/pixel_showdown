@@ -1,0 +1,17 @@
+.user-hover-info {
+  background: white;
+  position: absolute;
+}
+
+.user-hover-wrapper {
+  position: relative;
+  cursor: pointer;
+  color: black;
+  text-decoration: none;
+  text-decoration: underline;
+  transition: color 0.5s;
+}
+
+.user-hover-wrapper:hover {
+  color: #0077cc;
+}

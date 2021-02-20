@@ -12,8 +12,8 @@ function Carousel({ images }) {
         slidesToScroll: 1,
         arrows: true,
     };
-    if(images.length === 0) {
-        return(
+    if (images.length === 0) {
+        return (
             <div className='competition-text'>No entries have been received yet!</div>
         )
     }
@@ -22,7 +22,10 @@ function Carousel({ images }) {
             <Slider {...settings}>
                 {images.map((img, ind) => {
                     return (
-                        <img className='carousel-image' src={img.apngImgUrl} key={ind} alt={`Image ${ind}`}></img>
+                        <div className='carousel-image-container' key={ind}>
+                            <img className='carousel-image' src={img.apngImgUrl}  alt={`Image ${ind}`}></img>
+                            <div className='carousel-image-title'>{img.title} by {img.user}</div>
+                        </div>
                     )
                 })}
             </Slider>

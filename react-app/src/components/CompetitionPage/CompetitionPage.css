@@ -57,7 +57,6 @@
     width: 402px;
     padding: 0px;
     margin: 30px;
-    /* border: 1px solid black; */
     border-radius: 10px;
 }
 
@@ -69,10 +68,22 @@
     image-rendering: pixelated;
     max-width: 400px;
     max-height: 400px;
+    width: 400px;
     /* padding: 10px' */
     /* border: 1px solid black; */
 }
 
+.carousel-image-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-image-title{
+    font-size: 24px;
+    text-align: center;
+}
 
 .competition-text{
     font-size: 16px;

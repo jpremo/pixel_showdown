@@ -40,7 +40,7 @@ class Post(db.Model):
         """A function that returns key object information in a readable format"""
         nums = []
         for i in self.competition_images:
-            nums.append(i.to_dict())
+            nums.append(i.to_dict_competition())
         return {
             "id": self.id,
             "body": self.body,

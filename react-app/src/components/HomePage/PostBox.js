@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import React from 'react'
 import { formatDistance } from 'date-fns'
-
+import UserHover from '../UserHover'
 
 function PostBox({ post, competition, competitionClosed }) {
     // let desc = post.body
@@ -17,7 +17,8 @@ function PostBox({ post, competition, competitionClosed }) {
         <div className='post-box'>
             <div className='user-bar'>
                 <img className='user-icon' src={post.user.profileImg} onError={imageError} alt="User Icon" />
-                <div className='username'>Posted by <Link to={`/users/${post.user.id}`} className='user-link'>{post.user.username}</Link> {timeDif} ago</div>
+                <div className='username'>Posted by <UserHover user={post.user}/> {timeDif} ago</div>
+                {/* <Link to={`/users/${post.user.id}`} className='user-link'>{post.user.username}</Link> */}
             </div>
             <div className='post-description'>{post.body}</div>
             <div className='post-ruleset-wrapper'>

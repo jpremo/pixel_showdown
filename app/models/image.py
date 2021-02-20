@@ -47,3 +47,16 @@ class Image(db.Model):
             "created_at": self.created_at,
             "updated_at": self.updated_at
         }
+
+    def to_dict_competition(self):
+        """A function that returns key object information in a readable format"""
+        return {
+            "id": self.id,
+            "title": self.title,
+            "apngImgUrl": self.apngImgUrl,
+            "competitionId": self.competitionId,
+            "userId": self.userId,
+            "user": self.user.to_dict_simple(),
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
+        }
