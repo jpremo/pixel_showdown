@@ -1,6 +1,8 @@
 .user-hover-info {
   background: white;
   position: absolute;
+  left: 0px;
+  top: 16px;
 }
 
 .user-hover-wrapper {

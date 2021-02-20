@@ -15,7 +15,7 @@ def user(id):
 @user_routes.route('/<int:id>/profileImg', methods=["POST"])
 def user_profileImg(id):
     """
-    Retrieves and returns information on specified user
+    Updates user profile picture
     """
     data = request.get_json(force=True)
 
@@ -23,3 +23,15 @@ def user_profileImg(id):
     user.profileImg = data['profileImg']
     db.session.commit()
     return {'user': user.to_dict()}
+
+@user_routes.route('/follow', methods=["POST"])
+def user_follow():
+    """
+    Retrieves and returns information on specified user
+    """
+    data = request.get_json(force=True)
+    follower = User.query.get(data['follower'])
+    following = User.query.get(data['following'])
+    follower.followcheck.append(following)
+    db.session.commit()
+    return {'followed': True}

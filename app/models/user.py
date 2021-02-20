@@ -28,9 +28,14 @@ class User(db.Model, UserMixin):
     followers = db.relationship(
         "User",
         secondary=followings,
-        backref=backref('followings'),
         primaryjoin=(followings.c.following == id),
         secondaryjoin=(followings.c.follower == id))
+
+    followcheck = db.relationship(
+        "User",
+        secondary=followings,
+        secondaryjoin=(followings.c.following == id),
+        primaryjoin=(followings.c.follower == id))
 
     @property
     def password(self):
@@ -48,6 +53,13 @@ class User(db.Model, UserMixin):
         nums = []
         for r in self.rulesets:
             nums.append(r.to_dict_simple())
+        foll = []
+        for f in self.followers:
+            foll.append(f.id)
+        foll2 = []
+        for f in self.followcheck:
+            foll2.append(f.id)
+        print('\n\n', self.id, self.followers, '\n')
         return {
             "id": self.id,
             "username": self.username,
@@ -56,6 +68,8 @@ class User(db.Model, UserMixin):
             "lastName": self.lastName,
             "biography": self.biography,
             "profileImg": self.profileImg,
+            "followers": foll,
+            "followings": foll2,
             "created_at": self.created_at,
             "updated_at": self.updated_at,
             "rulesets": nums
