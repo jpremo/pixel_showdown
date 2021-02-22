@@ -14,7 +14,7 @@
   left: 0px;
   top: 16px;
   cursor: auto;
-  z-index: 100;
+  z-index: 1;
 }
 
 .user-hover-wrapper {

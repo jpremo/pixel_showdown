@@ -6,7 +6,7 @@ import './UserHover.css'
 const FollowButton = ({ user, currentUser, login }) => {
     const dispatch = useDispatch()
     let followText
-    if (currentUser.followings.includes(user.id)) {
+    if (currentUser.id && currentUser.followings.includes(user.id)) {
         followText = 'Unfollow'
     } else {
         followText = 'Follow'
