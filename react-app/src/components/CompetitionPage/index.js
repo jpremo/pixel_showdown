@@ -9,7 +9,7 @@ import { CirclePicker } from 'react-color'
 import './CompetitionPage.css'
 import Carousel from "./Carousel";
 import { setLoginModal } from '../../store/modal'
-import {longFormattedTime} from '../utils'
+import { longFormattedTime } from '../utils'
 //Component used to wrap elements that should be displayed in a modal; hidden prop is used to specify the property that
 //checks whether the modal should be visible
 const CompetitionPage = () => {
@@ -18,6 +18,8 @@ const CompetitionPage = () => {
     const post = useSelector(state => state.posts.competitionPage)
     const dispatch = useDispatch()
     const history = useHistory()
+    const [judging, setJudging] = useState(false)
+    const [winners, setWinners] = useState([null, null, null])
     const [loaded, setLoaded] = useState(false)
     const [notFound, setNotFound] = useState(false)
     const params = useParams()
@@ -115,6 +117,14 @@ const CompetitionPage = () => {
             }
         }
 
+        const judgeClick = () => {
+            if (judging) {
+                setJudging(false)
+            } else {
+                setJudging(true)
+            }
+        }
+
         const entryCheck = () => {
             if (!isPast(new Date(post.competitionEnd))) {
                 if (user.id) {
@@ -145,9 +155,13 @@ const CompetitionPage = () => {
                 )
             } else {
                 if (user.id === post.user.id) {
-                    return (
-                        <div className='modal-link' onClick={() => history.push(`/competitions/${post.id}/judge`)}>Judge Entries</div>
-                    )
+                    if (!judging) {
+                        return (
+                            <div className='modal-link' onClick={judgeClick}>Judge Entries</div>
+                        )
+                    } else {
+
+                    }
                 }
             }
 
@@ -163,8 +177,8 @@ const CompetitionPage = () => {
             )
         })
         let showTools = false
-        for(let i = 0; i < disabledTools.length; i++) {
-            if(disabledTools[i] !== null) {
+        for (let i = 0; i < disabledTools.length; i++) {
+            if (disabledTools[i] !== null) {
                 showTools = true
             }
         }
@@ -175,15 +189,15 @@ const CompetitionPage = () => {
                     <div className='competition-content-wrapper'>
                         <div className='competition-content'>
                             <div>
-                            <div className='user-bar bottom-spacing'>
-                                <img className='user-icon' src={post.user.profileImg} onError={imageError} alt="User Icon" />
-                                <div className='username'>Created by <Link to={`/users/${post.user.id}`} className='user-link'>{post.user.username}</Link> {timeDif} ago</div>
-                            </div>
-                            <div className='post-description format-erase'>{post.body}</div>
-                            <div className='post-ruleset-wrapper format-erase'>
-                                <div className='post-description-title format-erase'>Competition Description</div>
-                                <div className='post-description-ruleset format-erase'>{post.ruleset.description}</div>
-                            </div>
+                                <div className='user-bar bottom-spacing'>
+                                    <img className='user-icon' src={post.user.profileImg} onError={imageError} alt="User Icon" />
+                                    <div className='username'>Created by <Link to={`/users/${post.user.id}`} className='user-link'>{post.user.username}</Link> {timeDif} ago</div>
+                                </div>
+                                <div className='post-description format-erase'>{post.body}</div>
+                                <div className='post-ruleset-wrapper format-erase'>
+                                    <div className='post-description-title format-erase'>Competition Description</div>
+                                    <div className='post-description-ruleset format-erase'>{post.ruleset.description}</div>
+                                </div>
                             </div>
                             <div className='bolded-text'>{new Date() > new Date(post.competitionEnd) ? 'Closed on' : 'Closes on'} {longFormattedTime(post.competitionEnd)}</div>
                             <div className='competition-title-large'>Submissions</div>
