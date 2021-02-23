@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import UserHover from "../UserHover";
 import { useSelector } from "react-redux";
 
-function Carousel({ images }) {
+function Carousel({ images, setCurrentImage }) {
     const user = useSelector(state => state.session.user)
     var settings = {
         dots: true,
@@ -14,6 +14,11 @@ function Carousel({ images }) {
         slidesToShow: 1,
         slidesToScroll: 1,
         arrows: true,
+        afterChange: (indexOfCurrentSlide) => {
+            setCurrentImage(
+                indexOfCurrentSlide
+            )
+        }
     };
     if (images.length === 0) {
         return (

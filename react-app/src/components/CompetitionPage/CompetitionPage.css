@@ -141,3 +141,7 @@
 .bottom-spacing{
     margin-bottom: 15px;
 }
+
+.modal-link.invalid-selection {
+    background-color: rgb(87, 86, 86);
+  }

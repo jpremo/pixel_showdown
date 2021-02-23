@@ -200,7 +200,7 @@
 }
 
 .invalid-selection:hover{
-    cursor: auto;
+    cursor: default;
 }
 
 .deleting span div:hover{

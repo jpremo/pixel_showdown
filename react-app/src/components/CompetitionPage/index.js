@@ -23,6 +23,7 @@ const CompetitionPage = () => {
     const [loaded, setLoaded] = useState(false)
     const [notFound, setNotFound] = useState(false)
     const params = useParams()
+    const [currentImage, setCurrentImage] = useState(0)
     const competitionId = params.postId
     useEffect(() => {
         (async function () {
@@ -128,11 +129,6 @@ const CompetitionPage = () => {
         const entryCheck = () => {
             if (!isPast(new Date(post.competitionEnd))) {
                 if (user.id) {
-                    if (user.id === post.user.id) {
-                        return (
-                            <div className='bolded-text'>Your competition is going great! Check back in later to judge the entries.</div>
-                        )
-                    }
                     let userSubmission = post.images.filter((el) => {
                         return el.userId === user.id
                     })
@@ -154,17 +150,41 @@ const CompetitionPage = () => {
                     <div className='nav-link' onClick={entryLink}>Create Entry</div>
                 )
             } else {
-                if (user.id === post.user.id) {
-                    if (!judging) {
-                        return (
-                            <div className='modal-link' onClick={judgeClick}>Judge Entries</div>
-                        )
-                    } else {
-
-                    }
-                }
+                return null
             }
 
+        }
+
+        const judgeCheck = () => {
+            if (user.id === post.user.id) {
+                if (!isPast(new Date(post.competitionEnd))) {
+                    return (
+                        <div className='bolded-text'>Your competition is going great! Check back in later to judge the entries.</div>
+                    )
+                }
+                if (!judging) {
+                    if(post.images.length === 0) {
+                        return (
+                            <div className='bolded-text'>No entries were received so there's nothing to judge. 😢</div>
+                        )
+                    }
+                    return (
+                        <div className='modal-link' onClick={judgeClick}>Judge Entries</div>
+                    )
+                } else {
+                    if (winners[0] !== null && (winners[1] !== null || post.images.length <= 1) && (winners[2] !== null || post.images.length <= 2)) {
+                        return (
+                            <div className='modal-link' onClick={judgeClick}>Submit Winners</div>
+                        )
+                    } else {
+                        return (
+                            <div className='modal-link invalid-selection'>Submit Winners</div>
+                        )
+                    }
+                }
+            } else {
+                return null
+            }
         }
 
         let disabledTools = Object.entries(post.ruleset.rules).map((el, ind) => {
@@ -181,6 +201,23 @@ const CompetitionPage = () => {
             if (disabledTools[i] !== null) {
                 showTools = true
             }
+        }
+
+        const swapJudge = (idx) => {
+            let winnerCopy = [...winners]
+            if(winnerCopy[idx] === currentImage) {
+                winnerCopy[idx] = null
+            } else {
+                winnerCopy = winnerCopy.map((el) => {
+                    if(el === currentImage) {
+                        return null
+                    }
+                    return el
+                })
+                winnerCopy[idx] = currentImage
+            }
+            console.log(winnerCopy)
+            setWinners(winnerCopy)
         }
 
         return (
@@ -201,7 +238,23 @@ const CompetitionPage = () => {
                             </div>
                             <div className='bolded-text'>{new Date() > new Date(post.competitionEnd) ? 'Closed on' : 'Closes on'} {longFormattedTime(post.competitionEnd)}</div>
                             <div className='competition-title-large'>Submissions</div>
-                            <Carousel images={filteredImages} />
+                            <Carousel images={filteredImages} setCurrentImage={setCurrentImage}/>
+                            {judging &&
+                                <>
+                                    <div className='modal-button-box'>
+                                        <div className={(winners[0] !== null) ? 'modal-link selected' : 'modal-link'} onClick={() => swapJudge(0)}>First</div>
+                                        {post.images.length > 1 &&
+                                            <div className={(winners[1] !== null) ? 'modal-link selected' : 'modal-link'} onClick={() => swapJudge(1)}>Second</div>
+                                        }
+                                        {post.images.length > 2 &&
+                                            <div className={(winners[2] !== null) ? 'modal-link selected' : 'modal-link'} onClick={() => swapJudge(2)}>Third</div>
+                                        }
+                                    </div>
+                                    <div className='modal-button-box'>
+
+                                    </div>
+                                </>
+                            }
                             <div className='competition-title-large'>Rules</div>
                             <div className='bolded-text'>Submission Time Limit: {formattedTime(post.ruleset.rules.timeLimit)}</div>
                             <div className='competition-palette-box'>
@@ -236,6 +289,7 @@ const CompetitionPage = () => {
                                 })}
                             </div>
                             {entryCheck()}
+                            {judgeCheck()}
                         </div>
                     </div>
                 }
