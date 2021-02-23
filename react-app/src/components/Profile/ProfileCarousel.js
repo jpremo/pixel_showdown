@@ -26,6 +26,14 @@ function ProfileCarousel({ images, owner, userId }) {
             )
         }
     };
+    const ribbonLogo = (place) => {
+        switch (place) {
+            case 0: return (<i style={{ color: '#E0DF3D', margin: '0 5px' }} class="fas fa-trophy fa-sm"></i>)
+            case 1: return (<i style={{ color: '#DADADA', margin: '0 5px' }} class="fas fa-trophy fa-sm"></i>)
+            case 2: return (<i style={{ color: '#CD881B', margin: '0 5px' }} class="fas fa-trophy fa-sm"></i>)
+            default: return null;
+        }
+    }
     useEffect(() => {
     }, [currentSlide])
     if (images.length === 0) {
@@ -55,6 +63,14 @@ function ProfileCarousel({ images, owner, userId }) {
         history.push(`/sketch/${images[currentSlide].id}`)
     }
 
+    const sketchOrSubmitted = (img) => {
+        if(!img.competitionId) {
+            return (<div className='carousel-image-title'>Sketch</div>)
+        } else {
+            return (<div className='carousel-image-title'>Entered into a competition <span className='user-hover-wrapper' onClick={() => history.push('/competitions/'+img.competitionId)}>here</span></div>)
+        }
+    }
+
     return (
         <div className='carousel-div'>
             <Slider {...settings}>
@@ -62,9 +78,12 @@ function ProfileCarousel({ images, owner, userId }) {
                     return (
                         <div className='carousel-image-container' key={ind}>
                         <div className='carousel-image-title'>
+                            {ribbonLogo(img.place)}
                             <b>{img.title}</b>
                         </div>
                         <img className='carousel-image' src={img.apngImgUrl} key={ind} alt={`Image ${ind}`}></img>
+                        <div className='carousel-image-title'><b>Points Earned: {(img.points === null) ? 0:img.points}</b></div>
+                        {sketchOrSubmitted(img)}
                         <div className='carousel-image-title'>Edited on {longFormattedTime(img.updated_at)}</div>
                         </div>
                     )
@@ -73,7 +92,7 @@ function ProfileCarousel({ images, owner, userId }) {
             {owner &&
                 <div className='profile-button-wrapper'>
                     <div className='nav-link profile-spacer' onClick={updateImage}>Set Profile Image</div>
-                    {images[currentSlide].competitionId &&
+                    {images[currentSlide].competitionId ===null &&
                     <div className='nav-link profile-spacer' onClick={editImage}>Edit Image</div>
                     }
                 </div>

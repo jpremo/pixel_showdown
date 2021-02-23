@@ -30,14 +30,22 @@ function Carousel({ images, setCurrentImage }) {
             <div className='competition-text'>No entries have been received yet!</div>
         )
     }
+    const ribbonLogo = (place) => {
+        switch (place) {
+            case 0: return (<i style={{ color: '#E0DF3D', margin: '0 5px' }} class="fas fa-trophy fa-sm"></i>)
+            case 1: return (<i style={{ color: '#DADADA', margin: '0 5px' }} class="fas fa-trophy fa-sm"></i>)
+            case 2: return (<i style={{ color: '#CD881B', margin: '0 5px' }} class="fas fa-trophy fa-sm"></i>)
+            default: return null;
+        }
+    }
     return (
         <div className='carousel-div'>
             <Slider {...settings}>
                 {images.map((img, ind) => {
                     return (
                         <div className='carousel-image-container' key={ind}>
-                            <div className='carousel-image-title'><b>{img.title}</b> <span className='carousel-small-text'> by <UserHover user={img.user} currentUser={user}/> </span></div>
-                            <img className='carousel-image' src={img.apngImgUrl}  alt={`Image ${ind}`}></img>
+                            <div className='carousel-image-title'>{ribbonLogo(img.place)}<b>{img.title}</b> <span className='carousel-small-text'> by <UserHover user={img.user} currentUser={user} /> </span></div>
+                            <img className='carousel-image' src={img.apngImgUrl} alt={`Image ${ind}`}></img>
                         </div>
                     )
                 })}
