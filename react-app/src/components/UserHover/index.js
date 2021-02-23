@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import FollowButton from './FollowButton';
 import { formatDistance } from 'date-fns'
 import './UserHover.css'
+import TrophyBar from './TrophyBar';
 
 const UserHover = ({ user, currentUser, login }) => {
     const history = useHistory()
@@ -25,16 +26,25 @@ const UserHover = ({ user, currentUser, login }) => {
     }
 
     const dateStr = formatDistance(new Date(user.created_at), new Date())
-
+    const ribbonLogo = (place) => {
+        switch (place) {
+            case 0: return (<i style={{ color: '#E0DF3D', margin: '0 5px' }} class="fas fa-trophy fa-sm"></i>)
+            case 1: return (<i style={{ color: '#DADADA', margin: '0 5px' }} class="fas fa-trophy fa-sm"></i>)
+            case 2: return (<i style={{ color: '#CD881B', margin: '0 5px' }} class="fas fa-trophy fa-sm"></i>)
+            default: return null;
+        }
+    }
     return (
         <span className='user-hover-wrapper' onMouseEnter={enter} onMouseLeave={leave} onClick={click}>
             {user.username}
             {!hidden &&
                 <div className='user-hover-info'>
                     <div className='user-hover-header'>Pixel Artist for {dateStr}</div>
-                    <div className='user-hover-buttons'>
-                        <div className='user-hover-text'>{user.imageCount} Pictures</div>
-                        <div className='user-hover-text'>{user.competitionCount} Competitions</div>
+                    <TrophyBar user={user}/>
+                    <div className='user-hover-buttons' style={{marginTop:'0'}}>
+                        <div className='user-hover-text'>Pictures: {user.imageCount}</div>
+                        <div className='user-hover-text'>Competitions: {user.competitionCount}</div>
+                        <div className='user-hover-text'>Points: {user.points}</div>
                     </div>
                     <div className='user-hover-buttons'>
                         <FollowButton currentUser={currentUser} user={user} login={login} />

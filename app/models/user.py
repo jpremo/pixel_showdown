@@ -59,6 +59,19 @@ class User(db.Model, UserMixin):
         foll2 = []
         for f in self.followcheck:
             foll2.append(f.id)
+        points = 0
+        first = 0
+        second = 0
+        third = 0
+        for i in self.images:
+            if i.points:
+                points = points+i.points
+            if i.place == 0:
+                first += 1
+            if i.place == 1:
+                second +=1
+            if i.place == 2:
+                third += 1
 
         compCount = len([p for p in self.posts if p.rulesetId])
         return {
@@ -72,6 +85,10 @@ class User(db.Model, UserMixin):
             "imageCount": len(self.images),
             "competitionCount": compCount,
             "postCount": len(self.posts) - compCount,
+            "points": points,
+            "first": first,
+            "second": second,
+            "third": third,
             "followers": foll,
             "followings": foll2,
             "created_at": self.created_at,
@@ -82,6 +99,19 @@ class User(db.Model, UserMixin):
     def to_dict_simple(self):
         """A function that returns key object information in a readable format"""
         compCount = len([p for p in self.posts if p.rulesetId])
+        points = 0
+        first = 0
+        second = 0
+        third = 0
+        for i in self.images:
+            if i.points:
+                points = points+i.points
+            if i.place == 0:
+                first += 1
+            if i.place == 1:
+                second +=1
+            if i.place == 2:
+                third += 1
         return {
             "id": self.id,
             "username": self.username,
@@ -89,6 +119,10 @@ class User(db.Model, UserMixin):
             "imageCount": len(self.images),
             "competitionCount": compCount,
             "postCount": len(self.posts) - compCount,
+            "points": points,
+            "first": first,
+            "second": second,
+            "third": third,
             "created_at": self.created_at,
             "updated_at": self.updated_at,
         }

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from 'react-router-dom';
 import { userImages, clearUserImages } from '../../store/profile'
 import './Profile.css'
+import TrophyBar from '../UserHover/TrophyBar';
 
 const Profile = () => {
     const user = useSelector(state => state.session.user)
@@ -37,6 +38,12 @@ const Profile = () => {
                 <img className='user-icon-large' onError={imageError} alt='profile-pic' src={profile.user.profileImg} />
                 <div className='profile-header-title'>
                     {owner ? 'Your Profile' : `${profile.user.username}'s Profile`}
+                    <TrophyBar user={profile.user}/>
+                    <div className='user-hover-buttons' style={{marginTop:'0'}}>
+                        <div className='user-hover-text'>Pictures: {user.imageCount}</div>
+                        <div className='user-hover-text'>Competitions: {user.competitionCount}</div>
+                        <div className='user-hover-text'>Points: {user.points}</div>
+                    </div>
                 </div>
             </div>
             <div className='profile-image-wrapper'>

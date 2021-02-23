@@ -10,6 +10,7 @@ import './CompetitionPage.css'
 import Carousel from "./Carousel";
 import { setLoginModal } from '../../store/modal'
 import { longFormattedTime } from '../utils'
+import UserHover from "../UserHover";
 //Component used to wrap elements that should be displayed in a modal; hidden prop is used to specify the property that
 //checks whether the modal should be visible
 const CompetitionPage = () => {
@@ -232,7 +233,7 @@ const CompetitionPage = () => {
                             <div>
                                 <div className='user-bar bottom-spacing'>
                                     <img className='user-icon' src={post.user.profileImg} onError={imageError} alt="User Icon" />
-                                    <div className='username'>Created by <Link to={`/users/${post.user.id}`} className='user-link'>{post.user.username}</Link> {timeDif} ago</div>
+                                    <div className='username'>Created by <UserHover user={post.user} currentUser={user} /> {timeDif} ago</div>
                                 </div>
                                 <div className='post-description format-erase'>{post.body}</div>
                                 <div className='post-ruleset-wrapper format-erase'>
