@@ -3,6 +3,7 @@ const RECENTCLOSED = '/posts/recentclosed'
 const CLEARCOMPETITIONS = '/posts/clearCompetitions'
 const CLEARCOMPETITIONPAGE = '/posts/clearCompetitionPage'
 const COMPETITIONPAGE = '/posts/competitionPage'
+const COMPETITIONWINNERS = '/posts/competitionWinners'
 //These functions/reducer handle post data storage
 export const recentCompetitions = (recentCompetitions) => ({
     type: RECENT,
@@ -13,6 +14,26 @@ export const recentlyClosedCompetitions = (recentCompetitions) => ({
     type: RECENTCLOSED,
     payload: { recentlyClosedCompetitions: recentCompetitions.competitions }
 });
+
+const updateWinners = (winners) => ({
+    type: COMPETITIONWINNERS,
+    payload: { ...winners }
+});
+
+export const submitCompetitionWinners = (competitionId, competitionWinners) => async (dispatch) => {
+    const response = await fetch(`/api/posts/${competitionId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            competitionWinners
+        })
+    });
+    if (response.ok) {
+        dispatch(updateWinners({ competitionWinners }));
+    }
+};
 
 export const clearCompetitions = () => ({
     type: CLEARCOMPETITIONS
@@ -50,6 +71,9 @@ function reducer(state = initialState, action) {
             return newState;
         case CLEARCOMPETITIONPAGE:
             newState = Object.assign({}, state, { competitionPage: null });
+            return newState;
+        case COMPETITIONWINNERS:
+            newState = Object.assign({}, state, { ...action.payload });
             return newState;
         default:
             return state;

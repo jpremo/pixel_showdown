@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from 'react-router-dom';
-import { competitionPage, clearCompetitionPage } from '../../store/posts'
+import { competitionPage, clearCompetitionPage, submitCompetitionWinners } from '../../store/posts'
 import { formatDistance, isPast, addSeconds } from 'date-fns'
 import { Link } from 'react-router-dom'
 import { isArray } from "lodash";
@@ -118,9 +118,10 @@ const CompetitionPage = () => {
             }
         }
 
-        const judgeClick = () => {
+        const judgeClick = async () => {
             if (judging) {
                 setJudging(false)
+                await dispatch(submitCompetitionWinners(post.id,winners))
             } else {
                 setJudging(true)
             }
