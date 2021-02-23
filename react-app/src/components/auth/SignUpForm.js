@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import { signUp } from '../../services/auth';
 import { setLoginModal, setSignupModal } from '../../store/modal'
 import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from '../../store/session'
 
 //sign up form component; used inside of ModalContainer
-const SignUpForm = ({ authenticated, setAuthenticated }) => {
+const SignUpForm = ({ authenticated, setAuthenticated, endRoute=null }) => {
   const [errors, setErrors] = useState([]);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -17,6 +17,7 @@ const SignUpForm = ({ authenticated, setAuthenticated }) => {
   const [confirmed, setConfirmed] = useState(false)
   const [biography, setBiography] = useState('')
   const dispatch = useDispatch()
+  const history = useHistory()
   const user = useSelector(state => state.session.user)
 
   const openLogin = (e) => {
@@ -25,6 +26,9 @@ const SignUpForm = ({ authenticated, setAuthenticated }) => {
   }
   const cancel = (e) => {
     dispatch(setSignupModal(false))
+    if(endRoute) {
+      history.push(endRoute)
+    }
   }
 
   const onSignUp = async (e) => {

@@ -13,7 +13,7 @@ const LogoutButton = ({setAuthenticated}) => {
     await logout();
     dispatch(removeUser())
     setAuthenticated(false);
-    history.push('/')
+    history.push('/home')
     dispatch(setLogoutModal(true))
   };
 

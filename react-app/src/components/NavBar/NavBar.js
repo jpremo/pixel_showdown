@@ -76,6 +76,9 @@ const NavBar = ({ setAuthenticated }) => {
           </NavLink>
         </div>
         <div id="nav-bar-menu">
+          <NavLink to={'/home'} onClick={setSketch} exact={false} className="nav-link" activeClassName="active">
+            Home
+        </NavLink>
           <NavLink to={'/sketch'} onClick={setSketch} exact={false} className="nav-link" activeClassName="active">
             Sketch
         </NavLink>

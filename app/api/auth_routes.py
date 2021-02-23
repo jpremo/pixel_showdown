@@ -40,12 +40,23 @@ def login():
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         # Add the user to the session, we are logged in!
-        user = User.query.filter(or_(User.email == form.data['email'], User.username == form.data['email'])).first()
+        user = User.query.filter(or_(
+            User.email == form.data['email'], User.username == form.data['email'])).first()
         login_user(user)
         return user.to_dict()
-    error_msgs = [txt.split(': ')[1] for txt in validation_errors_to_error_messages(form.errors)]
+    error_msgs = [txt.split(': ')[1]
+                  for txt in validation_errors_to_error_messages(form.errors)]
     return {'errors': error_msgs}
 
+
+@auth_routes.route('/demo-login', methods=['GET'])
+def demo_login():
+    """
+    Logs the demo user in
+    """
+    user = User.query.get(1)
+    login_user(user)
+    return user.to_dict()
 
 
 @auth_routes.route('/logout')
@@ -67,7 +78,7 @@ def sign_up():
     err = ''
     data = request.get_json()
     if data['password'] != data['confirm_password']:
-        err='Password and confirm password must match.'
+        err = 'Password and confirm password must match.'
     if form.validate_on_submit():
         if err == '':
             user = User(
@@ -82,7 +93,8 @@ def sign_up():
             db.session.commit()
             login_user(user)
             return user.to_dict()
-    error_msgs = [txt.split(': ')[1] for txt in validation_errors_to_error_messages(form.errors)]
+    error_msgs = [txt.split(': ')[1]
+                  for txt in validation_errors_to_error_messages(form.errors)]
     if err:
         error_msgs.append(err)
     return {'errors': error_msgs}

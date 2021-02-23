@@ -1,4 +1,4 @@
-import { authenticate } from '../services/auth'
+import { authenticate, demoLogin } from '../services/auth'
 
 const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
@@ -33,6 +33,14 @@ export const removeUser = () => ({
 
 export const restoreUser = () => async (dispatch) => {
   let res = await authenticate();
+  let data = res
+  if (data.errors) data = { id: null }
+  dispatch(setUser(data));
+  return res;
+};
+
+export const loginDemoUser = () => async (dispatch) => {
+  let res = await demoLogin();
   let data = res
   if (data.errors) data = { id: null }
   dispatch(setUser(data));

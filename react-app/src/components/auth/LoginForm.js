@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
-import { login } from "../../services/auth";
+import { Redirect, useHistory } from "react-router-dom";
+import { login, demoLogin } from "../../services/auth";
 import { useDispatch, useSelector } from 'react-redux'
-import { setUser } from '../../store/session'
+import { loginDemoUser, setUser } from '../../store/session'
 import { setLoginModal, setSignupModal } from '../../store/modal'
 
 //login form component; used inside of ModalContainer
-const LoginForm = ({ authenticated, setAuthenticated }) => {
+const LoginForm = ({ authenticated, setAuthenticated, endRoute=null }) => {
   const [errors, setErrors] = useState([]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmed, setConfirmed] = useState(false)
   const user = useSelector(state => state.session.user)
+  const history = useHistory()
   const dispatch = useDispatch()
   const openSignup = (e) => {
     dispatch(setSignupModal(true))
@@ -19,6 +20,9 @@ const LoginForm = ({ authenticated, setAuthenticated }) => {
   }
   const cancel = (e) => {
     dispatch(setLoginModal(false))
+    if(endRoute) {
+      history.push(endRoute)
+    }
   }
 
   const onLogin = async (e) => {
@@ -33,15 +37,11 @@ const LoginForm = ({ authenticated, setAuthenticated }) => {
     }
   };
 
-  const demoLogin = async (e) => {
-    e.preventDefault();
-    const user = await login('demo@aa.io', 'password');
+  const demoLogin = async () => {
+    const user = await dispatch(loginDemoUser());
     if (!user.errors) {
       setAuthenticated(true);
-      dispatch(setUser(user))
       setConfirmed(true)
-    } else {
-      setErrors(user.errors);
     }
   }
 
