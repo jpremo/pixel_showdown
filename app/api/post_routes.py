@@ -1,9 +1,27 @@
 from flask import Blueprint, jsonify, request
-from app.models import db, Post, Ruleset
+from app.models import db, Post, Ruleset, Image
 from datetime import datetime, timedelta
 from sqlalchemy import and_, desc
+import math
 
 post_routes = Blueprint('posts', __name__)
+
+def calculate_points(place, entries):
+    if entries == 1:
+        return 1
+    if entries == 2:
+        if place == 0:
+            return 2
+        if place == 1:
+            return 1
+    total_points = entries*2
+    first_points = total_points / 2
+    total_points = total_points - first_points
+    second_points = math.ceil(total_points * .66)
+    total_points = total_points - second_points
+    third_points = total_points
+    points_list = [first_points,second_points,third_points]
+    return points_list[place]
 
 
 @post_routes.route('/', methods=['POST'])
@@ -23,7 +41,6 @@ def create_post():
         body=data['body'],
         rulesetId=data['rulesetId'],
         attachments=data['attachments'],
-        competitionWinners={},
         competitionEnd=end_time
     )
     db.session.add(post)
@@ -65,3 +82,25 @@ def get_competition(id):
 
 
     return {'notFound':True}
+
+
+@post_routes.route('/competitions/<int:id>', methods=['PUT'])
+def competition_results(id):
+    """
+    Grabs the competition specified
+    """
+    data = request.get_json(force=True)
+    imgArr = data['competitionWinners']
+    competition = Post.query.get(id)
+    competitionImageLength = len(competition.competition_images)
+    for i in range(0,len(imgArr)):
+        imageId = imgArr[i]
+        if imageId != None:
+            image = Image.query.get(imageId)
+            if image:
+                image.place = i
+                image.points = calculate_points(i,competitionImageLength)
+                db.session.commit()
+    competition = Post.query.get(id)
+    competition = competition.to_dict_detailed()
+    return {'images':competition['images']}

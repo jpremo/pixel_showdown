@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -6,6 +6,11 @@ import UserHover from "../UserHover";
 import { useSelector } from "react-redux";
 
 function Carousel({ images, setCurrentImage }) {
+    useEffect(() => {
+        setCurrentImage(
+            images[0].id
+        )
+    }, [])
     const user = useSelector(state => state.session.user)
     var settings = {
         dots: true,
@@ -16,7 +21,7 @@ function Carousel({ images, setCurrentImage }) {
         arrows: true,
         afterChange: (indexOfCurrentSlide) => {
             setCurrentImage(
-                indexOfCurrentSlide
+                images[indexOfCurrentSlide].id
             )
         }
     };

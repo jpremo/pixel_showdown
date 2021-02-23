@@ -4,6 +4,7 @@ const CLEARCOMPETITIONS = '/posts/clearCompetitions'
 const CLEARCOMPETITIONPAGE = '/posts/clearCompetitionPage'
 const COMPETITIONPAGE = '/posts/competitionPage'
 const COMPETITIONWINNERS = '/posts/competitionWinners'
+const COMPETITIONPAGEIMAGES = '/posts/competitionPageImages'
 //These functions/reducer handle post data storage
 export const recentCompetitions = (recentCompetitions) => ({
     type: RECENT,
@@ -15,25 +16,6 @@ export const recentlyClosedCompetitions = (recentCompetitions) => ({
     payload: { recentlyClosedCompetitions: recentCompetitions.competitions }
 });
 
-const updateWinners = (winners) => ({
-    type: COMPETITIONWINNERS,
-    payload: { ...winners }
-});
-
-export const submitCompetitionWinners = (competitionId, competitionWinners) => async (dispatch) => {
-    const response = await fetch(`/api/posts/${competitionId}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            competitionWinners
-        })
-    });
-    if (response.ok) {
-        dispatch(updateWinners({ competitionWinners }));
-    }
-};
 
 export const clearCompetitions = () => ({
     type: CLEARCOMPETITIONS
@@ -47,6 +29,28 @@ export const competitionPage = (competitionPage) => ({
     type: COMPETITIONPAGE,
     payload: { competitionPage: competitionPage.competition }
 });
+
+export const competitionPageImages = (images) => ({
+    type: COMPETITIONPAGEIMAGES,
+    payload: images.images
+});
+
+export const submitCompetitionWinners = (competitionId, competitionWinners) => async (dispatch) => {
+    const response = await fetch(`/api/posts/competitions/${competitionId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            competitionWinners
+        })
+    });
+    if (response.ok) {
+        // dispatch(clearCompetitionPage())
+        const data = await response.json()
+        dispatch(competitionPageImages(data));
+    }
+};
 
 const initialState = {
     recentCompetitions: null,
@@ -72,8 +76,11 @@ function reducer(state = initialState, action) {
         case CLEARCOMPETITIONPAGE:
             newState = Object.assign({}, state, { competitionPage: null });
             return newState;
-        case COMPETITIONWINNERS:
-            newState = Object.assign({}, state, { ...action.payload });
+        case COMPETITIONPAGEIMAGES:
+            const competitionPageCopy = {...state.competitionPage}
+            competitionPageCopy.images = action.payload
+            newState = Object.assign({}, state);
+            newState.competitionPage = competitionPageCopy
             return newState;
         default:
             return state;

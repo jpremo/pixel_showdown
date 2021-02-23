@@ -11,7 +11,6 @@ class Post(db.Model):
     body = db.Column(db.String(1000), nullable=False)
     attachments = db.Column(JSONB, nullable=False)
     competitionEnd = db.Column(db.DateTime, nullable=True)
-    competitionWinners = db.Column(JSONB, nullable=True)
     rulesetId = db.Column(db.Integer, db.ForeignKey("rulesets.id"), nullable=True)
     userId = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
@@ -29,7 +28,6 @@ class Post(db.Model):
             "body": self.body,
             "attachments": self.attachments,
             "competitionEnd": self.competitionEnd,
-            "competitionWinners": self.competitionWinners,
             "rulesetId": self.rulesetId,
             "userId": self.userId,
             "created_at": self.created_at,
@@ -46,7 +44,6 @@ class Post(db.Model):
             "body": self.body,
             "attachments": self.attachments,
             "competitionEnd": self.competitionEnd,
-            "competitionWinners": self.competitionWinners,
             "ruleset": self.ruleset.to_dict(),
             "user": self.user.to_dict(),
             "images": nums,

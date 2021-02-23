@@ -23,7 +23,7 @@ const CompetitionPage = () => {
     const [loaded, setLoaded] = useState(false)
     const [notFound, setNotFound] = useState(false)
     const params = useParams()
-    const [currentImage, setCurrentImage] = useState(0)
+    const [currentImage, setCurrentImage] = useState(null)
     const competitionId = params.postId
     useEffect(() => {
         (async function () {

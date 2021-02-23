@@ -12,6 +12,8 @@ class Image(db.Model):
     grid = db.Column(JSON, nullable=False)
     gifImgUrl = db.Column(db.String(1000), nullable=False, default='')
     apngImgUrl = db.Column(db.String(1000), nullable=False, default='')
+    place = db.Column(db.Integer, nullable=True, default=None)
+    points = db.Column(db.Integer, nullable=True, default=None)
     competitionId = db.Column(
         db.Integer, db.ForeignKey("posts.id"), nullable=True)
     userId = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
@@ -29,6 +31,8 @@ class Image(db.Model):
             "grid": self.grid,
             "gifImgUrl": self.gifImgUrl,
             "apngImgUrl": self.apngImgUrl,
+            "place": self.place,
+            "points": self.points,
             "competitionId": self.competitionId,
             "userId": self.userId,
             "created_at": self.created_at,
@@ -42,6 +46,8 @@ class Image(db.Model):
             "title": self.title,
             "gifImgUrl": self.gifImgUrl,
             "apngImgUrl": self.apngImgUrl,
+            "place": self.place,
+            "points": self.points,
             "competitionId": self.competitionId,
             "userId": self.userId,
             "created_at": self.created_at,
@@ -55,6 +61,8 @@ class Image(db.Model):
             "title": self.title,
             "apngImgUrl": self.apngImgUrl,
             "competitionId": self.competitionId,
+            "place": self.place,
+            "points": self.points,
             "userId": self.userId,
             "user": self.user.to_dict_simple(),
             "created_at": self.created_at,
