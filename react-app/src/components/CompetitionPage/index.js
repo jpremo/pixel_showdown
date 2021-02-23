@@ -158,6 +158,9 @@ const CompetitionPage = () => {
 
         const judgeCheck = () => {
             if (user.id === post.user.id) {
+                if(post.judged) {
+                    return null
+                }
                 if (!isPast(new Date(post.competitionEnd))) {
                     return (
                         <div className='bolded-text'>Your competition is going great! Check back in later to judge the entries.</div>

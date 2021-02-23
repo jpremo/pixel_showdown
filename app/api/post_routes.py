@@ -102,5 +102,8 @@ def competition_results(id):
                 image.points = calculate_points(i,competitionImageLength)
                 db.session.commit()
     competition = Post.query.get(id)
+    competition.judged = True
+    competition.updated_at = datetime.now()
+    db.session.commit()
     competition = competition.to_dict_detailed()
     return {'images':competition['images']}

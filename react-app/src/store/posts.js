@@ -79,6 +79,7 @@ function reducer(state = initialState, action) {
         case COMPETITIONPAGEIMAGES:
             const competitionPageCopy = {...state.competitionPage}
             competitionPageCopy.images = action.payload
+            competitionPageCopy.judged = true;
             newState = Object.assign({}, state);
             newState.competitionPage = competitionPageCopy
             return newState;
