@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -7,10 +7,17 @@ import { useSelector } from "react-redux";
 
 function Carousel({ images, setCurrentImage }) {
     useEffect(() => {
+        let val
+        if (images.length) {
+            val = images[0].id
+        } else {
+            val = null
+        }
         setCurrentImage(
-            images[0].id
+            val
         )
     }, [])
+    const [currentSlide, setCurrentSlide] = useState(0)
     const user = useSelector(state => state.session.user)
     var settings = {
         dots: true,
@@ -22,6 +29,9 @@ function Carousel({ images, setCurrentImage }) {
         afterChange: (indexOfCurrentSlide) => {
             setCurrentImage(
                 images[indexOfCurrentSlide].id
+            )
+            setCurrentSlide(
+                indexOfCurrentSlide
             )
         }
     };
@@ -40,11 +50,11 @@ function Carousel({ images, setCurrentImage }) {
     }
     return (
         <div className='carousel-div'>
+            <div className='carousel-image-title'>{ribbonLogo(images[currentSlide].place)}<b>{images[currentSlide].title}</b> <span className='carousel-small-text'> by <UserHover user={images[currentSlide].user} currentUser={user} /> </span></div>
             <Slider {...settings}>
                 {images.map((img, ind) => {
                     return (
                         <div className='carousel-image-container' key={ind}>
-                            <div className='carousel-image-title'>{ribbonLogo(img.place)}<b>{img.title}</b> <span className='carousel-small-text'> by <UserHover user={img.user} currentUser={user} /> </span></div>
                             <img className='carousel-image' src={img.apngImgUrl} alt={`Image ${ind}`}></img>
                         </div>
                     )

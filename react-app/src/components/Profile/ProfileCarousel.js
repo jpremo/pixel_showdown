@@ -73,14 +73,14 @@ function ProfileCarousel({ images, owner, userId }) {
 
     return (
         <div className='carousel-div'>
+                        <div className='carousel-image-title'>
+                            {ribbonLogo(images[currentSlide].place)}
+                            <b>{images[currentSlide].title}</b>
+                        </div>
             <Slider {...settings}>
                 {images.map((img, ind) => {
                     return (
                         <div className='carousel-image-container' key={ind}>
-                        <div className='carousel-image-title'>
-                            {ribbonLogo(img.place)}
-                            <b>{img.title}</b>
-                        </div>
                         <img className='carousel-image' src={img.apngImgUrl} key={ind} alt={`Image ${ind}`}></img>
                         <div className='carousel-image-title'><b>Points Earned: {(img.points === null) ? 0:img.points}</b></div>
                         {sketchOrSubmitted(img)}

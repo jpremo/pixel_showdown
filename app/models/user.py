@@ -81,13 +81,14 @@ class User(db.Model, UserMixin):
 
     def to_dict_simple(self):
         """A function that returns key object information in a readable format"""
-        nums = []
-        for r in self.rulesets:
-            nums.append(r.to_dict_simple())
+        compCount = len([p for p in self.posts if p.rulesetId])
         return {
             "id": self.id,
             "username": self.username,
             "profileImg": self.profileImg,
+            "imageCount": len(self.images),
+            "competitionCount": compCount,
+            "postCount": len(self.posts) - compCount,
             "created_at": self.created_at,
             "updated_at": self.updated_at,
         }
