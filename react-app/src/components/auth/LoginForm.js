@@ -20,7 +20,7 @@ const LoginForm = ({ authenticated, setAuthenticated, endRoute=null }) => {
   }
   const cancel = (e) => {
     dispatch(setLoginModal(false))
-    if(endRoute) {
+    if(endRoute && confirmed) {
       history.push(endRoute)
     }
   }

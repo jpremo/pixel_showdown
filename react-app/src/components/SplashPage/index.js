@@ -57,13 +57,16 @@ const SplashPage = ({ setAuthenticated }) => {
                 <SignUpForm setAuthenticated={setAuthenticated} endRoute={'/home'}></SignUpForm>
             </ModalContainer>
             <div className='splash-content'>
-                <div className='splash-title'>
-                    Welcome to Pixel Showdown!
-                </div>
-                <div className='splash-subtitle'>
-                    A space to express your creativity and competitiveness through pixel art
-                </div>
-                <div id="nav-bar-menu">
+                <div className='splash-image-container'>
+                <img className='gif-example' src='https://pixel-showdown.s3.amazonaws.com/Static/heart_animation.png' alt='Heart' />
+                    <div className='splash-header-container'>
+                        <div className='splash-title'>
+                            Welcome to Pixel Showdown!
+                        </div>
+                        <div className='splash-subtitle'>
+                            A space to express your creativity and competitiveness through pixel art
+                        </div>
+                        <div className="splash-bar-menu">
                     {!user.id &&
                         <>
                             <div onClick={openLogin} className="splash-link">
@@ -78,10 +81,14 @@ const SplashPage = ({ setAuthenticated }) => {
                         </>
                     }
                 </div>
+                    </div>
+                    <img className='gif-example' src='https://pixel-showdown.s3.amazonaws.com/Static/heart_animation.png' alt='Heart' />
+                </div>
+
                 <div className='splash-image-container'>
-                    <img className='gif-example' src='https://pixel-showdown.s3.amazonaws.com/Static/heart_animation.png' alt='Heart' />
+                    {/* <img className='gif-example' src='https://pixel-showdown.s3.amazonaws.com/Static/heart_animation.png' alt='Heart' /> */}
                     <img className='gif-demo' src='https://pixel-showdown.s3.amazonaws.com/Static/sketch.png' alt='Sketch Demo' />
-                    <img className='gif-example' src='https://pixel-showdown.s3.amazonaws.com/Static/heart_animation.png' alt='Heart' />
+                    {/* <img className='gif-example' src='https://pixel-showdown.s3.amazonaws.com/Static/heart_animation.png' alt='Heart' /> */}
                 </div>
                 <div className='splash-aligner'>
                     <div className='splash-paragraph' onClick={sketchNavigate}>
@@ -94,7 +101,7 @@ const SplashPage = ({ setAuthenticated }) => {
                     </div>
                     <div className='splash-paragraph' onClick={homeNavigate}>
                         <div className='splash-text'>
-                            Explore and participate in the customized pixel art competitions created by our users or make your own.
+                            Explore and participate in the customized pixel art competitions created by our users... or make your own.
                     </div>
                         {/* <NavLink to={'/home'} onClick={setSketch} exact={false} className="modal-link" activeClassName="active">
                             Explore

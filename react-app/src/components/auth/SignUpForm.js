@@ -26,7 +26,7 @@ const SignUpForm = ({ authenticated, setAuthenticated, endRoute=null }) => {
   }
   const cancel = (e) => {
     dispatch(setSignupModal(false))
-    if(endRoute) {
+    if(endRoute && confirmed) {
       history.push(endRoute)
     }
   }
