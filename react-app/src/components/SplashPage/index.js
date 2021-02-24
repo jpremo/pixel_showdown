@@ -38,6 +38,16 @@ const SplashPage = ({ setAuthenticated }) => {
         resetSketch(dispatch)
     }
 
+    const sketchNavigate = () => {
+        setSketch()
+        history.push('/sketch')
+    }
+
+    const homeNavigate = () => {
+        setSketch()
+        history.push('/home')
+    }
+
     return (
         <>
             <ModalContainer hidden={!modals.login} cancel={setLoginModal}>
@@ -51,40 +61,44 @@ const SplashPage = ({ setAuthenticated }) => {
                     Welcome to Pixel Showdown!
                 </div>
                 <div className='splash-subtitle'>
-                    A space to express your creativity and competitiveness through pixel art.
+                    A space to express your creativity and competitiveness through pixel art
                 </div>
                 <div id="nav-bar-menu">
                     {!user.id &&
                         <>
-                            <div onClick={openLogin} className="modal-link">
+                            <div onClick={openLogin} className="splash-link">
                                 Login
                     </div>
-                            <div onClick={openSignup} className="modal-link">
+                            <div onClick={openSignup} className="splash-link">
                                 Sign Up
                     </div>
-                            <div onClick={demoLogin} className="modal-link">
+                            <div onClick={demoLogin} className="splash-link">
                                 Demo Login
                     </div>
                         </>
                     }
                 </div>
-                    <img className='gif-example' src='https://pixel-showdown.s3.amazonaws.com/Static/heart_animation.png' alt='Sketch Demo'/>
+                <div className='splash-image-container'>
+                    <img className='gif-example' src='https://pixel-showdown.s3.amazonaws.com/Static/heart_animation.png' alt='Heart' />
+                    <img className='gif-demo' src='https://pixel-showdown.s3.amazonaws.com/Static/sketch.png' alt='Sketch Demo' />
+                    <img className='gif-example' src='https://pixel-showdown.s3.amazonaws.com/Static/heart_animation.png' alt='Heart' />
+                </div>
                 <div className='splash-aligner'>
-                    <div className='splash-paragraph'>
+                    <div className='splash-paragraph' onClick={sketchNavigate}>
                         <div className='splash-text'>
                             Use free sketch mode to test out our dynamic pixel art editor equipped with an array of advanced features like animation.
                     </div>
-                        <NavLink to={'/sketch'} onClick={setSketch} exact={false} className="modal-link" activeClassName="active">
+                        {/* <NavLink to={'/sketch'} onClick={setSketch} exact={false} className="modal-link" activeClassName="active">
                             Sketch
-                    </NavLink>
+                    </NavLink> */}
                     </div>
-                    <div className='splash-paragraph'>
+                    <div className='splash-paragraph' onClick={homeNavigate}>
                         <div className='splash-text'>
                             Explore and participate in the customized pixel art competitions created by our users or make your own.
                     </div>
-                        <NavLink to={'/home'} onClick={setSketch} exact={false} className="modal-link" activeClassName="active">
+                        {/* <NavLink to={'/home'} onClick={setSketch} exact={false} className="modal-link" activeClassName="active">
                             Explore
-                    </NavLink>
+                    </NavLink> */}
                     </div>
                 </div>
             </div>

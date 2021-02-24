@@ -1,15 +1,25 @@
-.splash-content{
+.splash-content-wrapper{
     display: flex;
+}
+
+
+.splash-content{
+    /* background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%); */
+    display: flex;
+    padding: 20px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
     width: 100%;
     height: 100%;
     /* background-image: url(https://pixel-showdown.s3.amazonaws.com/Static/sketch.png);
     background-size:cover; */
     /* background-image: linear-gradient(45deg, red,orange,yellow,green,blue,indigo,violet); */
+    background-image: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
     overflow: auto;
     /* color: white; */
+    min-width:fit-content;
 }
 
 .splash-aligner{
@@ -23,11 +33,55 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 15px;
+    border: 2px solid black;
+    /* background-color: #9e643c; */
+    /* background-color: #746d7565; */
+    transition: background-color 1s;
+    /* background-image: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%); */
+    background-color: #e0c3fc;
+    /* text-shadow: 1px 1px black; */
+    color: black;
+}
+
+.splash-paragraph:hover{
+    /* background-color: #7e4f30; */
+    background-color: #8ec5fc;
+    cursor: pointer;
+}
+
+.splash-link{
+
+}
+
+.splash-link {
+    margin: 0 10px;
+    padding: 5px;
+    color: black;
+    /* background-image: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%); */
+    background-color: #e0c3fc;
+    border-radius: 12px;
+    width: fit-content;
+    border: 2px solid black;
+    text-decoration: none;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color .5s;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.splash-link:hover {
+    background-color: #8ec5fc;
 }
 
 .splash-text{
     text-align: center;
     font-size: 22px;
+    margin: 5px;
 }
 
 .splash-title{
@@ -42,5 +96,17 @@
 
 .gif-example{
     /* width: 400px; */
+    width: 170px;
+    image-rendering: pixelated;
+}
 
+.gif-demo{
+    margin: 0 10px;
+    border: 2px solid black;
+    border-radius: 15px;
+}
+
+.splash-image-container{
+    display: flex;
+    align-items: center;
 }
