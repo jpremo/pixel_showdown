@@ -55,6 +55,14 @@
 
 .ruleset-range-option input {
     text-align: center;
+    border-radius: 5px;
+    padding: 3px;
+    border: 1px solid black;
+}
+
+.ruleset-range-option input:focus{
+    outline: none;
+    background-color: #ede6f2;
 }
 
 .ruleset-select{
@@ -132,4 +140,13 @@
     width: 200px;
     font-size: 18px;
     font-family: 'Times New Roman', Times, serif;
+    border-radius: 10px;
+    padding: 3px;
+    border: 1px solid black;
+}
+
+.ruleset-content-div input:focus,textarea:focus {
+    height: none;
+    outline: none;
+    background-color: #ede6f2;
 }

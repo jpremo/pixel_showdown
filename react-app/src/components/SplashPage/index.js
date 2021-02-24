@@ -48,6 +48,10 @@ const SplashPage = ({ setAuthenticated }) => {
         history.push('/home')
     }
 
+    const profileNavigate = () => {
+        history.push(`/users/${user.id}`)
+    }
+
     return (
         <>
             <ModalContainer hidden={!modals.login} cancel={setLoginModal}>
@@ -64,22 +68,36 @@ const SplashPage = ({ setAuthenticated }) => {
                             Welcome to Pixel Showdown!
                         </div>
                         <div className='splash-subtitle'>
-                            A space to express your creativity and competitiveness through pixel art
+                            {(user.id) ?  `Welcome back ${user.firstName}! Ready to get drawing again?`:
+                            'A space to express your creativity and competitiveness through pixel art'}
                         </div>
                         <div className="splash-bar-menu">
-                    {!user.id &&
-                        <>
-                            <div onClick={openLogin} className="splash-link">
-                                Login
-                    </div>
-                            <div onClick={openSignup} className="splash-link">
-                                Sign Up
-                    </div>
-                            <div onClick={demoLogin} className="splash-link">
-                                Demo Login
-                    </div>
-                        </>
-                    }
+                            {!user.id &&
+                                <>
+                                    <div onClick={openLogin} className="splash-link">
+                                        Login
+                                    </div>
+                                    <div onClick={openSignup} className="splash-link">
+                                        Sign Up
+                                    </div>
+                                    <div onClick={demoLogin} className="splash-link">
+                                        Demo Login
+                                    </div>
+                                </>
+                            }
+                            {user.id &&
+                                <>
+                                    <div onClick={homeNavigate} className="splash-link">
+                                        Home
+                                    </div>
+                                    <div onClick={sketchNavigate} className="splash-link">
+                                        Sketch
+                                    </div>
+                                    <div onClick={profileNavigate} className="splash-link">
+                                        Profile
+                                    </div>
+                                </>
+                            }
                 </div>
                     </div>
                     <img className='gif-example' src='https://pixel-showdown.s3.amazonaws.com/Static/heart_animation.png' alt='Heart' />
@@ -90,24 +108,26 @@ const SplashPage = ({ setAuthenticated }) => {
                     <img className='gif-demo' src='https://pixel-showdown.s3.amazonaws.com/Static/sketch.png' alt='Sketch Demo' />
                     {/* <img className='gif-example' src='https://pixel-showdown.s3.amazonaws.com/Static/heart_animation.png' alt='Heart' /> */}
                 </div>
-                <div className='splash-aligner'>
-                    <div className='splash-paragraph' onClick={sketchNavigate}>
-                        <div className='splash-text'>
-                            Use free sketch mode to test out our dynamic pixel art editor equipped with an array of advanced features like animation.
+                {!user.id &&
+                    <div className='splash-aligner'>
+                        <div className='splash-paragraph' onClick={sketchNavigate}>
+                            <div className='splash-text'>
+                                Use free sketch mode to test out our dynamic pixel art editor equipped with an array of advanced features like animation.
+                        </div>
+                            {/* <NavLink to={'/sketch'} onClick={setSketch} exact={false} className="modal-link" activeClassName="active">
+                                Sketch
+                        </NavLink> */}
+                        </div>
+                        <div className='splash-paragraph' onClick={homeNavigate}>
+                            <div className='splash-text'>
+                                Explore and participate in the customized pixel art competitions created by our users... or make your own.
+                        </div>
+                            {/* <NavLink to={'/home'} onClick={setSketch} exact={false} className="modal-link" activeClassName="active">
+                                Explore
+                        </NavLink> */}
+                        </div>
                     </div>
-                        {/* <NavLink to={'/sketch'} onClick={setSketch} exact={false} className="modal-link" activeClassName="active">
-                            Sketch
-                    </NavLink> */}
-                    </div>
-                    <div className='splash-paragraph' onClick={homeNavigate}>
-                        <div className='splash-text'>
-                            Explore and participate in the customized pixel art competitions created by our users... or make your own.
-                    </div>
-                        {/* <NavLink to={'/home'} onClick={setSketch} exact={false} className="modal-link" activeClassName="active">
-                            Explore
-                    </NavLink> */}
-                    </div>
-                </div>
+                }
             </div>
         </>
     );

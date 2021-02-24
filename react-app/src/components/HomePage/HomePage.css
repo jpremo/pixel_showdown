@@ -73,6 +73,7 @@
 .post-box {
   border-bottom: 1px solid black;
   padding: 10px 5px;
+  overflow: auto;
 }
 
 .user-bar{
@@ -133,7 +134,7 @@
 .post-description-ruleset{
   font-size: 16px;
   margin-left: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   margin-top: 4px;
 }
 
