@@ -5,7 +5,12 @@
   position: fixed;
   height: 72px;
   top: 0;
-  background-color: #746d75cc;
+  background-color: #adcbe2cc;
+  /* background-image: linear-gradient(120deg, #8ec5fccc 0%, #e0c3fccc 100%); */
+  /* background-image: linear-gradient(to left top, #e0c3fce7 0%, #8ec5fcec 100%); */
+  /* background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed; */
   /* 8ACDEA
     EDE6F2
     9E643C
@@ -54,8 +59,8 @@
   /* width: 200%; */
   margin-right: 20px;
   padding: 5px;
-  color: #ede6f2;
-  background-color: #9e643c;
+  color: black;
+  background-color: #e0c3fc;;
   border-radius: 12px;
   border: 2px solid black;
   text-decoration: none;
@@ -67,18 +72,21 @@
 }
 
 .active {
-  background-color: #7e4f30;
+  background-color: #8ec5fc;
 }
 
 .nav-link:hover {
-  background-color: #7e4f30;
+  background-color: #8ec5fc;
   font-size: 19px;
 }
 
 .modal-box {
   /* position: fixed;
     top: 100px; */
-  background-color: #746d75;
+  background-image: linear-gradient(to left top, #e0c3fc 0%, #8ec5fc 100%);
+  /* background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed; */
   padding: 20px;
   border: 2px solid black;
   border-radius: 30px;
@@ -103,8 +111,8 @@
 .modal-link {
     margin: 0 10px;
     padding: 5px;
-    color: #ede6f2;
-    background-color: #9e643c;
+    color: black;
+    background-color: #e0c3fc;
     border-radius: 12px;
     width: fit-content;
     border: 2px solid black;
@@ -122,7 +130,7 @@
 }
 
 .modal-link:hover {
-    background-color: #7e4f30;
+  background-color: #8ec5fc;
 }
 
 .modal-button-box {
@@ -132,7 +140,7 @@
 }
 
 .modal-text {
-  color: white;
+  color: black;
   font-size: 22px;
   line-height: normal;
   text-align: center;
@@ -161,7 +169,7 @@
   display: block;
   text-decoration: underline;
   font-size: 26px;
-  color: white;
+  color: black;
   margin-bottom: 1px;
   margin-top: 5px;
 
@@ -190,7 +198,7 @@
 
 .modal-title {
   text-align: center;
-  color: white;
+  color: black;
   font-size: 30px;
   margin: 5px;
   /* text-decoration: underline; */
@@ -199,7 +207,7 @@
 
 h3.modal-title{
   text-align: center;
-  color: white;
+  color: black;
   font-size: 22px;
   margin: 5px;
   /* text-decoration: underline; */

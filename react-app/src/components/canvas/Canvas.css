@@ -29,7 +29,7 @@
 .canvas-div-background {
   width: 100%;
   height: 100%;
-  background-color: #746d75;
+  background-color: #adcbe2;
   top: 0;
   position: absolute;
   z-index: -100;
@@ -72,8 +72,8 @@
   margin: 5px;
   padding: 8px;
   flex-grow: 0;
-  color: #ede6f2;
-  background-color: #9e643c;
+  color: black;
+  background-color: #e0c3fc;
   border-radius: 12px;
   border: 2px solid black;
   text-decoration: none;
@@ -87,8 +87,8 @@
 }
 
 .canvas-button:hover:not(.selected):not(.invalid-selection) {
-  background-color: #7e4f30;
-  color: black
+  background-color: #8ec5fc;
+  color: white
 }
 
 .canvas-button:focus {
@@ -106,7 +106,7 @@
 }
 
 .selected, .grid-selected {
-  background: #8C4843;
+  background: #7c92db;
 }
 /* 8ACDEA
     EDE6F2
@@ -143,7 +143,7 @@
 
 .canvas-tools {
   width: 300px;
-  background-color: #746d75;
+  background-color: #adcbe2;
   border: 2px solid black;
   padding: 10px;
   border-radius: 10px;
@@ -196,7 +196,7 @@
 }
 
 .invalid-selection {
-  background-color: rgb(87, 86, 86);
+  background-color: #7b8e9c;
 }
 
 .invalid-selection:hover{
