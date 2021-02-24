@@ -52,7 +52,7 @@
   border: 1px solid black;
   margin: 10px;
   box-sizing: border-box;
-  z-index: 100;
+  z-index: 2;
   box-sizing: border-box;
   pointer-events: none;
 }
