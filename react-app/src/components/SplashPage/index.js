@@ -105,7 +105,7 @@ const SplashPage = ({ setAuthenticated }) => {
 
                 <div className='splash-image-container'>
                     {/* <img className='gif-example' src='https://pixel-showdown.s3.amazonaws.com/Static/heart_animation.png' alt='Heart' /> */}
-                    <img className='gif-demo' src='https://pixel-showdown.s3.amazonaws.com/Static/sketch.png' alt='Sketch Demo' />
+                    <img className='gif-demo' src='https://pixel-showdown.s3.amazonaws.com/Static/sketch.gif' alt='Sketch Demo' />
                     {/* <img className='gif-example' src='https://pixel-showdown.s3.amazonaws.com/Static/heart_animation.png' alt='Heart' /> */}
                 </div>
                 {!user.id &&
