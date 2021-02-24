@@ -10,7 +10,7 @@ from apng import APNG
 import shutil
 from sqlalchemy import and_
 from datetime import datetime
-
+import math
 # let bucketRegion = "us-east-1";
 # let IdentityPoolId = "us-east-1:013e5b90-632f-4e59-aa4f-ed9acdd8a8c3";
 
@@ -55,7 +55,7 @@ def upload_image_aws(data, uuidOverwrite='none'):
 
     filePlace = os.path.join(path_to_data, unique_filename)
 
-    APNG.from_files(filenames, delay=100).save(filePlace)
+    APNG.from_files(filenames, delay=math.floor(1000./fps)).save(filePlace)
 
     s3.upload_file(
                     Bucket = BUCKET_NAME,
@@ -63,7 +63,7 @@ def upload_image_aws(data, uuidOverwrite='none'):
                     Key = 'app-content/'+unique_filename
                 )
 
-    imageio.mimsave(filePlace, images, 'GIF', duration = 1./fps)
+    imageio.mimsave(filePlace, images, 'GIF', duration = (1./fps))
 
     s3.upload_file(
                     Bucket = BUCKET_NAME,
