@@ -67,7 +67,7 @@ const RulesetForm = () => {
               userId: user.id
             }),
           });
-          history.push('/')
+          history.push('/home')
           const data = await response.json();
           dispatch(addRuleset(data))
           return

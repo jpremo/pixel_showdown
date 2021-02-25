@@ -10,9 +10,16 @@ def seed_posts():
                 userId=2,
                 competitionEnd=datetime.date(2200, 1, 1),
                 )
+    post2 = Post(body='''Draw the best dog/cat/floofer/pet that you can!''',
+                 attachments={},
+                 rulesetId=2,
+                 userId=2,
+                 competitionEnd=datetime.date(2200, 1, 1),
+                 )
 
 
     db.session.add(post1)
+    db.session.add(post2)
 
     db.session.commit()
 

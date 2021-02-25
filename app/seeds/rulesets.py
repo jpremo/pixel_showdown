@@ -65,7 +65,71 @@ def seed_rulesets():
         userId=2
     )
 
+    ruleset2 = Ruleset(
+        description='''Try your best in this simple competition where animation is turned off.''',
+        title='Animation not Allowed',
+        rules={
+            "fps": {
+                "maxValue": 100,
+                "minValue": 1,
+                "defaultValue": 1
+            },
+            "width": {
+                "maxValue": 100,
+                "minValue": 1,
+                "defaultValue": 16
+            },
+            "height": {
+                "maxValue": 100,
+                "minValue": 1,
+                "defaultValue": 16
+            },
+            "brushSize": {
+                "maxValue": 5,
+                "minValue": 1,
+                "defaultValue": 1
+            },
+            "pixelSize": {
+                "maxValue": 100,
+                "minValue": 1,
+                "defaultValue": 20
+            },
+            "timeLimit": 5,
+            "disableGrid": true,
+            "totalFrames": {
+                "maxValue": 1,
+                "minValue": 1,
+                "defaultValue": 1
+            },
+            "contestLength": 48,
+            "defaultPalette": [
+                "#f44336ff",
+                "#e91e63ff",
+                "#9c27b0ff",
+                "#673ab7ff",
+                "#3f51b5ff",
+                "#2196f3ff",
+                "#03a9f4ff",
+                "#00bcd4ff",
+                "#009688ff",
+                "#4caf50ff",
+                "#8bc34aff",
+                "#cddc39ff",
+                "#ffeb3bff",
+                "#ffc107ff",
+                "#ff9800ff",
+                "#ff5722ff",
+                "#795548ff",
+                "#607d8bff"
+            ],
+            "disableCopyPaste": true,
+            "disableAlphaPicker": false
+        },
+        userId=2
+    )
+
     db.session.add(ruleset1)
+    db.session.add(ruleset2)
 
     db.session.commit()
 

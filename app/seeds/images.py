@@ -62,15 +62,50 @@ def seed_images():
             "fps": 1,
             "totalFrames": 1
         },
-        competitionId=1,
-        apngImgUrl='https://pixel-showdown.s3.amazonaws.com/Static/pixel_puppy.png',
-        gifImgUrl='https://pixel-showdown.s3.amazonaws.com/Static/pixel_puppy.png',
+        competitionId=2,
+        apngImgUrl='https://pixel-showdown.s3.amazonaws.com/Static/PS_Seed_Images/pixel_puppy.png',
+        gifImgUrl='https://pixel-showdown.s3.amazonaws.com/Static/PS_Seed_Images/pixel_puppy.png',
         userId=3,
+    )
+    image5 = Image(
+        title='Karate Kat',
+        grid={
+            "gridColors": [
+                {}
+            ],
+            "width": 32,
+            "height": 32,
+            "fps": 1,
+            "totalFrames": 1
+        },
+        competitionId=2,
+        apngImgUrl='https://pixel-showdown.s3.amazonaws.com/Static/karate_cat.gif',
+        gifImgUrl='https://pixel-showdown.s3.amazonaws.com/Static/Karate_cat.gif',
+        userId=5,
+    )
+    image6 = Image(
+        title='Karate Kat',
+        grid={
+            "gridColors": [
+                {}
+            ],
+            "width": 32,
+            "height": 32,
+            "fps": 1,
+            "totalFrames": 1
+        },
+        competitionId=2,
+        apngImgUrl='https://pixel-showdown.s3.amazonaws.com/Static/glubbers.png',
+        gifImgUrl='https://pixel-showdown.s3.amazonaws.com/Static/glubbers.png',
+        userId=4,
     )
 
     db.session.add(image1)
     db.session.add(image2)
     db.session.add(image3)
+    db.session.add(image4)
+    db.session.add(image5)
+    db.session.add(image6)
     db.session.commit()
 
 # Uses a raw SQL query to TRUNCATE the users table.
