@@ -36,10 +36,10 @@ function Entry() {
     }
 
     const getEndTime = (timeLimit, created_at) => {
-        if(timeLimit === .5) {
+        if (timeLimit === .5) {
             return addSeconds(new Date(created_at), 30)
         }
-       return addMinutes(new Date(created_at), timeLimit)
+        return addMinutes(new Date(created_at), timeLimit)
     }
 
     //Fetches data from backend server if an image id is specified in the url
@@ -66,7 +66,7 @@ function Entry() {
                     }
 
                     const endTime = getEndTime(data.competition.ruleset.rules.timeLimit, parsed.created_at)
-                    if(isPast(endTime)) {
+                    if (isPast(endTime)) {
                         history.push(`/competitions/${postId}`)
                     }
 
