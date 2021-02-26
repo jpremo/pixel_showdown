@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import LogoutButton from '../auth/LogoutButton';
 import './NavBar.css';
 import picture from "./pixel_showdown_logo.png"
@@ -18,6 +18,7 @@ const NavBar = ({ setAuthenticated }) => {
   const modals = useSelector(state => state.modal)
   const user = useSelector(state => state.session.user)
   const dispatch = useDispatch()
+  const history = useHistory()
 
   //opens login modal
   const openLogin = (e) => {
@@ -51,6 +52,10 @@ const NavBar = ({ setAuthenticated }) => {
     resetSketch(dispatch)
   }
 
+  const goToProfile = () => {
+    history.push(`/users/${user.id}`)
+    history.go(0)
+  }
 
   return (
     <>
@@ -99,9 +104,9 @@ const NavBar = ({ setAuthenticated }) => {
           }
 
           {user.id && <>
-            <NavLink to={`/users/${user.id}`} exact={true} className="nav-link" activeClassName="active">
+            <div to={`/users/${user.id}`} onClick={goToProfile} exact={true} className="nav-link" activeClassName="active">
               Profile
-        </NavLink>
+        </div>
             <LogoutButton setAuthenticated={setAuthenticated} />
           </>}
 
