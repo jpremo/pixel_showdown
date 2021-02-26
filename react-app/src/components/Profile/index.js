@@ -7,6 +7,7 @@ import './Profile.css'
 import TrophyBar from '../UserHover/TrophyBar';
 import { changeProperty } from '../../store/canvas';
 import PostList from '../HomePage/PostList'
+import UserList from './UserList';
 
 const Profile = () => {
     const user = useSelector(state => state.session.user)
@@ -91,6 +92,22 @@ const Profile = () => {
                         {owner ? 'Your Competitions' : `${profile.username}'s Images`}
                     </div>
                 <PostList name='' postList={profile.competitions} profilePage={true}/>
+                </div>
+            }
+            {page === 3 &&
+                <div className='profile-user-list-wrapper'>
+                    <div className='profile-header-title'>
+                        {owner ? 'Your Followers' : `${profile.username}'s Followers`}
+                    </div>
+                    <UserList user={user} users={profile.followers}/>
+                </div>
+            }
+            {page === 4 &&
+                <div className='profile-user-list-wrapper'>
+                    <div className='profile-header-title'>
+                        {owner ? 'Users You Follow' : `User ${profile.username} is Following`}
+                    </div>
+                    <UserList user={user} users={profile.followings} />
                 </div>
             }
 

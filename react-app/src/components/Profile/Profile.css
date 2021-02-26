@@ -39,6 +39,14 @@
     align-items: center;
   }
 
+    .profile-user-list-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 400px;
+  }
+
+
   .profile-wrapper{
       display: flex;
       flex-direction: column;
@@ -52,4 +60,18 @@
 
   .profile-select-button{
       margin: 3px;
+  }
+
+  .profile-user-wrapper{
+      width: 48%;
+      text-align: center;
+      margin: 3px;
+      box-sizing: border-box;
+  }
+
+  .profile-user-list{
+      display: flex;
+      flex-wrap: wrap;
+      text-align: left;
+      width: 100%;
   }
