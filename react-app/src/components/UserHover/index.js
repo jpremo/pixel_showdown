@@ -22,6 +22,7 @@ const UserHover = ({ user, currentUser, login, profilePage=false }) => {
     const click = (e) => {
         if (e.target === e.currentTarget) {
             history.push(`/users/${user.id}`)
+            history.go(0)
         }
     }
 

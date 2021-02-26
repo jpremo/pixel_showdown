@@ -105,7 +105,7 @@ const Profile = () => {
             {page === 4 &&
                 <div className='profile-user-list-wrapper'>
                     <div className='profile-header-title'>
-                        {owner ? 'Users You Follow' : `User ${profile.username} is Following`}
+                        {owner ? 'Users You Follow' : `Users ${profile.username} is Following`}
                     </div>
                     <UserList user={user} users={profile.followings} owner={owner}/>
                 </div>
