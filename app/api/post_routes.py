@@ -1,10 +1,11 @@
 from flask import Blueprint, jsonify, request
 from app.models import db, Post, Ruleset, Image
 from datetime import datetime, timedelta
-from sqlalchemy import and_, desc
+from sqlalchemy import and_, desc, or_, func, asc
 import math
 
 post_routes = Blueprint('posts', __name__)
+
 
 def calculate_points(place, entries):
     if entries == 1:
@@ -20,7 +21,7 @@ def calculate_points(place, entries):
     second_points = math.ceil(total_points * .66)
     total_points = total_points - second_points
     third_points = total_points
-    points_list = [first_points,second_points,third_points]
+    points_list = [first_points, second_points, third_points]
     return points_list[place]
 
 
@@ -57,7 +58,8 @@ def get_recent_competitions():
     competitions = Post.query.filter(
         and_(Post.rulesetId != None, Post.competitionEnd >= current_time)).order_by(desc(Post.competitionEnd)).limit(5).all()
     neat_competitions = [comp.to_dict_detailed() for comp in competitions]
-    return {'competitions':neat_competitions}
+    return {'competitions': neat_competitions}
+
 
 @post_routes.route('/competitions/recently-closed', methods=['GET'])
 def get_recent_closed_competitions():
@@ -68,7 +70,32 @@ def get_recent_closed_competitions():
     competitions = Post.query.filter(
         and_(Post.rulesetId != None, Post.competitionEnd < current_time)).order_by(desc(Post.competitionEnd)).limit(5).all()
     neat_competitions = [comp.to_dict_detailed() for comp in competitions]
-    return {'competitions':neat_competitions}
+    return {'competitions': neat_competitions}
+
+
+@post_routes.route('/competitions/featured', methods=['GET'])
+def get_featured_competitions():
+    """
+    Grabs the five featured posts by id using the array below
+    """
+    featured = [1, 2, 3, 4, 5]
+    competitions = Post.query.filter(
+        or_(Post.id == featured[0], Post.id == featured[1], Post.id == featured[2],
+            Post.id == featured[3], Post.id == featured[4])).order_by(asc(Post.judged)).limit(5).all()
+    neat_competitions = [comp.to_dict_detailed() for comp in competitions]
+    return {'competitions': neat_competitions}
+
+
+@post_routes.route('/competitions/popular', methods=['GET'])
+def get_popular_competitions():
+    """
+    Grabs the five competitions with the highest submission number
+    """
+    competitions = Post.query.filter(
+        Post.rulesetId != None).group_by(Post.id).join(Image).order_by(func.count().desc(), asc(Post.judged)).all()
+    neat_competitions = [comp.to_dict_detailed() for comp in competitions]
+    return {'competitions': neat_competitions}
+
 
 @post_routes.route('/competitions/<int:id>', methods=['GET'])
 def get_competition(id):
@@ -78,10 +105,9 @@ def get_competition(id):
     competition = Post.query.get(id)
     if(competition):
         competition = competition.to_dict_detailed()
-        return {'competition':competition}
+        return {'competition': competition}
 
-
-    return {'notFound':True}
+    return {'notFound': True}
 
 
 @post_routes.route('/competitions/<int:id>', methods=['PUT'])
@@ -93,17 +119,17 @@ def competition_results(id):
     imgArr = data['competitionWinners']
     competition = Post.query.get(id)
     competitionImageLength = len(competition.competition_images)
-    for i in range(0,len(imgArr)):
+    for i in range(0, len(imgArr)):
         imageId = imgArr[i]
         if imageId != None:
             image = Image.query.get(imageId)
             if image:
                 image.place = i
-                image.points = calculate_points(i,competitionImageLength)
+                image.points = calculate_points(i, competitionImageLength)
                 db.session.commit()
     competition = Post.query.get(id)
     competition.judged = True
     competition.updated_at = datetime.now()
     db.session.commit()
     competition = competition.to_dict_detailed()
-    return {'images':competition['images']}
+    return {'images': competition['images']}

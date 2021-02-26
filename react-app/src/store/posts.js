@@ -5,6 +5,8 @@ const CLEARCOMPETITIONPAGE = '/posts/clearCompetitionPage'
 const COMPETITIONPAGE = '/posts/competitionPage'
 const COMPETITIONWINNERS = '/posts/competitionWinners'
 const COMPETITIONPAGEIMAGES = '/posts/competitionPageImages'
+const FEATURED = '/posts/featured'
+const POPULAR = '/posts/popular'
 //These functions/reducer handle post data storage
 export const recentCompetitions = (recentCompetitions) => ({
     type: RECENT,
@@ -14,6 +16,16 @@ export const recentCompetitions = (recentCompetitions) => ({
 export const recentlyClosedCompetitions = (recentCompetitions) => ({
     type: RECENTCLOSED,
     payload: { recentlyClosedCompetitions: recentCompetitions.competitions }
+});
+
+export const featuredCompetitions = (featured) => ({
+    type: FEATURED,
+    payload: { featuredCompetitions: featured.competitions }
+});
+
+export const popularCompetitions = (popular) => ({
+    type: POPULAR,
+    payload: { popularCompetitions: popular.competitions }
 });
 
 
@@ -67,11 +79,18 @@ function reducer(state = initialState, action) {
         case RECENTCLOSED:
             newState = Object.assign({}, state, { ...action.payload });
             return newState;
+        case FEATURED:
+            newState = Object.assign({}, state, { ...action.payload });
+            return newState;
+        case POPULAR:
+            newState = Object.assign({}, state, { ...action.payload });
+            return newState;
         case COMPETITIONPAGE:
             newState = Object.assign({}, state, { ...action.payload });
             return newState;
         case CLEARCOMPETITIONS:
-            newState = Object.assign({}, state, { recentlyClosedCompetitions: null, recentCompetitions: null });
+            newState = Object.assign({}, state, { recentlyClosedCompetitions: null, recentCompetitions: null,
+                featuredCompetitions:null, popularCompetitions:null });
             return newState;
         case CLEARCOMPETITIONPAGE:
             newState = Object.assign({}, state, { competitionPage: null });

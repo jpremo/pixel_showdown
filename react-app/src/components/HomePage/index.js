@@ -8,7 +8,7 @@ import CompleteCanvas from '../canvas/CompleteCanvas'
 import { setCreatePostModal, setLoginModal, setCreateCompetitionModal } from '../../store/modal'
 import ModalContainer from '../NavBar/ModalContainer'
 import './HomePage.css'
-import { recentCompetitions, recentlyClosedCompetitions, clearCompetitions} from '../../store/posts'
+import { recentCompetitions, recentlyClosedCompetitions, clearCompetitions, popularCompetitions, featuredCompetitions } from '../../store/posts'
 import PostList from './PostList'
 //This component organizes the home page
 function HomePage() {
@@ -28,6 +28,14 @@ function HomePage() {
             data = await data.json()
             dispatch(recentlyClosedCompetitions(data))
 
+            data = await fetch('/api/posts/competitions/popular')
+            data = await data.json()
+            dispatch(popularCompetitions(data))
+
+            data = await fetch('/api/posts/competitions/featured')
+            data = await data.json()
+            dispatch(featuredCompetitions(data))
+
             setLoaded(true)
         })();
     }, [])
@@ -37,6 +45,10 @@ function HomePage() {
 
             {loaded &&
                 <>
+                    <div className='highlight-div'>
+                        <PostList name='Featured Competitions' postList={posts.featuredCompetitions} competition={true} />
+                        <PostList name='Popular Competitions' postList={posts.popularCompetitions} competition={true} competitionClosed={true} />
+                    </div>
                     <div className='highlight-div'>
                         <PostList name='New Competitions' postList={posts.recentCompetitions} competition={true} />
                         <PostList name='Recently Closed Competitions' postList={posts.recentlyClosedCompetitions} competition={true} competitionClosed={true} />
