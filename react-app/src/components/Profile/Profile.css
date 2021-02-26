@@ -75,3 +75,8 @@
       text-align: left;
       width: 100%;
   }
+
+  .profile-list-header-center{
+    width: 100%;
+    text-align: center;
+  }

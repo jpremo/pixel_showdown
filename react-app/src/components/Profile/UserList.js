@@ -14,7 +14,7 @@ function UserList({ users, user, owner }) {
         <>
             <div className='profile-user-list'>
                 <div>
-                    <h2 style={{ marginLeft: '10px' }}>No Results</h2>
+                    {/* <h2 className='profile-list-header-center'>No Results</h2> */}
                 </div>
             </div>
         </>
