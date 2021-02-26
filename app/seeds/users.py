@@ -6,7 +6,7 @@ def seed_users():
 
     demo = User(username='Demo', email='demo@aa.io',
                 password='password', firstName='Demo', lastName='User', biography='I am the demo user.')
-    user1 = User(username='PostMan', email='poster@place.com',
+    user1 = User(username='PostGuy', email='poster@place.com',
                 password='asdfasdfweffasd', firstName='Post', lastName='Man', biography='I post things.')
     user2 = User(username='SnideCommenter102', email='user2@place.com',
                 password='asdfweqfqdsaf', firstName='Snide', lastName='Commenter', biography='I am a person who values snide comments and good art.')

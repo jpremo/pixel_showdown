@@ -10,7 +10,26 @@ def seed_posts():
                 userId=2,
                 competitionEnd=datetime.date(2200, 1, 1),
                 )
-    post2 = Post(body='''Draw the best dog/cat/floofer/pet that you can!''',
+    post2 = Post(body='''Plz draw a plant 4 me. No ferns allowed. I hate ferns 5ever. Ferns r4 losers.''',
+                 attachments={},
+                 rulesetId=4,
+                 userId=2,
+                 competitionEnd=datetime.date(2021, 2, 1),
+                 judged=True,
+                 )
+    post3 = Post(body='''Draw whatever you want! The catch? No colorful colors allowed!''',
+                 attachments={},
+                 rulesetId=3,
+                 userId=2,
+                 competitionEnd=datetime.date(2200, 1, 1),
+                 )
+    post4 = Post(body='''Draw whatever you want! May the best drawing win!''',
+                 attachments={},
+                 rulesetId=4,
+                 userId=2,
+                 competitionEnd=datetime.date(2200, 1, 1),
+                 )
+    post5 = Post(body='''Draw the best dog/cat/floofer/pet that you can!''',
                  attachments={},
                  rulesetId=2,
                  userId=2,
@@ -20,6 +39,9 @@ def seed_posts():
 
     db.session.add(post1)
     db.session.add(post2)
+    db.session.add(post3)
+    db.session.add(post4)
+    db.session.add(post5)
 
     db.session.commit()
 
