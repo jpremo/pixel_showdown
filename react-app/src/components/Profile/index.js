@@ -91,7 +91,9 @@ const Profile = () => {
                     <div className='profile-header-title'>
                         {owner ? 'Your Competitions' : `${profile.username}'s Images`}
                     </div>
-                <PostList name='' postList={profile.competitions} profilePage={true}/>
+                    {profile.competitions.length > 0 &&
+                        <PostList name='' postList={profile.competitions} profilePage={true} />
+                    }
                 </div>
             }
             {page === 3 &&
@@ -99,7 +101,7 @@ const Profile = () => {
                     <div className='profile-header-title'>
                         {owner ? 'Your Followers' : `${profile.username}'s Followers`}
                     </div>
-                <UserList user={user} users={profile.followers} owner={owner}/>
+                    <UserList user={user} users={profile.followers} owner={owner} />
                 </div>
             }
             {page === 4 &&
@@ -107,7 +109,7 @@ const Profile = () => {
                     <div className='profile-header-title'>
                         {owner ? 'Users You Follow' : `Users ${profile.username} is Following`}
                     </div>
-                    <UserList user={user} users={profile.followings} owner={owner}/>
+                    <UserList user={user} users={profile.followings} owner={owner} />
                 </div>
             }
 
