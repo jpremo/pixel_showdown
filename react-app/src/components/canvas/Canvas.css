@@ -264,13 +264,13 @@ button.deleting{
 }
 
 .radio-list label{
-  color: white;
+  color: black;
   margin-left: 5px;
   margin-bottom: 5px;
 }
 
 .radio-list input{
-  color: white;
+  color: black;
   margin-left: 20px;
   margin-bottom: 5px;
 }

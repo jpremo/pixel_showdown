@@ -91,9 +91,9 @@ function ProfileCarousel({ images, owner, userId }) {
             </Slider>
             {owner &&
                 <div className='profile-button-wrapper'>
-                    <div className='nav-link profile-spacer' onClick={updateImage}>Set Profile Image</div>
+                    <div className={'modal-link profile-spacer'} onClick={updateImage}>Set as Profile Image</div>
                     {images[currentSlide].competitionId ===null &&
-                    <div className='nav-link profile-spacer' onClick={editImage}>Edit Image</div>
+                    <div className={'modal-link profile-spacer'} onClick={editImage}>Edit Image</div>
                     }
                 </div>
             }
