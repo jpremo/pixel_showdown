@@ -26,7 +26,7 @@ const CanvasTools = props => {
 
     //setting up some basic rules
     useEffect(() => {
-        if (!props.skipDefault) {
+        if (!props.skipDefault || ruleset.defaultPalette) {
             dispatch(changeProperty({ colorPalette: ruleset.defaultPalette }))
         }
     }, [])
@@ -101,8 +101,8 @@ const CanvasTools = props => {
     const colorGrabClass = canvasSettings.currentTool === 'colorGrab' ? ' selected' : ''
     const colorSwapClass = canvasSettings.currentTool === 'colorSwap' ? ' selected' : ''
     const colorSwapBrushClass = canvasSettings.currentTool === 'colorSwapBrush' ? ' selected' : ''
-    const removeFromPalette = !canvasSettings.colorPalette.length ? ' invalid-selection' : ''
-    const addToPalette = canvasSettings.colorPalette.includes(rgbaToHex(canvasSettings.color)) ? ' invalid-selection' : ''
+    const removeFromPalette = (canvasSettings.colorPalette && !canvasSettings.colorPalette.length) ? ' invalid-selection' : ''
+    const addToPalette = (canvasSettings.colorPalette && canvasSettings.colorPalette.includes(rgbaToHex(canvasSettings.color))) ? ' invalid-selection' : ''
     const removeFromPalette2 = deleteColor ? ' deleting' : ''
     const removeFromPalette3 = deleteColor ? ' selected' : ''
     const playingClass = (canvasSettings.playing || canvasSettings.totalFrames === 1) ? ' selected' : ''

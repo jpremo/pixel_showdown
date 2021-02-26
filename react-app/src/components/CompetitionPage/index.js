@@ -111,7 +111,7 @@ const CompetitionPage = () => {
         let timeDif = formatDistance(new Date(post.created_at), new Date())
         if (post.user.profileImg === null || post.user.profileImg === undefined) post.user.profileImage = 'create-error'
 
-        const entryLink = () => {
+        const entryLink = async() => {
             if (user.id) {
                 history.push(`/competitions/${post.id}/entry/new`)
             } else {
