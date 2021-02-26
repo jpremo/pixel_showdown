@@ -312,7 +312,7 @@ button.deleting{
   top: 74px;
   left: 50vw;
   z-index: 1000000;
-  background:#8C4843;
+  background: #7c92db;
   /* rgb(86, 194, 86); */
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
@@ -323,8 +323,8 @@ button.deleting{
 
 .banner{
   font-size: 32px;
-  color: white;
-  text-shadow: 2px 2px black;
+  color: black;
+  /* text-shadow: 2px 2px black; */
   width: 100px;
   text-align: center;
 }
