@@ -22,6 +22,8 @@
   margin: 0;
 }
 
+
+
 .nav-spacer{
   height: 72px;
   width: 100%;
@@ -78,6 +80,21 @@
 .nav-link:hover {
   background-color: #8ec5fc;
   font-size: 19px;
+}
+
+@media only screen and (max-width: 650px) {
+  .nav-link {
+    margin: 1px;
+    font-size: 14px;
+  }
+  .nav-link:hover {
+  background-color: #8ec5fc;
+  font-size: 16px;
+}
+#nav-bar-logo-picture-div {
+    margin-left: 5px;
+
+  }
 }
 
 .modal-box {

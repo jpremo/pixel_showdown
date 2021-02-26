@@ -27,7 +27,7 @@ function Sketch() {
                     }
                     const moveHistoryNew = []
                     const historyPositionNew = []
-                    for(let i = 0; i < parsed.grid.gridColors.length; i++) {
+                    for (let i = 0; i < parsed.grid.gridColors.length; i++) {
                         moveHistoryNew.push([parsed.grid.gridColors[i]])
                         historyPositionNew.push(0)
                     }
@@ -46,7 +46,7 @@ function Sketch() {
                         title: parsed.title,
                         moveHistory: moveHistoryNew,
                         historyPosition: historyPositionNew,
-                        playing:false,
+                        playing: false,
                         ruleset: {}
                     }))
                     setLoaded(true)
@@ -81,8 +81,10 @@ function Sketch() {
 
     if (loaded) {
         return (
-            <div id='sketch-content-wrapper'>
-                <CompleteCanvas skipDefault={true}/>
+            <div className='center-content-wrapper'>
+                <div id='sketch-content-wrapper'>
+                    <CompleteCanvas skipDefault={true} />
+                </div>
             </div>
         );
     } else {

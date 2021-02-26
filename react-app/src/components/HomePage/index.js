@@ -44,7 +44,7 @@ function HomePage() {
         <>
 
             {loaded &&
-                <>
+                <div className='center-content-wrapper'>
                     <div className='highlight-div'>
                         <PostList name='Featured Competitions' postList={posts.featuredCompetitions} competition={true} />
                         <PostList name='Popular Competitions' postList={posts.popularCompetitions} competition={true} competitionClosed={true} />
@@ -53,7 +53,7 @@ function HomePage() {
                         <PostList name='New Competitions' postList={posts.recentCompetitions} competition={true} />
                         <PostList name='Recently Closed Competitions' postList={posts.recentlyClosedCompetitions} competition={true} competitionClosed={true} />
                     </div>
-                </>
+                </div>
             }
 
         </>
