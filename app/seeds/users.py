@@ -20,6 +20,11 @@ def seed_users():
     db.session.add(user3)
     db.session.add(user4)
 
+    demo.followcheck.append(user1)
+    demo.followcheck.append(user2)
+    demo.followcheck.append(user3)
+    demo.followcheck.append(user4)
+
     db.session.commit()
 
 # Uses a raw SQL query to TRUNCATE the users table.
