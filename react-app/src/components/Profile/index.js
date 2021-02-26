@@ -92,7 +92,7 @@ const Profile = () => {
                         {owner ? 'Your Competitions' : `${profile.username}'s Images`}
                     </div>
                     {profile.competitions.length > 0 &&
-                        <PostList name='' postList={profile.competitions} profilePage={true} />
+                    <PostList name='' postList={profile.competitions} profilePage={true} competition={true}/>
                     }
                 </div>
             }
