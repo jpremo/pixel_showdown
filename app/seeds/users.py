@@ -4,15 +4,15 @@ from app.models import db, User
 # Adds a demo user, you can add other users here if you want
 def seed_users():
 
-    demo = User(username='Demo', email='demo@aa.io',
+    demo = User(username='Demo', email='demo@aa.io', profileImg='https://pixel-showdown.s3.amazonaws.com/Static/PS_Seed_Images/heart_animation.png',
                 password='password', firstName='Demo', lastName='User', biography='I am the demo user.')
-    user1 = User(username='PostGuy', email='poster@place.com',
+    user1 = User(username='PostGuy', email='poster@place.com', profileImg='https://pixel-showdown.s3.amazonaws.com/Static/PS_Seed_Images/heart_animation.png',
                 password='asdfasdfweffasd', firstName='Post', lastName='Man', biography='I post things.')
-    user2 = User(username='SnideCommenter102', email='user2@place.com',
+    user2 = User(username='SnideCommenter102', email='user2@place.com', profileImg='https://pixel-showdown.s3.amazonaws.com/Static/PS_Seed_Images/forbidden_fern.gif',
                 password='asdfweqfqdsaf', firstName='Snide', lastName='Commenter', biography='I am a person who values snide comments and good art.')
-    user3 = User(username='FatCatFriend', email='user3@place.com',
+    user3 = User(username='FatCatFriend', email='user3@place.com', profileImg='https://pixel-showdown.s3.amazonaws.com/Static/PS_Seed_Images/karate_cat.gif',
                 password='asdfqwe3qwefsda', firstName='Person', lastName='IsTheBest', biography='I like drawing fat cats and other chonky animals.')
-    user4 = User(username='Friendly_Artist', email='user4@place.com',
+    user4 = User(username='Friendly_Artist', email='user4@place.com', profileImg='https://pixel-showdown.s3.amazonaws.com/Static/PS_Seed_Images/plant_dog.png',
                 password='asdfweqefdsa', firstName='Friendly', lastName='Artist', biography='Art and friends go together like wine and cheese!')
     db.session.add(demo)
     db.session.add(user1)
