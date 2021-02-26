@@ -56,7 +56,7 @@ def get_recent_competitions():
     """
     current_time = datetime.utcnow()
     competitions = Post.query.filter(
-        and_(Post.rulesetId != None, Post.competitionEnd >= current_time)).order_by(desc(Post.competitionEnd)).limit(5).all()
+        and_(Post.rulesetId != None, Post.competitionEnd >= current_time)).order_by(desc(Post.created_at)).limit(5).all()
     neat_competitions = [comp.to_dict_detailed() for comp in competitions]
     return {'competitions': neat_competitions}
 
@@ -68,7 +68,7 @@ def get_recent_closed_competitions():
     """
     current_time = datetime.utcnow()
     competitions = Post.query.filter(
-        and_(Post.rulesetId != None, Post.competitionEnd < current_time)).order_by(desc(Post.competitionEnd)).limit(5).all()
+        and_(Post.rulesetId != None, Post.competitionEnd < current_time)).order_by(desc(Post.created_at)).limit(5).all()
     neat_competitions = [comp.to_dict_detailed() for comp in competitions]
     return {'competitions': neat_competitions}
 

@@ -129,7 +129,7 @@ const CompetitionPage = () => {
         }
 
         const entryCheck = () => {
-            if (!isPast(new Date(post.competitionEnd))) {
+            if (!isPast(new Date(post.competitionEnd)) && user.id !== post.user.id) {
                 if (user.id) {
                     let userSubmission = post.images.filter((el) => {
                         return el.userId === user.id
