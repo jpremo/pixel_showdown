@@ -99,7 +99,7 @@ const Profile = () => {
                     <div className='profile-header-title'>
                         {owner ? 'Your Followers' : `${profile.username}'s Followers`}
                     </div>
-                    <UserList user={user} users={profile.followers}/>
+                <UserList user={user} users={profile.followers} owner={owner}/>
                 </div>
             }
             {page === 4 &&
@@ -107,7 +107,7 @@ const Profile = () => {
                     <div className='profile-header-title'>
                         {owner ? 'Users You Follow' : `User ${profile.username} is Following`}
                     </div>
-                    <UserList user={user} users={profile.followings} />
+                    <UserList user={user} users={profile.followings} owner={owner}/>
                 </div>
             }
 

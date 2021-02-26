@@ -5,7 +5,7 @@ import { formatDistance } from 'date-fns'
 import './UserHover.css'
 import TrophyBar from './TrophyBar';
 
-const UserHover = ({ user, currentUser, login }) => {
+const UserHover = ({ user, currentUser, login, profilePage=false }) => {
     const history = useHistory()
     const [hidden, setHidden] = useState(true)
     const [alarm, setAlarm] = useState(null)
@@ -47,7 +47,7 @@ const UserHover = ({ user, currentUser, login }) => {
                         <div className='user-hover-text'>Points: {user.points}</div>
                     </div>
                     <div className='user-hover-buttons'>
-                        <FollowButton currentUser={currentUser} user={user} login={login} />
+                        <FollowButton currentUser={currentUser} user={user} login={login} profilePage={profilePage} />
                         <div className='user-hover-view-profile modal-link' onClick={click}>Profile</div>
                     </div>
                 </div>

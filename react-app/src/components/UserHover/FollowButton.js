@@ -2,8 +2,9 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { followUser, unFollowUser } from '../../store/session'
 import './UserHover.css'
+import { followUserProfile, unFollowUserProfile } from '../../store/profile'
 
-const FollowButton = ({ user, currentUser, login }) => {
+const FollowButton = ({ user, currentUser, login, profilePage }) => {
     const dispatch = useDispatch()
     let followText
     if (currentUser.id && currentUser.followings.includes(user.id)) {
@@ -11,15 +12,21 @@ const FollowButton = ({ user, currentUser, login }) => {
     } else {
         followText = 'Follow'
     }
-    const followClick = () => {
+    const followClick = async () => {
         if (!currentUser.id) {
             login()
             return
         }
         if (followText === 'Follow') {
-            dispatch(followUser(currentUser.id, user.id))
+            await dispatch(followUser(currentUser.id, user.id))
+            if(profilePage){
+                dispatch(followUserProfile(user))
+            }
         } else {
-            dispatch(unFollowUser(currentUser.id, user.id))
+            await dispatch(unFollowUser(currentUser.id, user.id))
+            if (profilePage) {
+                dispatch(unFollowUserProfile(user))
+            }
         }
     }
     return (

@@ -5,7 +5,7 @@ import { setLoginModal } from '../../store/modal'
 import { useDispatch, useSelector } from 'react-redux'
 import UserHover from '../UserHover'
 
-function UserList({ users, user }) {
+function UserList({ users, user, owner }) {
     const dispatch = useDispatch()
     const loginModalOpen = () => {
         dispatch(setLoginModal(true))
@@ -24,7 +24,7 @@ function UserList({ users, user }) {
             {users.map((el, ind) => {
                 return (
                     <div className={'profile-user-wrapper'} key={ind}>
-                        <UserHover login={loginModalOpen} currentUser={user} user={el} />
+                        <UserHover login={loginModalOpen} currentUser={user} user={el} profilePage={owner} />
                     </div>
                 )
             })}
