@@ -17,7 +17,7 @@ const LogoutButton = ({setAuthenticated}) => {
     dispatch(setLogoutModal(true))
   };
 
-  return <button id="logout" className="nav-link" onClick={onLogout}>Log-Out</button>;
+  return <div id="logout" className="nav-link" onClick={onLogout}>Log-Out</div>;
 };
 
 export default LogoutButton;
