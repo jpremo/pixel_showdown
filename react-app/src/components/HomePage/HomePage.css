@@ -152,3 +152,7 @@
   min-width: fit-content;
   overflow: auto;
 }
+
+.post-timedif{
+  margin-top: 12px;
+}

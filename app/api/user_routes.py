@@ -12,6 +12,14 @@ def user(id):
     user = User.query.get(id)
     return user.to_dict()
 
+@user_routes.route('/profile/<int:id>')
+def user_profile_data(id):
+    """
+    Retrieves and returns information on specified user needed for the profile page
+    """
+    user = User.query.get(id)
+    return user.to_dict_profile()
+
 @user_routes.route('/<int:id>/profileImg', methods=["POST"])
 def user_profileImg(id):
     """

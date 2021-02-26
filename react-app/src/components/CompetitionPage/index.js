@@ -143,13 +143,13 @@ const CompetitionPage = () => {
                             )
                         } else {
                             return (
-                                <div className='nav-link' onClick={entryLink}>Edit Entry</div>
+                                <div className='modal-link' onClick={entryLink}>Edit Entry</div>
                             )
                         }
                     }
                 }
                 return (
-                    <div className='nav-link' onClick={entryLink}>Create Entry</div>
+                    <div className='modal-link' onClick={entryLink}>Create Entry</div>
                 )
             } else {
                 return null

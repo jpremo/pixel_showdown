@@ -45,3 +45,11 @@
       justify-content: center;
       align-items: center;
   }
+
+  .profile-select-bar{
+      display: flex;
+  }
+
+  .profile-select-button{
+      margin: 3px;
+  }

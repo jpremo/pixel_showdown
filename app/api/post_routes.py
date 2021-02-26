@@ -92,7 +92,7 @@ def get_popular_competitions():
     Grabs the five competitions with the highest submission number
     """
     competitions = Post.query.filter(
-        Post.rulesetId != None).group_by(Post.id).join(Image).order_by(func.count().desc(), asc(Post.judged)).all()
+        Post.rulesetId != None).group_by(Post.id).join(Image).order_by(func.count().desc(), asc(Post.judged)).limit(5).all()
     neat_competitions = [comp.to_dict_detailed() for comp in competitions]
     return {'competitions': neat_competitions}
 
