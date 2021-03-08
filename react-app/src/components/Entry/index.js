@@ -45,7 +45,6 @@ function Entry() {
     //Fetches data from backend server if an image id is specified in the url
     useEffect(() => {
         const fetchData = async () => {
-            debugger
             let data = await fetch(`/api/posts/competitions/${postId}`)
             data = await data.json()
 
@@ -70,7 +69,6 @@ function Entry() {
             }
             if (!isNaN(id) && Number.isInteger(Number(id))) {
                 try {
-                    debugger
                     const res = await fetch('/api/images/' + id + '')
                     const parsed = await res.json()
                     if (!res.ok || user.id !== parsed.userId) {
@@ -88,7 +86,6 @@ function Entry() {
                         moveHistoryNew.push([parsed.grid.gridColors[i]])
                         historyPositionNew.push(0)
                     }
-                    debugger
                     dispatch(changeProperty({
                         grid: parsed.grid.gridColors,
                         width: parsed.grid.width,

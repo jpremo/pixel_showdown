@@ -46,10 +46,6 @@ function reducer(state = initialState, action) {
   let newState;
   switch (action.type) {
     case CHANGE_PROPERTY:
-      if(action.payload.colorPalette !== undefined) {
-
-        debugger
-      }
       newState = Object.assign({}, state, action.payload);
       return newState;
     case CHANGE_RULESET:

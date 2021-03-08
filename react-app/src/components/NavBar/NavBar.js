@@ -104,7 +104,7 @@ const NavBar = ({ setAuthenticated }) => {
           }
 
           {user.id && <>
-            <div to={`/users/${user.id}`} onClick={goToProfile} exact={true} className="nav-link" activeClassName="active">
+            <div to={`/users/${user.id}`} onClick={goToProfile} className="nav-link">
               Profile
         </div>
             <LogoutButton setAuthenticated={setAuthenticated} />

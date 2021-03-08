@@ -425,11 +425,11 @@ const CanvasTools = props => {
                         <div className='canvas-tools-container'>
                             {canvasSettings.totalFrames > 1 &&
                                 <>
-                                    <button className={'canvas-button' + playingClass} onClick={playAnimation}><i class="fas fa-play"></i></button>
-                                    <button className={'canvas-button' + pausedClass} onClick={pauseAnimation}><i class="fas fa-pause"></i></button>
-                                    <button className={'canvas-button' + advanceClass} onClick={subtractOneFrame}><i class="fas fa-arrow-left"></i></button>
+                                    <button className={'canvas-button' + playingClass} onClick={playAnimation}><i className="fas fa-play"></i></button>
+                                    <button className={'canvas-button' + pausedClass} onClick={pauseAnimation}><i className="fas fa-pause"></i></button>
+                                    <button className={'canvas-button' + advanceClass} onClick={subtractOneFrame}><i className="fas fa-arrow-left"></i></button>
                                     <span className='frame-counter'> Frame: {canvasSettings.currentFrame} </span>
-                                    <button className={'canvas-button' + advanceClass} onClick={addOneFrame}><i class="fas fa-arrow-right"></i></button>
+                                    <button className={'canvas-button' + advanceClass} onClick={addOneFrame}><i className="fas fa-arrow-right"></i></button>
                                 </>
                             }
                         </div>
@@ -472,39 +472,39 @@ const CanvasTools = props => {
                 </Collapse>
                 <Collapse title={'Brushes'}>
                     <div className='canvas-tools-container'>
-                        <button className={'canvas-button' + brushClass} onClick={swapBrush}><i class="fas fa-paint-brush"></i></button>
+                        <button className={'canvas-button' + brushClass} onClick={swapBrush}><i className="fas fa-paint-brush"></i></button>
                         <RuleChecker property='disableEraser' canvasSettings={canvasSettings}>
-                            <button className={'canvas-button' + eraserClass} onClick={swapEraser}><i class="fas fa-eraser"></i></button>
+                            <button className={'canvas-button' + eraserClass} onClick={swapEraser}><i className="fas fa-eraser"></i></button>
                         </RuleChecker>
                         <RuleChecker property='disableEyedropper' canvasSettings={canvasSettings}>
-                            <button className={'canvas-button' + colorGrabClass} onClick={swapColorGrab}><i class="fas fa-eye-dropper"></i></button>
+                            <button className={'canvas-button' + colorGrabClass} onClick={swapColorGrab}><i className="fas fa-eye-dropper"></i></button>
                         </RuleChecker>
                         <RuleChecker property='disableFill' canvasSettings={canvasSettings}>
-                            <button className={'canvas-button' + fillClass} onClick={swapFill}><i class="fas fa-fill"></i></button>
+                            <button className={'canvas-button' + fillClass} onClick={swapFill}><i className="fas fa-fill"></i></button>
                         </RuleChecker>
                         <RuleChecker property='disableColorSwapper' canvasSettings={canvasSettings}>
-                            <button className={'canvas-button' + colorSwapClass} onClick={swapColorSwap}><i class="fas fa-exchange-alt"></i></button>
+                            <button className={'canvas-button' + colorSwapClass} onClick={swapColorSwap}><i className="fas fa-exchange-alt"></i></button>
                         </RuleChecker>
                         <RuleChecker property='disableColorSwapBrush' canvasSettings={canvasSettings}>
-                            <button className={'canvas-button' + colorSwapBrushClass} onClick={swapColorSwapBrush}><i class="fas fa-paint-brush"></i><span>/</span><i class="fas fa-exchange-alt"></i></button>
+                            <button className={'canvas-button' + colorSwapBrushClass} onClick={swapColorSwapBrush}><i className="fas fa-paint-brush"></i><span>/</span><i className="fas fa-exchange-alt"></i></button>
                         </RuleChecker>
                     </div>
                 </Collapse>
                 <Collapse title={'Tools'}>
                     <div className='canvas-tools-container'>
                         <RuleChecker property='disableUndoRedo' canvasSettings={canvasSettings}>
-                            <button className={'canvas-button' + undoClass} onClick={undo}><i class="fas fa-undo"></i></button>
-                            <button className={'canvas-button' + redoClass} onClick={redo}><i class="fas fa-redo"></i></button>
+                            <button className={'canvas-button' + undoClass} onClick={undo}><i className="fas fa-undo"></i></button>
+                            <button className={'canvas-button' + redoClass} onClick={redo}><i className="fas fa-redo"></i></button>
                         </RuleChecker>
                         <RuleChecker property='disableGrid' canvasSettings={canvasSettings}>
-                            <button className={'canvas-button' + gridClass} onClick={swapGrid}><i class="fas fa-th"></i></button>
+                            <button className={'canvas-button' + gridClass} onClick={swapGrid}><i className="fas fa-th"></i></button>
                         </RuleChecker>
                         <RuleChecker property='disableClear' canvasSettings={canvasSettings}>
-                            <button className={'canvas-button'} onClick={clearImage}><i class="fas fa-ban"></i></button>
+                            <button className={'canvas-button'} onClick={clearImage}><i className="fas fa-ban"></i></button>
                         </RuleChecker>
                         <RuleChecker property='disableCopyPaste' canvasSettings={canvasSettings}>
-                            <button className={'canvas-button'} onClick={copy}><i class="fas fa-copy"></i></button>
-                            <button className={'canvas-button' + pasteClass} onClick={paste}><i class="fas fa-paste"></i></button>
+                            <button className={'canvas-button'} onClick={copy}><i className="fas fa-copy"></i></button>
+                            <button className={'canvas-button' + pasteClass} onClick={paste}><i className="fas fa-paste"></i></button>
                         </RuleChecker>
                     </div>
                 </Collapse>

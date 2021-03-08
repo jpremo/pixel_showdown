@@ -42,7 +42,6 @@ const RuleAddSubtract = ({ setValidated, property, min, max, defaultValue, title
     }
 
     const add = () => {
-        // debugger
         const val = alterVal(Number(value) + 1)
         const obj = {ruleset:{...canvasSettings.ruleset}}
         obj.ruleset[property][innerProperty] = val

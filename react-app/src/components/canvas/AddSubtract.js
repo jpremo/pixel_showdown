@@ -7,7 +7,6 @@ const AddSubtract = ({ property, min, max, title, loops, defaultValue }) => {
     const canvasSettings = useSelector(state => state.canvas)
     const dispatch = useDispatch()
     const [value, setValue] = useState(canvasSettings[property])
-    // debugger
     min = canvasSettings.ruleset[property] ? canvasSettings.ruleset[property]['minValue']:min
     max = canvasSettings.ruleset[property] ? canvasSettings.ruleset[property]['maxValue']:max
     useEffect(() => {

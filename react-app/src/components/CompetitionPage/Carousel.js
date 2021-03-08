@@ -42,9 +42,9 @@ function Carousel({ images, setCurrentImage }) {
     }
     const ribbonLogo = (place) => {
         switch (place) {
-            case 0: return (<i style={{ color: '#E0DF3D', margin: '0 5px' }} class="fas fa-trophy fa-sm"></i>)
-            case 1: return (<i style={{ color: '#DADADA', margin: '0 5px' }} class="fas fa-trophy fa-sm"></i>)
-            case 2: return (<i style={{ color: '#CD881B', margin: '0 5px' }} class="fas fa-trophy fa-sm"></i>)
+            case 0: return (<i style={{ color: '#E0DF3D', margin: '0 5px' }} className="fas fa-trophy fa-sm"></i>)
+            case 1: return (<i style={{ color: '#DADADA', margin: '0 5px' }} className="fas fa-trophy fa-sm"></i>)
+            case 2: return (<i style={{ color: '#CD881B', margin: '0 5px' }} className="fas fa-trophy fa-sm"></i>)
             default: return null;
         }
     }

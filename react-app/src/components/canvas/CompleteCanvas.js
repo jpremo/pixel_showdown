@@ -14,7 +14,6 @@ function CompleteCanvas({ reload = false, disableHotKeys = false, skipDefault = 
     const dispatch = useDispatch()
 
     const loadRuleset = () => {
-        // debugger
         const ruleset = canvasSettings.ruleset
         const newProperties = {}
         for (let key in ruleset) {
