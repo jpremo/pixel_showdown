@@ -122,7 +122,8 @@ const Canvas = props => {
 
     }
 
-    //This function is used with the fill function and recursively replaces the selected color within bounds set by other colors
+    //This function is used with the fill function and recursively replaces the selected color
+    //within bounds set by other colors
     const fillPixels = (e) => {
         let x = e.pageX - canvasRef.current.offsetParent.offsetLeft - canvasRef.current.offsetLeft - 3;
         let y = e.pageY - canvasRef.current.offsetParent.offsetTop - canvasRef.current.offsetTop - 3;

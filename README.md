@@ -21,31 +21,31 @@ Pixel Showdown is an original, full stack web application that allows users to c
 12. To start the react server, exit your pipenv shell and run ***npm start*** in the react-app directory.
 
 ## Technologies Used ##
-Petential places uses various technologies to create a dynamic and fun web application. The front end utilizes React and Redux while the back end relies on Express, Sequelize and PostgreSQL. Other key technologies include AWS for image uploading and the TomTom Maps API for displaying map information.
+Pixel Showdown utilizes several key technologies in order to operate in an efficient manner. The front end uses React and Redux while the back end uses a combination of Flask, SQLAlchemy, and PostgreSQL. In addition to this, AWS is used for cloud storage of user art.
 
 ## Key Features ##
 
-### Image Uploading ###
-One of the most important features of a review site like Yelp and Petential places is the capability for users to upload images. When adding an image to a review or business, users are able to add a link to an existing picture or upload an image from their local computer. Petential Places allows for this through the use of AWS. Upon selecting the upload image button, users are permitted to select a png, jpeg, or gif file to upload. After making this selection, the image file is incorporated into a FormData object which is then sent to the backend server via an HTTP POST request. The Express server then converts this image into base64 and uploads it to AWS using a unique identifier as its name. This implementation allows for seamless image uploading and a snappy user experience.
+### Image Editor ###
+The image editor is integral to the funcionality of the site. When the user makes a stroke on the canvas the coordinates on from the mouse position are grabbed and the selected pixel(s) are altered based on the current tool. Information on the current drawing is stored in Redux until the save button is clicked. This results in the information being converted to base64 and sent to the backend server where it is processed into GIF and APNG format and subsequently uploaded to AWS. Key features of the image editor include the ability to select a color/opacity, draw, erase, copy a color, fill a selected area, swap a color, and undo/redo an action. Additionally, the editor has animation capabilities with customizable frame counts and frame rates along with the ability to copy and paste frames.
 
-![Uploading GIF](./documentation/README_Images/UploadDemo.gif)
+![Sketch GIF](https://pixel-showdown.s3.amazonaws.com/Static/sketch.gif)
 
-***A demonstration of the image uploading feature from the user's perspective.***
+***A low skill demonstration of the image editor.***
 
-![Uploading Code Snippet](./documentation/README_Images/openUpload.png)
+![Sketch Fill Code Snippet](./documentation/README_Images/fill_snippet.png)
 
-***A code snippet from Petential Places that opens up the local device image upload window.***
+***A code snippet that handles the recursive logic of the fill tool***
 
-### Image Viewing ###
-Uploading images would not serve much of a purpose if they could not be viewed afterwards. As such, one of the most important features of Petential Places is the image viewing modal. This dynamic feature allows for users to browse through all of the images posted for a business or choose to focus on one at a time to see additional information. All of this is handled through fetching the image data from the backend, storing it in Redux, and changing what is displayed using React state.
+### Ruleset Generation ###
+The ability to create customized rulesets allows users to create fun challenges for their friends and followers. When creating a ruleset, a user can disable a variety of tools used by the image editor, set a time limit, create a custom color palette, and more. As they fill out the form, users are able to see a live preview of what the image editor will look like for the competition. This is possible through live Redux changes that are fed into the image editor that act to prevent/alter different tools.
 
-![Image Modal GIF](./documentation/README_Images/ImageModalDemo.gif)
+![Image Modal GIF](./documentation/README_Images/RulesetDemo.gif)
 
-***A demonstration of the image browsing modal from the user's perspective.***
+***A demonstration of the ruleset generator.***
 
-![Image Modal Code Snippet](./documentation/README_Images/toggleImageModal.png)
+![Image Modal Code Snippet](./documentation/README_Images/checkbox_snippet.png)
 
-***A code snippet that toggles the image modal display mode.***
+***A code snippet that handles the logic for updating the redux store with custom rules***
 
 ## Challenges ##
 There were numerous challenges in the development of Petential Places that had to be addressed along the way. One of the most interesting issues was how to effectively display a business' location. The solution for this came in the form of the TomTom Maps API. This technology was selected for its dynamism and the ease with which a product key could be obtained. One central issue with weaving this API into the application, came in ensuring that the maps would not load before receiving coordinate data from the server. This was accomplished via using React state to prevent display of the map until a response had been received from the server.

@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { changeRuleset } from '../../store/canvas'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-//This component creates a -/input/+ box for the canvas property specified in props
+//This component creates a check box for the canvas property specified in props
 const RulecheckBox = ({property, title}) => {
-    const canvasSettings = useSelector(state => state.canvas)
     const dispatch = useDispatch()
     const [checked, setChecked] = useState(false)
 
