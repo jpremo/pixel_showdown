@@ -12,6 +12,7 @@ import CompetitionPage from './components/CompetitionPage'
 import Entry from './components/Entry'
 import Profile from './components/Profile'
 import SplashPage from "./components/SplashPage";
+import Footer from './components/Footer/Footer'
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -37,49 +38,51 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Switch>
-        <Route path="/" exact={true} authenticated={authenticated}>
-          <SplashPage setAuthenticated={setAuthenticated} />
-        </Route>
-        <Route path="/" exact={false}>
+      <div className='page-wrapper'>
+        <Switch>
+          <Route path="/" exact={true} authenticated={authenticated}>
+            <SplashPage setAuthenticated={setAuthenticated} />
+          </Route>
+          <Route path="/" exact={false}>
 
-          <NavBar setAuthenticated={setAuthenticated} />
-        </Route>
-      </Switch>
-      <Switch>
+            <NavBar setAuthenticated={setAuthenticated} />
+          </Route>
+        </Switch>
+        <Switch>
 
-        <Route path="/login" exact={true}>
-          <LoginForm
-            authenticated={authenticated}
-            setAuthenticated={setAuthenticated}
-          />
-        </Route>
-        <Route path={"/sketch"} exact={true}>
-          <Sketch />
-        </Route>
-        <Route path={"/sketch/:id"} exact={true}>
-          <Sketch />
-        </Route>
-        <Route path="/sign-up" exact={true}>
-          <SignUpForm authenticated={authenticated} setAuthenticated={setAuthenticated} />
-        </Route>
-        <Route path="/users/:userId" exact={true} authenticated={authenticated}>
-          <Profile />
-        </Route>
-        <Route path="/competitions/:postId" exact={true} authenticated={authenticated}>
-          <CompetitionPage />
-        </Route>
-        <Route path="/competitions/:postId/entry/:id" exact={true}>
-          <Entry />
-        </Route>
-        <Route path="/rulesets/create" exact={true} authenticated={authenticated}>
-          <RulesetForm />
-        </Route>
-        <Route path="/home" exact={true} authenticated={authenticated}>
-          <HomePage />
-        </Route>
-
-      </Switch>
+          <Route path="/login" exact={true}>
+            <LoginForm
+              authenticated={authenticated}
+              setAuthenticated={setAuthenticated}
+            />
+          </Route>
+          <Route path={"/sketch"} exact={true}>
+            <Sketch />
+          </Route>
+          <Route path={"/sketch/:id"} exact={true}>
+            <Sketch />
+          </Route>
+          <Route path="/sign-up" exact={true}>
+            <SignUpForm authenticated={authenticated} setAuthenticated={setAuthenticated} />
+          </Route>
+          <Route path="/users/:userId" exact={true} authenticated={authenticated}>
+            <Profile />
+          </Route>
+          <Route path="/competitions/:postId" exact={true} authenticated={authenticated}>
+            <CompetitionPage />
+          </Route>
+          <Route path="/competitions/:postId/entry/:id" exact={true}>
+            <Entry />
+          </Route>
+          <Route path="/rulesets/create" exact={true} authenticated={authenticated}>
+            <RulesetForm />
+          </Route>
+          <Route path="/home" exact={true} authenticated={authenticated}>
+            <HomePage />
+          </Route>
+        </Switch>
+        <Footer />
+      </div>
     </BrowserRouter>
   );
 }

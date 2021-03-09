@@ -54,6 +54,14 @@ body{
 	background-attachment: fixed;
 }
 
+.page-wrapper{
+  position: absolute;
+  min-height: 100vh;
+  width: 100%;
+  min-width: min-content;
+  top: 0;
+}
+
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
